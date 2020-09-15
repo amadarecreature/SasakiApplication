@@ -1,11 +1,10 @@
-# Awesome-name
+# InstructionGo
 
-This application is to draw a IGO Boad.
+This application is to draw a IGO Boad for instruction.
 
 ## Description
 
 This application is written by Typescript.
-
 
 ## Features
 
@@ -16,6 +15,19 @@ This application is written by Typescript.
 
 - Requirement
 
+## SampleDemo local
+
+Before execute,you need to have installed docker.
+```
+
+docker build -t instructiongo_sample_nginx .
+
+docker run --name InstructionGo -v /{furllPath}InstructionGo\doc\sample:/usr/share/nginx/html -p 80:80 instructiongo_sample_nginx
+
+#accsess http://localhost on your browser
+
+```
+
 ## Usage
 
 1. A
@@ -24,10 +36,9 @@ This application is written by Typescript.
 
 ## Installation
 
-`
 $ git clone <https://github.com/amadarecreature/InstructionGo.git>
 $ cd InstructionGo
-`
+
 
 ## Test
 
