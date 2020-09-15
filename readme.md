@@ -22,7 +22,7 @@ Before execute,you need to have installed docker.
 
 docker build -t instructiongo_sample_nginx .
 
-docker run --name InstructionGo -v /{furllPath}InstructionGo\doc\sample:/usr/share/nginx/html -p 80:80 instructiongo_sample_nginx
+docker run --name InstructionGo -v /{furllPath}InstructionGo\docs\sample:/usr/share/nginx/html -p 80:80 instructiongo_sample_nginx
 
 #accsess http://localhost on your browser
 
