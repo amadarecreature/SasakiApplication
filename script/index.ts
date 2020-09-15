@@ -1,24 +1,26 @@
-import { GoBoadManager } from "./GoBoardManager.js";
-
-console.log("yyyyyyyyyyyyyyyyyyy");
-
-
+import { GoBoadManager } from "./GoBoardMagnager.js";
+import { GoSetting } from "./GoSetting.js";
 
 class Main {
 
     readonly gbm: GoBoadManager;
     constructor() {
         const canvas: HTMLCanvasElement = <HTMLCanvasElement>document.getElementById("main_canvas");
+        const canvasIshi: HTMLCanvasElement = <HTMLCanvasElement>document.getElementById("sub_canvas");
 
-        this.gbm = new GoBoadManager(canvas, 50, 20, 20, 9);
+        this.gbm = new GoBoadManager(canvas, canvasIshi, new GoSetting(0.9, 20, 20), 9);
 
-        canvas.addEventListener("click", (e: MouseEvent) => this.gbm.onClick(e));
+        canvasIshi.addEventListener("click", (e: MouseEvent) => this.onClick(e));
 
         console.log("X1X2X3XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
 
         const btnRenew: HTMLButtonElement = <HTMLButtonElement>document.getElementById("btn_renew");
         btnRenew.addEventListener("click", (e: Event) => this.renew(e))
 
+    }
+
+    private onClick(e: MouseEvent) {
+        this.gbm.addGoishi(e.offsetX, e.offsetY);
     }
     /**
      * 再描画イベント用
