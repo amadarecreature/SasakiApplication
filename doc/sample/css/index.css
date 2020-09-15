@@ -1,0 +1,31 @@
+#body {
+    height: 600px;
+    width: 600px;
+
+}
+
+.main_container {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.goban_container{
+    height: 100%;
+    width: 100%;
+    position: relative;
+}
+.goban_container canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.goban_controller_container{
+    float: left;
+}
+.btn_renew{
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
