@@ -5,6 +5,7 @@
 <head>
     <script type="module" src="js/GoBoardMagnager.js"></script>
     <script type="module" src="js/GoSetting.js"></script>
+    <script type="module" src="js/GoLogger.js"></script>
     <script type="module" src="js/index.js"></script>
     <link rel="stylesheet" type="text/css" href="css/index.css" />
 </head>
@@ -20,9 +21,13 @@
             <button id="btn_renew" class="btn_renew">再表示</button>
         </div>
         <div class="goban_container">
-            <canvas id="main_canvas"></canvas>
-            <canvas id="sub_canvas"></canvas>
-
+            <div class="goban_area">
+                <canvas id="main_canvas"></canvas>
+                <canvas id="sub_canvas"></canvas>
+            </div>
+        </div>
+        <div class="log_container">
+            <label id="log"></label>
         </div>
 
     </div>

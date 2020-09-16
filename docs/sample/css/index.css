@@ -1,31 +1,48 @@
-#body {
+.main_container {
     height: 600px;
     width: 600px;
-
-}
-
-.main_container {
-    height: 100%;
-    width: 100%;
+    padding: 2%;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
-.goban_container{
-    height: 100%;
+
+.goban_container {
     width: 100%;
-    position: relative;
+    height: 80%;
+    border: 1px;
+    border-style: solid;
+    border-color: black;
+    /* display: flex; */
+
 }
-.goban_container canvas {
+
+.goban_area {
+    position: relative;
+
+}
+
+.goban_area canvas {
     position: absolute;
     top: 0;
     left: 0;
 }
 
-.goban_controller_container{
+.goban_controller_container {
+    width: 100%;
     float: left;
+    border: 1px solid black;
+    margin-bottom: 2px;
 }
-.btn_renew{
+
+.log_container {
+    border: 2px solid black;
+    width: 100%;
+    min-height: 20px;
+    margin-top: 5px;
+}
+
+.btn_renew {
     margin-top: 10px;
     margin-bottom: 10px;
 }

@@ -4,12 +4,12 @@ var GoishiType;
     GoishiType["WHITE"] = "W";
     GoishiType["NONE"] = "N";
 })(GoishiType || (GoishiType = {}));
-var KifPart = /** @class */ (function () {
-    function KifPart(color, roX, roY) {
+var KifuPart = /** @class */ (function () {
+    function KifuPart(color, roX, roY) {
         this.color = color;
         this.position = new PositionXY(roX, roY);
     }
-    return KifPart;
+    return KifuPart;
 }());
 var PositionXY = /** @class */ (function () {
     function PositionXY(x, y) {
@@ -25,12 +25,14 @@ var GoBoadManager = /** @class */ (function () {
      * @param goSetting
      * @param ro
      */
-    function GoBoadManager(canvas, canvasIshi, goSetting, ro) {
+    function GoBoadManager(canvas, canvasIshi, goSetting, ro, logger) {
         // 一路の横
         this.dx = 22;
         // 一路の縦
         this.dy = 24;
         this.turn = GoishiType.BLACK;
+        this.logger = logger;
+        this.goSetting = goSetting;
         //カンバスが使用できるかチェック
         if (!canvas.getContext) {
             console.log('[Roulette.constructor] カンバスが使用できません');
@@ -40,7 +42,6 @@ var GoBoadManager = /** @class */ (function () {
             this.gobanLeft = 0;
             this.kifu = new Array();
             this.realtimePosition = new Array();
-            this.goSetting = goSetting;
             return;
         }
         //カンバス・コンテキスト・大きさを注入する
@@ -221,7 +222,7 @@ var GoBoadManager = /** @class */ (function () {
         var fillstyle = (nowTurn == GoishiType.BLACK) ? "black" : "white";
         this.drawCircle(circleX - (this.dx / 2), circleY - (this.dy / 2), 10, 0, this.ctxIshi, fillstyle);
         // 棋譜の設定
-        this.kifu.push(new KifPart(nowTurn, positionOnGoban.x - 1, positionOnGoban.y - 1));
+        this.kifu.push(new KifuPart(nowTurn, positionOnGoban.x - 1, positionOnGoban.y - 1));
         // 配置の設定
         this.realtimePosition[positionOnGoban.x - 1][positionOnGoban.y - 1] = nowTurn;
         // ターンを入れ替える
@@ -230,7 +231,7 @@ var GoBoadManager = /** @class */ (function () {
         this.kifu.forEach(function (kifu) {
             tmp += kifu.color + "(" + kifu.position.x + ":" + kifu.position.y + ")";
         });
-        console.log("kifu:", tmp);
+        this.logger.log("kifu:" + tmp);
         // auClick.play();
         // turn = 3 - turn;
     };

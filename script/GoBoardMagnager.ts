@@ -1,11 +1,11 @@
 import { GoSetting } from "./GoSetting";
-
+import { Logger } from "./GoLogger";
 enum GoishiType {
     BLACK = "B",
     WHITE = "W",
     NONE = "N"
 }
-class KifPart {
+class KifuPart {
     readonly color: GoishiType;
     readonly position: PositionXY;
     constructor(color: GoishiType, roX: number, roY: number) {
@@ -25,7 +25,7 @@ class PositionXY {
 export class GoBoadManager {
 
 
-    readonly kifu: KifPart[];
+    readonly kifu: KifuPart[];
 
     readonly realtimePosition: GoishiType[][];
 
@@ -53,6 +53,8 @@ export class GoBoadManager {
     private gobanLeft: number;
 
     private goSetting: GoSetting;
+
+    readonly logger: Logger;
 
 
     // 一路の横
@@ -93,9 +95,11 @@ export class GoBoadManager {
      * @param goSetting
      * @param ro 
      */
-    public constructor(canvas: HTMLCanvasElement, canvasIshi: HTMLCanvasElement, goSetting: GoSetting, ro: number) {
+    public constructor(canvas: HTMLCanvasElement, canvasIshi: HTMLCanvasElement, goSetting: GoSetting, ro: number, logger: Logger) {
 
         this.turn = GoishiType.BLACK;
+        this.logger = logger;
+        this.goSetting = goSetting;
 
         //カンバスが使用できるかチェック
         if (!canvas.getContext) {
@@ -106,7 +110,6 @@ export class GoBoadManager {
             this.gobanLeft = 0;
             this.kifu = new Array();
             this.realtimePosition = new Array();
-            this.goSetting = goSetting;
             return;
         }
 
@@ -313,7 +316,7 @@ export class GoBoadManager {
 
 
         // 棋譜の設定
-        this.kifu.push(new KifPart(nowTurn, positionOnGoban.x - 1, positionOnGoban.y - 1));
+        this.kifu.push(new KifuPart(nowTurn, positionOnGoban.x - 1, positionOnGoban.y - 1));
 
         // 配置の設定
         this.realtimePosition[positionOnGoban.x - 1][positionOnGoban.y - 1] = nowTurn;
@@ -327,7 +330,7 @@ export class GoBoadManager {
             tmp += kifu.color + "(" + kifu.position.x + ":" + kifu.position.y + ")";
         });
 
-        console.log("kifu:", tmp);
+        this.logger.log("kifu:" + tmp);
 
         // auClick.play();
         // turn = 3 - turn;

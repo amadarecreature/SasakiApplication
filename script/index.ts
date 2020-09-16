@@ -1,5 +1,6 @@
 import { GoBoadManager } from "./GoBoardMagnager.js";
 import { GoSetting } from "./GoSetting.js";
+import { GoLogger } from "./GoLogger.js"
 
 class Main {
 
@@ -7,8 +8,8 @@ class Main {
     constructor() {
         const canvas: HTMLCanvasElement = <HTMLCanvasElement>document.getElementById("main_canvas");
         const canvasIshi: HTMLCanvasElement = <HTMLCanvasElement>document.getElementById("sub_canvas");
-
-        this.gbm = new GoBoadManager(canvas, canvasIshi, new GoSetting(0.9, 20, 20), 9);
+        const lblLog: HTMLLabelElement = <HTMLLabelElement>document.getElementById("log");
+        this.gbm = new GoBoadManager(canvas, canvasIshi, new GoSetting(0.9, 20, 20), 9, GoLogger.getInstance(lblLog));
 
         canvasIshi.addEventListener("click", (e: MouseEvent) => this.onClick(e));
 

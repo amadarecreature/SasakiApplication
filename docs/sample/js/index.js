@@ -1,11 +1,13 @@
 import { GoBoadManager } from "./GoBoardMagnager.js";
 import { GoSetting } from "./GoSetting.js";
+import { GoLogger } from "./GoLogger.js";
 var Main = /** @class */ (function () {
     function Main() {
         var _this = this;
         var canvas = document.getElementById("main_canvas");
         var canvasIshi = document.getElementById("sub_canvas");
-        this.gbm = new GoBoadManager(canvas, canvasIshi, new GoSetting(0.9, 20, 20), 9);
+        var lblLog = document.getElementById("log");
+        this.gbm = new GoBoadManager(canvas, canvasIshi, new GoSetting(0.9, 20, 20), 9, GoLogger.getInstance(lblLog));
         canvasIshi.addEventListener("click", function (e) { return _this.onClick(e); });
         console.log("X1X2X3XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
         var btnRenew = document.getElementById("btn_renew");
