@@ -40,7 +40,7 @@ var GoBoadManager = /** @class */ (function () {
      * @param goSetting
      * @param ro
      */
-    function GoBoadManager(canvas, canvasIshi, goSetting, ro, logger) {
+    function GoBoadManager(canvas, goSetting, ro, logger) {
         // 一路の横
         this.roWidth = 22;
         // 一路の縦
@@ -61,9 +61,7 @@ var GoBoadManager = /** @class */ (function () {
         }
         //カンバス・コンテキスト・大きさを注入する
         this.canvas = canvas;
-        this.canvasIshi = canvasIshi;
         this.context = canvas.getContext('2d');
-        this.ctxIshi = canvasIshi.getContext("2d");
         this.roCount = ro;
         this.goSetting = goSetting;
         this.gobanTop = goSetting.gobanTop;

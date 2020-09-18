@@ -1,5 +1,6 @@
 import { GoBoadSetting } from "./GoSetting";
 import { Logger } from "./GoLogger";
+import { readConfigFile } from "node_modules/typescript/lib/typescript";
 enum GoishiType {
     BLACK = "B",
     WHITE = "W",
@@ -93,7 +94,7 @@ export class GoBoadManager {
      * @param goSetting
      * @param ro 
      */
-    public constructor(canvas: HTMLCanvasElement, canvasIshi: HTMLCanvasElement, goSetting: GoBoadSetting, ro: number, logger: Logger) {
+    public constructor(canvas: HTMLCanvasElement, goSetting: GoBoadSetting, ro: number, logger: Logger) {
 
         this.turn = GoishiType.BLACK;
         this.logger = logger;
@@ -115,9 +116,7 @@ export class GoBoadManager {
 
         //カンバス・コンテキスト・大きさを注入する
         this.canvas = canvas;
-        this.canvasIshi = canvasIshi;
         this.context = canvas.getContext('2d')!;
-        this.ctxIshi = canvasIshi.getContext("2d")!;
 
         this.roCount = ro;
 
