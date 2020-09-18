@@ -1,4 +1,4 @@
-import { GoishiManager } from "../GoBoardMagnager";
+import { GoishiManager } from "../main/GoBoardMagnager";
 
 test('basic', () => {
     expect(1).toBe(0);
