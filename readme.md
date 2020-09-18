@@ -18,7 +18,8 @@ This application is written by Typescript.
 ## SampleDemo local
 
 Before execute,you need to have installed docker.
-```
+
+```docker
 
 docker build -t instructiongo_sample_nginx .
 
@@ -26,7 +27,7 @@ docker run --name InstructionGo -v /{furllPath}InstructionGo\docs\sample:/usr/sh
 
 #accsess http://localhost on your browser
 
-```
+ ```
 
 ## Usage
 
@@ -38,7 +39,6 @@ docker run --name InstructionGo -v /{furllPath}InstructionGo\docs\sample:/usr/sh
 
 $ git clone <https://github.com/amadarecreature/InstructionGo.git>
 $ cd InstructionGo
-
 
 ## Test
 
@@ -56,6 +56,4 @@ mail to: xxxx@mail.com
 
 ## License
 
-No printing...
-
-[MIT](http://sample.com)</blockquote>
+This software is released under the MIT License, see LICENSE.txt.

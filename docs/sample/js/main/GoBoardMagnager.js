@@ -41,10 +41,6 @@ var GoBoadManager = /** @class */ (function () {
      * @param ro
      */
     function GoBoadManager(canvas, goSetting, ro, logger) {
-        // 一路の横
-        this.roWidth = 22;
-        // 一路の縦
-        this.roHeight = 22;
         this.turn = GoishiType.BLACK;
         this.logger = logger;
         this.goSetting = goSetting;
@@ -80,7 +76,7 @@ var GoBoadManager = /** @class */ (function () {
         this.context.font = "bold 15px '游ゴシック'";
         this.context.textAlign = 'center';
         this.context.shadowBlur = 2;
-        this.drawBoard(5, this.canvas, this.canvasIshi, this.context);
+        this.drawBoard(5, this.canvas, this.context);
     }
     /**
      * 碁盤を描画します。
@@ -88,19 +84,17 @@ var GoBoadManager = /** @class */ (function () {
      * @param context 描画先のコンテキストを指定します。
      * @since 0.1
      */
-    GoBoadManager.prototype.drawBoard = function (shadow, canvas, canvasIshi, context) {
+    GoBoadManager.prototype.drawBoard = function (shadow, canvas, context) {
         // 碁盤のサイズ
-        var gobanWidth = this.roWidth * (this.roCount + 1);
-        var gobanHeight = this.roHeight * (this.roCount + 1);
-        var areaWidth = this.roWidth * (this.roCount - 1) + 2;
-        var areaHeight = this.roHeight * (this.roCount - 1) + 2;
+        var gobanWidth = this.goSetting.roHW * (this.roCount + 1);
+        var gobanHeight = this.goSetting.roHW * (this.roCount + 1);
+        var areaWidth = this.goSetting.roHW * (this.roCount - 1) + 2;
+        var areaHeight = this.goSetting.roHW * (this.roCount - 1) + 2;
         var areaLeft = this.gobanLeft + Math.floor((gobanWidth - areaWidth) / 2);
         var areaTop = this.gobanTop + Math.floor((gobanHeight - areaHeight) / 2);
         // サイズ変更(サイズ変更すると描画内容が消えるので先に変更)
         canvas.width = gobanWidth + 20;
         canvas.height = gobanHeight + 20;
-        canvasIshi.width = gobanWidth + 20;
-        canvasIshi.height = gobanHeight + 20;
         console.log("canvas:", canvas.width, canvas.height);
         // 碁盤の影
         this.drowShadow(this.context, this.gobanLeft, this.gobanTop, gobanWidth, shadow, gobanHeight);
@@ -109,8 +103,7 @@ var GoBoadManager = /** @class */ (function () {
         // 木目
         // drawWoodGrain(x, y, width, height, context);
         // 格子
-        this.drowKoushi(this.context, areaLeft, this.roCount, areaTop, this.roHeight, areaWidth, this.roWidth, areaHeight);
-        // TODO:変更の仕方調べる
+        this.drowKoushi(this.context, areaLeft, this.roCount, areaTop, this.goSetting.roHW, areaWidth, this.goSetting.roHW, areaHeight);
     };
     GoBoadManager.prototype.drowKoushi = function (context, gx, ro, gy, dy, gwidth, dx, gheight) {
         context.fillStyle = "black";
@@ -254,13 +247,6 @@ var GoishiManager = /** @class */ (function () {
      * @since 0.1
      */
     GoishiManager.prototype.initCanvas = function (canvas, goBoadInfo) {
-        // 碁盤のサイズ
-        // const width = this.roWidthX * (this.roCount + 1);
-        // const height = this.roHeight * (this.roCount + 1);
-        // const gwidth = this.roWidthX * (this.roCount - 1) + 2;
-        // const gheight = this.roHeight * (this.roCount - 1) + 2;
-        // const gx = this.gobanLeft + Math.floor((width - gwidth) / 2);
-        // const gy = this.gobanTop + Math.floor((height - gheight) / 2);
         // サイズ変更(サイズ変更すると描画内容が消えるので先に変更)
         canvas.width = goBoadInfo.width + 20;
         canvas.height = goBoadInfo.height + 20;
@@ -283,6 +269,18 @@ var GoishiManager = /** @class */ (function () {
         // 次を白番にする
         this._turn = GoishiType.WHITE;
         this.logger.log("kifu:" + tmp);
+    };
+    GoishiManager.prototype.chakushBack = function (count) {
+        var now = this.kifu.length - 1;
+        var targetNo = now - count;
+        var targetChakushu = this.kifu[targetNo];
+        this.clearGoishiByRo(new PositionXY(targetChakushu.position.x + 1, targetChakushu.position.y + 1));
+    };
+    GoishiManager.prototype.clearGoishiByRo = function (positionOnGoban) {
+        var keisen = 1;
+        // 碁石の中心位置を計算する。
+        var circleCenterPosition = this.calcCircleCenterPosition(keisen, positionOnGoban);
+        this.clearGoishi(circleCenterPosition.x - (this.roWidthX / 2), circleCenterPosition.y - (this.roHeight / 2), this.ctx);
     };
     /**
      * 碁石を置きます。
@@ -324,9 +322,9 @@ var GoishiManager = /** @class */ (function () {
         return tmp;
     };
     GoishiManager.prototype.calcCircleCenterPosition = function (keisen, positionOnGoban) {
-        var circleX = this.goBoadInfo.areaLeft + 1 + keisen + (this.roWidthX) * (positionOnGoban.x - 1);
-        // 端の線は2px(格子ごとの線+1px)
-        var circleY = this.goBoadInfo.areaTop + 1 + keisen + (this.roHeight) * (positionOnGoban.y - 1);
+        var circleX = this.goBoadInfo.areaLeft + keisen + (this.roWidthX) * (positionOnGoban.x - 1);
+        // 端の線は2px(格子ごとの線+1pxなので、足りない1pxだけ足す)
+        var circleY = this.goBoadInfo.areaTop + keisen + (this.roHeight) * (positionOnGoban.y - 1);
         var circleCenterPosition = new PositionXY(circleX, circleY);
         return circleCenterPosition;
     };

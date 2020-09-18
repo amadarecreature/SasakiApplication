@@ -4,14 +4,19 @@ import { GoLogger } from "./GoLogger.js";
 var Main = /** @class */ (function () {
     function Main() {
         var _this = this;
+        this.setting = new GoBoadSetting(0.9, 20, 20, 22);
         var canvas = document.getElementById("main_canvas");
         var canvasIshi = document.getElementById("sub_canvas");
         var lblLog = document.getElementById("log");
-        this.gbm = new GoBoadManager(canvas, new GoBoadSetting(0.9, 20, 20), 9, GoLogger.getInstance(lblLog));
-        this.gim = new GoishiManager(canvasIshi, new GoBoadSetting(0.9, 20, 20), 9, GoLogger.getInstance(lblLog));
+        this.gbm = new GoBoadManager(canvas, this.setting, 9, GoLogger.getInstance(lblLog));
+        this.gim = new GoishiManager(canvasIshi, this.setting, 9, GoLogger.getInstance(lblLog));
         canvasIshi.addEventListener("click", function (e) { return _this.onMouseClick(e); });
+        // 再描画
         var btnRenew = document.getElementById("btn_renew");
         btnRenew.addEventListener("click", function (e) { return _this.renew(e); });
+        // 待った
+        var btnBack = document.getElementById("btn_back");
+        btnBack.addEventListener("click", function (e) { return _this.mattta(e); });
     }
     /**
      *
@@ -38,8 +43,11 @@ var Main = /** @class */ (function () {
         var lblLog = document.getElementById("log");
         var slRosu = document.getElementById("sl_rosu");
         var rosu = parseInt(slRosu.options[slRosu.selectedIndex].value, 10);
-        this.gbm = new GoBoadManager(canvas, new GoBoadSetting(0.9, 20, 20), rosu, GoLogger.getInstance(lblLog));
-        this.gim = new GoishiManager(canvasIshi, new GoBoadSetting(0.9, 20, 20), rosu, GoLogger.getInstance(lblLog));
+        this.gbm = new GoBoadManager(canvas, this.setting, rosu, GoLogger.getInstance(lblLog));
+        this.gim = new GoishiManager(canvasIshi, this.setting, rosu, GoLogger.getInstance(lblLog));
+    };
+    Main.prototype.mattta = function (e) {
+        this.gim.chakushBack(0);
     };
     return Main;
 }());

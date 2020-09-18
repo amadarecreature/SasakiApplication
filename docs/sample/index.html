@@ -19,18 +19,27 @@
                 <option value="19">19</option>
             </select>
             <button id="btn_renew" class="btn_renew">再表示</button>
-            <input type="checkbox" id="ckOkiishiMode"  name="onOkiishiMode" /><label>置き石モードON</label>
+            <input type="checkbox" id="ckOkiishiMode" name="onOkiishiMode" /><label>置き石モードON</label>
+            <button id="btn_back" class="btn_back">待った</button>
         </div>
-        <div class="log_container">
-            <label id="log"></label>
-        </div>
-        <div class="goban_container">
-            <label>手番 : </label><span id="spnTeban"></span>
-            <label>アゲハマ(白) : </label><span id="spnAgehamaW"></span>
-            <label>アゲハマ(黒) : </label><span id="spnAgehamaB"></span>
-            <div class="goban_area">
-                <canvas id="main_canvas"></canvas>
-                <canvas id="sub_canvas"></canvas>
+        <div class="play_field_container">
+            <div class="log_container">
+                <label id="log"></label>
+            </div>
+            <div class="goban_container">
+                <div class="goban_area">
+                    <canvas id="main_canvas"></canvas>
+                    <canvas id="sub_canvas"></canvas>
+                </div>
+                <div class="play_info_area">
+                    <label>手番 : </label><span id="spnTeban"></span>
+                    <div class="own_info">
+                        <label>アゲハマ(白) : </label><span id="spnAgehamaW"></span>
+                    </div>
+                    <div class="enemy_info">
+                        <label>アゲハマ(黒) : </label><span id="spnAgehamaB"></span>
+                    </div>
+                </div>
             </div>
         </div>
 

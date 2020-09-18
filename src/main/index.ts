@@ -6,17 +6,23 @@ class Main {
 
     private gbm: GoBoadManager;
     private gim: GoishiManager;
+    readonly setting: GoBoadSetting = new GoBoadSetting(0.9, 20, 20, 22);
     constructor() {
         const canvas: HTMLCanvasElement = <HTMLCanvasElement>document.getElementById("main_canvas");
         const canvasIshi: HTMLCanvasElement = <HTMLCanvasElement>document.getElementById("sub_canvas");
         const lblLog: HTMLLabelElement = <HTMLLabelElement>document.getElementById("log");
-        this.gbm = new GoBoadManager(canvas, new GoBoadSetting(0.9, 20, 20), 9, GoLogger.getInstance(lblLog));
-        this.gim = new GoishiManager(canvasIshi, new GoBoadSetting(0.9, 20, 20), 9, GoLogger.getInstance(lblLog));
+        this.gbm = new GoBoadManager(canvas, this.setting, 9, GoLogger.getInstance(lblLog));
+        this.gim = new GoishiManager(canvasIshi, this.setting, 9, GoLogger.getInstance(lblLog));
 
         canvasIshi.addEventListener("click", (e: MouseEvent) => this.onMouseClick(e));
 
+        // 再描画
         const btnRenew: HTMLButtonElement = <HTMLButtonElement>document.getElementById("btn_renew");
         btnRenew.addEventListener("click", (e: Event) => this.renew(e))
+
+        // 待った
+        const btnBack: HTMLButtonElement = <HTMLButtonElement>document.getElementById("btn_back");
+        btnBack.addEventListener("click", (e: Event) => this.mattta(e))
 
     }
 
@@ -46,8 +52,11 @@ class Main {
         const slRosu: HTMLSelectElement = <HTMLSelectElement>document.getElementById("sl_rosu");
         const rosu: number = parseInt(slRosu.options[slRosu.selectedIndex].value, 10);
 
-        this.gbm = new GoBoadManager(canvas, new GoBoadSetting(0.9, 20, 20), rosu, GoLogger.getInstance(lblLog));
-        this.gim = new GoishiManager(canvasIshi, new GoBoadSetting(0.9, 20, 20), rosu, GoLogger.getInstance(lblLog));
+        this.gbm = new GoBoadManager(canvas, this.setting, rosu, GoLogger.getInstance(lblLog));
+        this.gim = new GoishiManager(canvasIshi, this.setting, rosu, GoLogger.getInstance(lblLog));
+    }
+    private mattta(e:Event){
+        this.gim.chakushBack(0);
     }
 }
 

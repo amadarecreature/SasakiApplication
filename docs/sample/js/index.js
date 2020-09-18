@@ -4,11 +4,14 @@ import { GoLogger } from "./main/GoLogger.js";
 var Main = /** @class */ (function () {
     function Main() {
         var _this = this;
+        this.goBoadSetting = new GoBoadSetting(0.9, 20, 20, 22);
+        // 路のサイズ
+        var roWH = 22;
         var canvas = document.getElementById("main_canvas");
         var canvasIshi = document.getElementById("sub_canvas");
         var lblLog = document.getElementById("log");
-        this.gbm = new GoBoadManager(canvas, new GoBoadSetting(0.9, 20, 20), 9, GoLogger.getInstance(lblLog));
-        this.gim = new GoishiManager(canvasIshi, new GoBoadSetting(0.9, 20, 20), 9, GoLogger.getInstance(lblLog));
+        this.gbm = new GoBoadManager(canvas, this.goBoadSetting, 9, GoLogger.getInstance(lblLog));
+        this.gim = new GoishiManager(canvasIshi, this.goBoadSetting, 9, GoLogger.getInstance(lblLog));
         canvasIshi.addEventListener("click", function (e) { return _this.onClick(e); });
         console.log("X1X2X3XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
         var btnRenew = document.getElementById("btn_renew");
@@ -33,9 +36,11 @@ var Main = /** @class */ (function () {
         var slRosu = document.getElementById("sl_rosu");
         var rosu = parseInt(slRosu.options[slRosu.selectedIndex].value, 10);
         var canvas = document.getElementById("main_canvas");
-        this.gbm = new GoBoadManager(canvas, new GoBoadSetting(0.9, 20, 20), rosu, GoLogger.getInstance(lblLog));
+        this.gbm = new GoBoadManager(canvas, this.goBoadSetting, rosu, GoLogger.getInstance(lblLog));
         var canvasIshi = document.getElementById("sub_canvas");
-        this.gim = new GoishiManager(canvasIshi, new GoBoadSetting(0.9, 20, 20), rosu, GoLogger.getInstance(lblLog));
+        this.gim = new GoishiManager(canvasIshi, this.goBoadSetting, rosu, GoLogger.getInstance(lblLog));
+    };
+    Main.prototype.back = function (e) {
     };
     return Main;
 }());
