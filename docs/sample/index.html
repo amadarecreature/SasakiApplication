@@ -19,11 +19,13 @@
                 <option value="19">19</option>
             </select>
             <button id="btn_renew" class="btn_renew">再表示</button>
+            <input type="checkbox" id="ckOkiishiMode"  name="onOkiishiMode" /><label>置き石モードON</label>
         </div>
         <div class="log_container">
             <label id="log"></label>
         </div>
         <div class="goban_container">
+            <label>手番</label><span id="teban"></span>
             <div class="goban_area">
                 <canvas id="main_canvas"></canvas>
                 <canvas id="sub_canvas"></canvas>

@@ -22,7 +22,12 @@ class Main {
     }
 
     private onClick(e: MouseEvent) {
-        this.gim.addGoishi(e.offsetX, e.offsetY);
+        const ckOnOkiishiMode: HTMLInputElement = <HTMLInputElement>document.getElementById("ckOkiishiMode");
+        if (ckOnOkiishiMode.checked) {
+            this.gim.addOkiIshi(e.offsetX, e.offsetY);
+        } else {
+            this.gim.chakushu(e.offsetX, e.offsetY);
+        }
     }
     /**
      * 再描画イベント用
@@ -38,7 +43,6 @@ class Main {
 
         this.gbm = new GoBoadManager(canvas, canvasIshi, new GoSetting(0.9, 20, 20), rosu, GoLogger.getInstance(lblLog));
         this.gim = new GoishiManager(canvasIshi, new GoSetting(0.9, 20, 20), rosu, GoLogger.getInstance(lblLog));
-
     }
 
 }
