@@ -1,4 +1,4 @@
-export class GoSetting {
+export class GoBoadSetting {
     readonly goishiGlobalAlpha: number;
 
     readonly gobanTop: number;

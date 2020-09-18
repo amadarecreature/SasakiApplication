@@ -1,4 +1,4 @@
-import { GoSetting } from "./GoSetting";
+import { GoBoadSetting } from "./GoSetting";
 import { Logger } from "./GoLogger";
 enum GoishiType {
     BLACK = "B",
@@ -48,7 +48,6 @@ class PositionXY {
 }
 export class GoBoadManager {
 
-
     readonly kifu: KifuPart[];
 
     readonly realtimePosition: GoishiType[][];
@@ -76,7 +75,7 @@ export class GoBoadManager {
     private gobanTop: number;
     private gobanLeft: number;
 
-    private goSetting: GoSetting;
+    private goSetting: GoBoadSetting;
 
     readonly logger: Logger;
 
@@ -94,7 +93,7 @@ export class GoBoadManager {
      * @param goSetting
      * @param ro 
      */
-    public constructor(canvas: HTMLCanvasElement, canvasIshi: HTMLCanvasElement, goSetting: GoSetting, ro: number, logger: Logger) {
+    public constructor(canvas: HTMLCanvasElement, canvasIshi: HTMLCanvasElement, goSetting: GoBoadSetting, ro: number, logger: Logger) {
 
         this.turn = GoishiType.BLACK;
         this.logger = logger;
@@ -299,12 +298,17 @@ export class GoishiManager {
 
     private canvas!: HTMLCanvasElement;
 
-    private turn: GoishiType;
+    private _turn: GoishiType;
+
+    public get turn(): string {
+        return this._turn;
+    }
+
 
     private gobanTop: number;
     private gobanLeft: number;
 
-    private goSetting: GoSetting;
+    readonly goSetting: GoBoadSetting;
 
     readonly logger: Logger;
 
@@ -315,7 +319,8 @@ export class GoishiManager {
     // 一路の縦
     private roHeight = 22;
 
-    private roCount: number;
+    // 路数
+    readonly roCount: number;
     /**
      * このクラスが扱うコンテキストと幅(縦も同義)を注入する
      * @param canvas 
@@ -323,9 +328,9 @@ export class GoishiManager {
      * @param ro 
      * @param logger
      */
-    public constructor(canvas: HTMLCanvasElement, goSetting: GoSetting, ro: number, logger: Logger) {
+    public constructor(canvas: HTMLCanvasElement, goSetting: GoBoadSetting, ro: number, logger: Logger) {
 
-        this.turn = GoishiType.BLACK;
+        this._turn = GoishiType.BLACK;
         this.logger = logger;
 
         this.goSetting = goSetting;
@@ -368,10 +373,10 @@ export class GoishiManager {
         this.initCanvas(this.canvas, this.goBoadInfo);
     }
     /**
- * 碁盤上での位置左上から数えた路数
- * @param x 
- * @param y 
- */
+     * 碁盤上での位置左上から数えた路数
+     * @param x 
+     * @param y 
+     */
     private calcPositionOnGoban(x: number, y: number): PositionXY {
         const x0 = x - this.gobanLeft;
         const xRo = Math.floor((x0 + (this.roWidthX / 2)) / this.roWidthX);
@@ -429,7 +434,7 @@ export class GoishiManager {
         var tmp = this.newMethod(GoishiType.BLACK, circleCenterPosition, positionOnGoban);
 
         // 次を白番にする
-        this.turn = GoishiType.WHITE;
+        this._turn = GoishiType.WHITE;
 
         this.logger.log("kifu:" + tmp);
 
@@ -445,7 +450,7 @@ export class GoishiManager {
 
         console.info("click=" + mouseX + ":" + mouseY);
 
-        const nowTurn = this.turn;
+        const nowTurn = this._turn;
 
         const positionOnGoban = this.calcPositionOnGoban(mouseX, mouseY)
 
@@ -466,7 +471,7 @@ export class GoishiManager {
         var tmp = this.newMethod(nowTurn, circleCenterPosition, positionOnGoban);
 
         // ターンを入れ替える
-        this.turn = (nowTurn == GoishiType.BLACK) ? GoishiType.WHITE : GoishiType.BLACK;
+        this._turn = (nowTurn == GoishiType.BLACK) ? GoishiType.WHITE : GoishiType.BLACK;
 
         this.logger.log("kifu:" + tmp);
 

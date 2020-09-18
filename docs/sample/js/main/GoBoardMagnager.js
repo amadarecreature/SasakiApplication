@@ -194,7 +194,7 @@ var GoishiManager = /** @class */ (function () {
         this.roWidthX = 22;
         // 一路の縦
         this.roHeight = 22;
-        this.turn = GoishiType.BLACK;
+        this._turn = GoishiType.BLACK;
         this.logger = logger;
         this.goSetting = goSetting;
         this.gobanTop = goSetting.gobanTop;
@@ -229,11 +229,18 @@ var GoishiManager = /** @class */ (function () {
         this.ctx.shadowBlur = 2;
         this.initCanvas(this.canvas, this.goBoadInfo);
     }
+    Object.defineProperty(GoishiManager.prototype, "turn", {
+        get: function () {
+            return this._turn;
+        },
+        enumerable: false,
+        configurable: true
+    });
     /**
- * 碁盤上での位置左上から数えた路数
- * @param x
- * @param y
- */
+     * 碁盤上での位置左上から数えた路数
+     * @param x
+     * @param y
+     */
     GoishiManager.prototype.calcPositionOnGoban = function (x, y) {
         var x0 = x - this.gobanLeft;
         var xRo = Math.floor((x0 + (this.roWidthX / 2)) / this.roWidthX);
@@ -276,7 +283,7 @@ var GoishiManager = /** @class */ (function () {
         }
         var tmp = this.newMethod(GoishiType.BLACK, circleCenterPosition, positionOnGoban);
         // 次を白番にする
-        this.turn = GoishiType.WHITE;
+        this._turn = GoishiType.WHITE;
         this.logger.log("kifu:" + tmp);
     };
     /**
@@ -286,7 +293,7 @@ var GoishiManager = /** @class */ (function () {
      */
     GoishiManager.prototype.chakushu = function (mouseX, mouseY) {
         console.info("click=" + mouseX + ":" + mouseY);
-        var nowTurn = this.turn;
+        var nowTurn = this._turn;
         var positionOnGoban = this.calcPositionOnGoban(mouseX, mouseY);
         var keisen = 1;
         // 碁石の中心位置を計算する。
@@ -300,7 +307,7 @@ var GoishiManager = /** @class */ (function () {
         }
         var tmp = this.newMethod(nowTurn, circleCenterPosition, positionOnGoban);
         // ターンを入れ替える
-        this.turn = (nowTurn == GoishiType.BLACK) ? GoishiType.WHITE : GoishiType.BLACK;
+        this._turn = (nowTurn == GoishiType.BLACK) ? GoishiType.WHITE : GoishiType.BLACK;
         this.logger.log("kifu:" + tmp);
         // auClick.play();
         // turn = 3 - turn;

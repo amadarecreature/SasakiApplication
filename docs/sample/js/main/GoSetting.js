@@ -1,9 +1,9 @@
-var GoSetting = /** @class */ (function () {
-    function GoSetting(gobanTop, gobanLeft, goishiGlobalAlpha) {
+var GoBoadSetting = /** @class */ (function () {
+    function GoBoadSetting(gobanTop, gobanLeft, goishiGlobalAlpha) {
         this.goishiGlobalAlpha = goishiGlobalAlpha;
         this.gobanTop = gobanTop;
         this.gobanLeft = gobanLeft;
     }
-    return GoSetting;
+    return GoBoadSetting;
 }());
-export { GoSetting };
+export { GoBoadSetting };

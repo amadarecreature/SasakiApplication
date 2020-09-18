@@ -1,5 +1,5 @@
 import { GoBoadManager, GoishiManager } from "./GoBoardMagnager.js";
-import { GoSetting } from "./GoSetting.js";
+import { GoBoadSetting } from "./GoSetting.js";
 import { GoLogger } from "./GoLogger.js";
 var Main = /** @class */ (function () {
     function Main() {
@@ -7,14 +7,17 @@ var Main = /** @class */ (function () {
         var canvas = document.getElementById("main_canvas");
         var canvasIshi = document.getElementById("sub_canvas");
         var lblLog = document.getElementById("log");
-        this.gbm = new GoBoadManager(canvas, canvasIshi, new GoSetting(0.9, 20, 20), 9, GoLogger.getInstance(lblLog));
-        this.gim = new GoishiManager(canvasIshi, new GoSetting(0.9, 20, 20), 9, GoLogger.getInstance(lblLog));
-        canvasIshi.addEventListener("click", function (e) { return _this.onClick(e); });
-        console.log("X1X2X3XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+        this.gbm = new GoBoadManager(canvas, canvasIshi, new GoBoadSetting(0.9, 20, 20), 9, GoLogger.getInstance(lblLog));
+        this.gim = new GoishiManager(canvasIshi, new GoBoadSetting(0.9, 20, 20), 9, GoLogger.getInstance(lblLog));
+        canvasIshi.addEventListener("click", function (e) { return _this.onMouseClick(e); });
         var btnRenew = document.getElementById("btn_renew");
         btnRenew.addEventListener("click", function (e) { return _this.renew(e); });
     }
-    Main.prototype.onClick = function (e) {
+    /**
+     *
+     * @param e
+     */
+    Main.prototype.onMouseClick = function (e) {
         var ckOnOkiishiMode = document.getElementById("ckOkiishiMode");
         if (ckOnOkiishiMode.checked) {
             this.gim.addOkiIshi(e.offsetX, e.offsetY);
@@ -22,6 +25,8 @@ var Main = /** @class */ (function () {
         else {
             this.gim.chakushu(e.offsetX, e.offsetY);
         }
+        var spnTeban = document.getElementById("spnTeban");
+        spnTeban.innerHTML = this.gim.turn;
     };
     /**
      * 再描画イベント用
@@ -33,8 +38,8 @@ var Main = /** @class */ (function () {
         var lblLog = document.getElementById("log");
         var slRosu = document.getElementById("sl_rosu");
         var rosu = parseInt(slRosu.options[slRosu.selectedIndex].value, 10);
-        this.gbm = new GoBoadManager(canvas, canvasIshi, new GoSetting(0.9, 20, 20), rosu, GoLogger.getInstance(lblLog));
-        this.gim = new GoishiManager(canvasIshi, new GoSetting(0.9, 20, 20), rosu, GoLogger.getInstance(lblLog));
+        this.gbm = new GoBoadManager(canvas, canvasIshi, new GoBoadSetting(0.9, 20, 20), rosu, GoLogger.getInstance(lblLog));
+        this.gim = new GoishiManager(canvasIshi, new GoBoadSetting(0.9, 20, 20), rosu, GoLogger.getInstance(lblLog));
     };
     return Main;
 }());
