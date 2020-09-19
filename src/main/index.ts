@@ -7,14 +7,22 @@ class Main {
     private gbm: GoBoadManager;
     private gim: GoishiManager;
     readonly setting: GoBoadSetting = new GoBoadSetting(0.9, 20, 20, 22);
-    constructor() {
-        const canvas: HTMLCanvasElement = <HTMLCanvasElement>document.getElementById("main_canvas");
-        const canvasIshi: HTMLCanvasElement = <HTMLCanvasElement>document.getElementById("sub_canvas");
-        const lblLog: HTMLLabelElement = <HTMLLabelElement>document.getElementById("log");
-        this.gbm = new GoBoadManager(canvas, this.setting, 9, GoLogger.getInstance(lblLog));
-        this.gim = new GoishiManager(canvasIshi, this.setting, 9, GoLogger.getInstance(lblLog));
 
-        canvasIshi.addEventListener("click", (e: MouseEvent) => this.onMouseClick(e));
+    readonly canvas: HTMLCanvasElement = <HTMLCanvasElement>document.getElementById("main_canvas");
+    readonly canvasIshi: HTMLCanvasElement = <HTMLCanvasElement>document.getElementById("sub_canvas");
+    readonly lblLog: HTMLLabelElement = <HTMLLabelElement>document.getElementById("log");
+
+    readonly slRosu: HTMLSelectElement = <HTMLSelectElement>document.getElementById("sl_rosu");
+
+
+    /**
+     * メイン処理をここに書く
+     */
+    constructor() {
+        this.gbm = new GoBoadManager(this.canvas, this.setting, 9);
+        this.gim = new GoishiManager(this.canvasIshi, this.setting, 9, GoLogger.getInstance(this.lblLog));
+
+        this.canvasIshi.addEventListener("click", (e: MouseEvent) => this.onMouseClick(e));
 
         // 再描画
         const btnNew: HTMLButtonElement = <HTMLButtonElement>document.getElementById("btn_new");
@@ -49,15 +57,10 @@ class Main {
      * @param e 
      */
     private new(e: Event) {
-        const canvas: HTMLCanvasElement = <HTMLCanvasElement>document.getElementById("main_canvas");
-        const canvasIshi: HTMLCanvasElement = <HTMLCanvasElement>document.getElementById("sub_canvas");
-        const lblLog: HTMLLabelElement = <HTMLLabelElement>document.getElementById("log");
+        const rosu: number = parseInt(this.slRosu.options[this.slRosu.selectedIndex].value, 10);
 
-        const slRosu: HTMLSelectElement = <HTMLSelectElement>document.getElementById("sl_rosu");
-        const rosu: number = parseInt(slRosu.options[slRosu.selectedIndex].value, 10);
-
-        this.gbm = new GoBoadManager(canvas, this.setting, rosu, GoLogger.getInstance(lblLog));
-        this.gim = new GoishiManager(canvasIshi, this.setting, rosu, GoLogger.getInstance(lblLog));
+        this.gbm = new GoBoadManager(this.canvas, this.setting, rosu);
+        this.gim = new GoishiManager(this.canvasIshi, this.setting, rosu, GoLogger.getInstance(this.lblLog));
     }
     private mattta(e:Event){
         this.gim.chakushBack(0);
@@ -66,7 +69,6 @@ class Main {
         this.gim.view();
     }
 }
-
 // Mainクラスを実行する。
 window.addEventListener("load", () => new Main());
 

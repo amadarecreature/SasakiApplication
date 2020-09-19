@@ -36,9 +36,9 @@ var Main = /** @class */ (function () {
         var slRosu = document.getElementById("sl_rosu");
         var rosu = parseInt(slRosu.options[slRosu.selectedIndex].value, 10);
         var canvas = document.getElementById("main_canvas");
-        this.gbm = new GoBoadManager(canvas, this.goBoadSetting, rosu, GoLogger.getInstance(lblLog));
+        this.gbm = new GoBoadManager(canvas, this.goBoadSetting, rosu);
         var canvasIshi = document.getElementById("sub_canvas");
-        this.gim = new GoishiManager(canvasIshi, this.goBoadSetting, rosu, GoLogger.getInstance(lblLog));
+        this.gim = new GoishiManager(canvasIshi, this.goBoadSetting, rosu, GoLogger.getInstance(this.lblLog));
     };
     Main.prototype.back = function (e) {
     };

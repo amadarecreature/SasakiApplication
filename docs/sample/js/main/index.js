@@ -2,15 +2,19 @@ import { GoBoadManager, GoishiManager } from "./GoBoardMagnager.js";
 import { GoBoadSetting } from "./GoSetting.js";
 import { GoLogger } from "./GoLogger.js";
 var Main = /** @class */ (function () {
+    /**
+     * メイン処理をここに書く
+     */
     function Main() {
         var _this = this;
         this.setting = new GoBoadSetting(0.9, 20, 20, 22);
-        var canvas = document.getElementById("main_canvas");
-        var canvasIshi = document.getElementById("sub_canvas");
-        var lblLog = document.getElementById("log");
-        this.gbm = new GoBoadManager(canvas, this.setting, 9, GoLogger.getInstance(lblLog));
-        this.gim = new GoishiManager(canvasIshi, this.setting, 9, GoLogger.getInstance(lblLog));
-        canvasIshi.addEventListener("click", function (e) { return _this.onMouseClick(e); });
+        this.canvas = document.getElementById("main_canvas");
+        this.canvasIshi = document.getElementById("sub_canvas");
+        this.lblLog = document.getElementById("log");
+        this.slRosu = document.getElementById("sl_rosu");
+        this.gbm = new GoBoadManager(this.canvas, this.setting, 9);
+        this.gim = new GoishiManager(this.canvasIshi, this.setting, 9, GoLogger.getInstance(this.lblLog));
+        this.canvasIshi.addEventListener("click", function (e) { return _this.onMouseClick(e); });
         // 再描画
         var btnNew = document.getElementById("btn_new");
         btnNew.addEventListener("click", function (e) { return _this.new(e); });
@@ -41,13 +45,9 @@ var Main = /** @class */ (function () {
      * @param e
      */
     Main.prototype.new = function (e) {
-        var canvas = document.getElementById("main_canvas");
-        var canvasIshi = document.getElementById("sub_canvas");
-        var lblLog = document.getElementById("log");
-        var slRosu = document.getElementById("sl_rosu");
-        var rosu = parseInt(slRosu.options[slRosu.selectedIndex].value, 10);
-        this.gbm = new GoBoadManager(canvas, this.setting, rosu, GoLogger.getInstance(lblLog));
-        this.gim = new GoishiManager(canvasIshi, this.setting, rosu, GoLogger.getInstance(lblLog));
+        var rosu = parseInt(this.slRosu.options[this.slRosu.selectedIndex].value, 10);
+        this.gbm = new GoBoadManager(this.canvas, this.setting, rosu);
+        this.gim = new GoishiManager(this.canvasIshi, this.setting, rosu, GoLogger.getInstance(this.lblLog));
     };
     Main.prototype.mattta = function (e) {
         this.gim.chakushBack(0);
