@@ -378,12 +378,16 @@ export class GoishiManager {
     }
     private _view(realtimePosition: GoishiType[][]) {
 
+        this.clearGoishiView();
         for (let x = 0; x < realtimePosition.length; x++) {
             const col = realtimePosition[x];
             for (let y = 0; y < col.length; y++) {
                 const color = realtimePosition[x][y];
                 const kifuPart = new KifuPart(color, x, y, false);
-                this.addGoishi(kifuPart);
+                if (kifuPart.color == GoishiType.NONE) {
+                } else {
+                    this.addGoishi(kifuPart);
+                }
             }
         }
 
@@ -423,6 +427,10 @@ export class GoishiManager {
 
         console.log("initCanvas:", canvas.width, canvas.height);
     }
+    public clearGoishiView() {
+        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    }
+
 
     public addOkiIshi(mouseX: number, mouseY: number) {
         console.info("click=" + mouseX + ":" + mouseY);

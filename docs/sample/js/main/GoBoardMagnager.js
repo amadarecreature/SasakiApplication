@@ -258,12 +258,17 @@ var GoishiManager = /** @class */ (function () {
         this._view(this.realtimePosition);
     };
     GoishiManager.prototype._view = function (realtimePosition) {
+        this.clearGoishiView();
         for (var x = 0; x < realtimePosition.length; x++) {
             var col = realtimePosition[x];
             for (var y = 0; y < col.length; y++) {
                 var color = realtimePosition[x][y];
                 var kifuPart = new KifuPart(color, x, y, false);
-                this.addGoishi(kifuPart);
+                if (kifuPart.color == GoishiType.NONE) {
+                }
+                else {
+                    this.addGoishi(kifuPart);
+                }
             }
         }
     };
@@ -293,6 +298,9 @@ var GoishiManager = /** @class */ (function () {
         canvas.width = goBoadInfo.width + 20;
         canvas.height = goBoadInfo.height + 20;
         console.log("initCanvas:", canvas.width, canvas.height);
+    };
+    GoishiManager.prototype.clearGoishiView = function () {
+        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
     };
     GoishiManager.prototype.addOkiIshi = function (mouseX, mouseY) {
         console.info("click=" + mouseX + ":" + mouseY);

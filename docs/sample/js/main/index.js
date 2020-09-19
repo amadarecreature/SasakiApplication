@@ -12,6 +12,9 @@ var Main = /** @class */ (function () {
         this.gim = new GoishiManager(canvasIshi, this.setting, 9, GoLogger.getInstance(lblLog));
         canvasIshi.addEventListener("click", function (e) { return _this.onMouseClick(e); });
         // 再描画
+        var btnNew = document.getElementById("btn_new");
+        btnNew.addEventListener("click", function (e) { return _this.new(e); });
+        // 再描画
         var btnRenew = document.getElementById("btn_renew");
         btnRenew.addEventListener("click", function (e) { return _this.renew(e); });
         // 待った
@@ -37,7 +40,7 @@ var Main = /** @class */ (function () {
      * 再描画イベント用
      * @param e
      */
-    Main.prototype.renew = function (e) {
+    Main.prototype.new = function (e) {
         var canvas = document.getElementById("main_canvas");
         var canvasIshi = document.getElementById("sub_canvas");
         var lblLog = document.getElementById("log");
@@ -48,6 +51,9 @@ var Main = /** @class */ (function () {
     };
     Main.prototype.mattta = function (e) {
         this.gim.chakushBack(0);
+    };
+    Main.prototype.renew = function (e) {
+        this.gim.view();
     };
     return Main;
 }());

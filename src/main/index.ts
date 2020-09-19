@@ -17,6 +17,10 @@ class Main {
         canvasIshi.addEventListener("click", (e: MouseEvent) => this.onMouseClick(e));
 
         // 再描画
+        const btnNew: HTMLButtonElement = <HTMLButtonElement>document.getElementById("btn_new");
+        btnNew.addEventListener("click", (e: Event) => this.new(e))
+
+        // 再描画
         const btnRenew: HTMLButtonElement = <HTMLButtonElement>document.getElementById("btn_renew");
         btnRenew.addEventListener("click", (e: Event) => this.renew(e))
 
@@ -44,7 +48,7 @@ class Main {
      * 再描画イベント用
      * @param e 
      */
-    private renew(e: Event) {
+    private new(e: Event) {
         const canvas: HTMLCanvasElement = <HTMLCanvasElement>document.getElementById("main_canvas");
         const canvasIshi: HTMLCanvasElement = <HTMLCanvasElement>document.getElementById("sub_canvas");
         const lblLog: HTMLLabelElement = <HTMLLabelElement>document.getElementById("log");
@@ -57,6 +61,9 @@ class Main {
     }
     private mattta(e:Event){
         this.gim.chakushBack(0);
+    }
+    private renew(e:Event){
+        this.gim.view();
     }
 }
 
