@@ -382,7 +382,7 @@ export class GoishiManager {
             const col = realtimePosition[x];
             for (let y = 0; y < col.length; y++) {
                 const color = realtimePosition[x][y];
-                const kifuPart = new KifuPart(color, x + 1, y + 1, false);
+                const kifuPart = new KifuPart(color, x, y, false);
                 this.addGoishi(kifuPart);
             }
         }

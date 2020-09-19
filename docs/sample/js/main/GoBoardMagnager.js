@@ -262,7 +262,7 @@ var GoishiManager = /** @class */ (function () {
             var col = realtimePosition[x];
             for (var y = 0; y < col.length; y++) {
                 var color = realtimePosition[x][y];
-                var kifuPart = new KifuPart(color, x + 1, y + 1, false);
+                var kifuPart = new KifuPart(color, x, y, false);
                 this.addGoishi(kifuPart);
             }
         }
