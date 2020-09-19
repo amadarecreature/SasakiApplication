@@ -6,6 +6,14 @@ var GoishiType;
     GoishiType["NONE"] = "N";
 })(GoishiType || (GoishiType = {}));
 var GoBoadInfo = /** @class */ (function () {
+    /**
+     * 碁盤の構成情報
+     * @param roWidth
+     * @param roHeight
+     * @param left
+     * @param top
+     * @param roCount
+     */
     function GoBoadInfo(roWidth, roHeight, left, top, roCount) {
         this.roWidth = roWidth;
         this.roHeight = roHeight;
@@ -20,9 +28,10 @@ var GoBoadInfo = /** @class */ (function () {
     return GoBoadInfo;
 }());
 var KifuPart = /** @class */ (function () {
-    function KifuPart(color, roX, roY) {
+    function KifuPart(color, roX, roY, isPassed) {
         this.color = color;
         this.position = new PositionXY(roX, roY);
+        this.isPassed = isPassed;
     }
     return KifuPart;
 }());
@@ -32,6 +41,21 @@ var PositionXY = /** @class */ (function () {
         this.y = y;
     }
     return PositionXY;
+}());
+var PositionOnGoBoad = /** @class */ (function () {
+    /**
+     * 路数で位置を指定
+     * @param roX 1～19
+     * @param roY 1～19
+     */
+    function PositionOnGoBoad(roX, roY) {
+        if (roX <= 0 || roY <= 0) {
+            throw new Error("ro must be greater than 0.");
+        }
+        this.roX = roX;
+        this.roY = roY;
+    }
+    return PositionOnGoBoad;
 }());
 var GoBoadManager = /** @class */ (function () {
     /**
@@ -204,7 +228,7 @@ var GoishiManager = /** @class */ (function () {
         }
         //カンバス・コンテキスト・大きさを注入する
         this.canvas = canvas;
-        this.ctx = canvas.getContext("2d");
+        this.context = canvas.getContext("2d");
         this.kifu = new Array();
         // 現在地の初期化(最初から19路分用意しておく)
         this.realtimePosition = new Array();
@@ -215,9 +239,9 @@ var GoishiManager = /** @class */ (function () {
             }
         }
         //クラスを通して変わらないカンバス設定
-        this.ctx.font = "bold 15px '游ゴシック'";
-        this.ctx.textAlign = 'center';
-        this.ctx.shadowBlur = 2;
+        this.context.font = "bold 15px '游ゴシック'";
+        this.context.textAlign = 'center';
+        this.context.shadowBlur = 2;
         this.initCanvas(this.canvas, this.goBoadInfo);
     }
     Object.defineProperty(GoishiManager.prototype, "turn", {
@@ -227,6 +251,12 @@ var GoishiManager = /** @class */ (function () {
         enumerable: false,
         configurable: true
     });
+    GoishiManager.prototype.view = function () {
+        this._view(this.realtimePosition);
+    };
+    GoishiManager.prototype._view = function (realtimePosition) {
+        this.chakushu;
+    };
     /**
      * 碁盤上での位置左上から数えた路数
      * @param x
@@ -234,11 +264,13 @@ var GoishiManager = /** @class */ (function () {
      */
     GoishiManager.prototype.calcPositionOnGoban = function (x, y) {
         var x0 = x - this.gobanLeft;
+        // 1区画の半分先までは、手前の路数として判断する
         var xRo = Math.floor((x0 + (this.roWidthX / 2)) / this.roWidthX);
         var y0 = y - this.gobanTop;
+        // 1区画の半分先までは、手前の路数として判断する
         var yRo = Math.floor((y0 + (this.roHeight / 2)) / this.roHeight);
         console.info("ro=" + xRo + ":" + yRo);
-        return new PositionXY(xRo, yRo);
+        return new PositionOnGoBoad(xRo, yRo);
     };
     /**
      * 碁盤を描画します。
@@ -259,10 +291,10 @@ var GoishiManager = /** @class */ (function () {
         // 碁石の中心位置を計算する。
         var circleCenterPosition = this.calcCircleCenterPosition(keisen, positionOnGoban);
         console.info("circle=" + circleCenterPosition.x + ":" + circleCenterPosition.y);
-        if (this.realtimePosition[positionOnGoban.x - 1][positionOnGoban.y - 1] != GoishiType.NONE) {
+        if (this.realtimePosition[positionOnGoban.roX - 1][positionOnGoban.roY - 1] != GoishiType.NONE) {
             console.log("既に石がある。");
-            this.clearGoishi(circleCenterPosition.x - (this.roWidthX / 2), circleCenterPosition.y - (this.roHeight / 2), this.ctx);
-            this.realtimePosition[positionOnGoban.x - 1][positionOnGoban.y - 1] = GoishiType.NONE;
+            this.clearGoishi(circleCenterPosition.x - (this.roWidthX / 2), circleCenterPosition.y - (this.roHeight / 2), this.context);
+            this.realtimePosition[positionOnGoban.roX - 1][positionOnGoban.roY - 1] = GoishiType.NONE;
             return;
         }
         var tmp = this.newMethod(GoishiType.BLACK, circleCenterPosition, positionOnGoban);
@@ -274,13 +306,15 @@ var GoishiManager = /** @class */ (function () {
         var now = this.kifu.length - 1;
         var targetNo = now - count;
         var targetChakushu = this.kifu[targetNo];
-        this.clearGoishiByRo(new PositionXY(targetChakushu.position.x + 1, targetChakushu.position.y + 1));
+        this.clearGoishiByRo(new PositionOnGoBoad(targetChakushu.position.x + 1, targetChakushu.position.y + 1));
     };
     GoishiManager.prototype.clearGoishiByRo = function (positionOnGoban) {
         var keisen = 1;
         // 碁石の中心位置を計算する。
         var circleCenterPosition = this.calcCircleCenterPosition(keisen, positionOnGoban);
-        this.clearGoishi(circleCenterPosition.x - (this.roWidthX / 2), circleCenterPosition.y - (this.roHeight / 2), this.ctx);
+        this.clearGoishi(circleCenterPosition.x - (this.roWidthX / 2), circleCenterPosition.y - (this.roHeight / 2), this.context);
+    };
+    GoishiManager.prototype.addGoishi = function (positionOnGoBoad) {
     };
     /**
      * 碁石を置きます。
@@ -295,10 +329,10 @@ var GoishiManager = /** @class */ (function () {
         // 碁石の中心位置を計算する。
         var circleCenterPosition = this.calcCircleCenterPosition(keisen, positionOnGoban);
         console.info("circle=" + circleCenterPosition.x + ":" + circleCenterPosition.y);
-        if (this.realtimePosition[positionOnGoban.x - 1][positionOnGoban.y - 1] != GoishiType.NONE) {
+        if (this.realtimePosition[positionOnGoban.roX - 1][positionOnGoban.roY - 1] != GoishiType.NONE) {
             console.log("既に石がある。");
-            this.clearGoishi(circleCenterPosition.x - (this.roWidthX / 2), circleCenterPosition.y - (this.roHeight / 2), this.ctx);
-            this.realtimePosition[positionOnGoban.x - 1][positionOnGoban.y - 1] = GoishiType.NONE;
+            this.clearGoishi(circleCenterPosition.x - (this.roWidthX / 2), circleCenterPosition.y - (this.roHeight / 2), this.context);
+            this.realtimePosition[positionOnGoban.roX - 1][positionOnGoban.roY - 1] = GoishiType.NONE;
             return;
         }
         var tmp = this.newMethod(nowTurn, circleCenterPosition, positionOnGoban);
@@ -310,11 +344,11 @@ var GoishiManager = /** @class */ (function () {
     };
     GoishiManager.prototype.newMethod = function (nowTurn, circleCenterPosition, positionOnGoban) {
         var fillstyle = (nowTurn == GoishiType.BLACK) ? "black" : "white";
-        this.drawCircle(circleCenterPosition.x - (this.roWidthX / 2), circleCenterPosition.y - (this.roHeight / 2), 10, this.ctx, fillstyle);
+        this.drawCircle(circleCenterPosition.x - (this.roWidthX / 2), circleCenterPosition.y - (this.roHeight / 2), 10, this.context, fillstyle);
         // 棋譜の設定
-        this.kifu.push(new KifuPart(nowTurn, positionOnGoban.x - 1, positionOnGoban.y - 1));
+        this.kifu.push(new KifuPart(nowTurn, positionOnGoban.roX - 1, positionOnGoban.roY - 1, false));
         // 配置の設定
-        this.realtimePosition[positionOnGoban.x - 1][positionOnGoban.y - 1] = nowTurn;
+        this.realtimePosition[positionOnGoban.roX - 1][positionOnGoban.roY - 1] = nowTurn;
         var tmp = "";
         this.kifu.forEach(function (kifu) {
             tmp += kifu.color + "(" + kifu.position.x + ":" + kifu.position.y + ")";
@@ -322,9 +356,9 @@ var GoishiManager = /** @class */ (function () {
         return tmp;
     };
     GoishiManager.prototype.calcCircleCenterPosition = function (keisen, positionOnGoban) {
-        var circleX = this.goBoadInfo.areaLeft + keisen + (this.roWidthX) * (positionOnGoban.x - 1);
+        var circleX = this.goBoadInfo.areaLeft + keisen + (this.roWidthX) * (positionOnGoban.roX - 1);
         // 端の線は2px(格子ごとの線+1pxなので、足りない1pxだけ足す)
-        var circleY = this.goBoadInfo.areaTop + keisen + (this.roHeight) * (positionOnGoban.y - 1);
+        var circleY = this.goBoadInfo.areaTop + keisen + (this.roHeight) * (positionOnGoban.roY - 1);
         var circleCenterPosition = new PositionXY(circleX, circleY);
         return circleCenterPosition;
     };
