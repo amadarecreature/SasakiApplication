@@ -1,4 +1,4 @@
-import { GoBoadManager, GoishiManager } from "./GoBoardMagnager.js";
+import { FreeWriteManager, GoBoadManager, GoishiManager } from "./GoBoardMagnager.js";
 import { GoBoadSetting } from "./GoSetting.js";
 import { GoLogger } from "./GoLogger.js"
 
@@ -6,13 +6,19 @@ class Main {
 
     private gbm: GoBoadManager;
     private gim: GoishiManager;
-    readonly setting: GoBoadSetting = new GoBoadSetting(0.9, 20, 20, 22);
+    readonly setting: GoBoadSetting = new GoBoadSetting(0.9, 20, 20, 40);
 
     readonly canvas: HTMLCanvasElement = <HTMLCanvasElement>document.getElementById("main_canvas");
     readonly canvasIshi: HTMLCanvasElement = <HTMLCanvasElement>document.getElementById("sub_canvas");
+    readonly canvasFree: HTMLCanvasElement = <HTMLCanvasElement>document.getElementById("free_canvas");
     readonly lblLog: HTMLLabelElement = <HTMLLabelElement>document.getElementById("log");
+    readonly inpKifu: HTMLInputElement = <HTMLInputElement>document.getElementById("kifu");
 
+    readonly ckDrawMode: HTMLInputElement = <HTMLInputElement>document.getElementById("ckDrawMode");
+    readonly ckOnOkiishiMode: HTMLInputElement = <HTMLInputElement>document.getElementById("ckOkiishiMode");
     readonly slRosu: HTMLSelectElement = <HTMLSelectElement>document.getElementById("sl_rosu");
+    readonly Fwm: FreeWriteManager;
+    readonly btnNew: HTMLButtonElement = <HTMLButtonElement>document.getElementById("btn_new");
 
 
     /**
@@ -20,31 +26,61 @@ class Main {
      */
     constructor() {
         this.gbm = new GoBoadManager(this.canvas, this.setting, 9);
-        this.gim = new GoishiManager(this.canvasIshi, this.setting, 9, GoLogger.getInstance(this.lblLog));
+        this.gim = new GoishiManager(this.canvasIshi, this.setting, 9, GoLogger.getInstance(this.inpKifu));
+        this.Fwm = new FreeWriteManager(this.canvasFree, this.setting, 9);
+        this.canvasFree.addEventListener("click", (e: MouseEvent) => this.onMouseClick(e));
 
-        this.canvasIshi.addEventListener("click", (e: MouseEvent) => this.onMouseClick(e));
-
+        // お絵描きモード用イベント
+        this.canvasFree.addEventListener("mousedown", (e: MouseEvent) => this.onMouseDown(e));
+        this.canvasFree.addEventListener("mouseup", (e: MouseEvent) => this.onMouseUp(e));
+        this.canvasFree.addEventListener("mousemove", (e: MouseEvent) => this.onMouseMove(e));
         // 再描画
-        const btnNew: HTMLButtonElement = <HTMLButtonElement>document.getElementById("btn_new");
-        btnNew.addEventListener("click", (e: Event) => this.new(e))
+        this.btnNew.addEventListener("click", (e: Event) => this.new(e))
 
         // 再描画
         const btnRenew: HTMLButtonElement = <HTMLButtonElement>document.getElementById("btn_renew");
-        btnRenew.addEventListener("click", (e: Event) => this.renew(e))
+        btnRenew.addEventListener("click", (e: Event) => this.renew(e));
 
         // 待った
         const btnBack: HTMLButtonElement = <HTMLButtonElement>document.getElementById("btn_back");
-        btnBack.addEventListener("click", (e: Event) => this.mattta(e))
+        btnBack.addEventListener("click", (e: Event) => this.mattta(e));
+
+        // 棋譜読み込み
+        const btnKifuRead: HTMLButtonElement = <HTMLButtonElement>document.getElementById("btn_bkifu_read");
+        btnKifuRead.addEventListener("click", (e: Event) => this.onClickKifuRead(e));
 
     }
+    private onMouseMove(e: MouseEvent): any {
+        if (this.ckDrawMode.checked) {
+            this.Fwm.draw(e.offsetX, e.offsetY);
+        }
+    }
+    private onMouseDown(e: MouseEvent): any {
+        if (this.ckDrawMode.checked) {
+            this.Fwm.start();
+        }
+    }
+    private onMouseUp(e: MouseEvent): any {
+        if (this.ckDrawMode.checked) {
+            this.Fwm.stop();
+        }
+    }
 
+    private onClickKifuRead(e: Event) {
+        const kifu = this.inpKifu.value;
+        this.gim.viewFromKifu(kifu);
+    }
     /**
      * 
      * @param e 
      */
     private onMouseClick(e: MouseEvent) {
-        const ckOnOkiishiMode: HTMLInputElement = <HTMLInputElement>document.getElementById("ckOkiishiMode");
-        if (ckOnOkiishiMode.checked) {
+        if (this.ckDrawMode.checked) {
+            // 描画モードの場合
+            return;
+        }
+
+        if (this.ckOnOkiishiMode.checked) {
             this.gim.addOkiIshi(e.offsetX, e.offsetY);
         } else {
             this.gim.chakushu(e.offsetX, e.offsetY);
@@ -60,13 +96,13 @@ class Main {
         const rosu: number = parseInt(this.slRosu.options[this.slRosu.selectedIndex].value, 10);
 
         this.gbm = new GoBoadManager(this.canvas, this.setting, rosu);
-        this.gim = new GoishiManager(this.canvasIshi, this.setting, rosu, GoLogger.getInstance(this.lblLog));
+        this.gim = new GoishiManager(this.canvasIshi, this.setting, rosu, GoLogger.getInstance(this.inpKifu));
     }
-    private mattta(e:Event){
+    private mattta(e: Event) {
         this.gim.chakushBack(0);
     }
-    private renew(e:Event){
-        this.gim.view();
+    private renew(e: Event) {
+        this.gim.viewFromKifu(this.inpKifu.value);
     }
 }
 // Mainクラスを実行する。

@@ -6,7 +6,7 @@ export class GoLogger implements Logger {
     }
 
     readonly target: HTMLElement;
-    static getInstance(target: HTMLElement) {
+    static getInstance(target: HTMLInputElement) {
         if (!GoLogger.instance) {
             GoLogger.instance = new GoLogger(target);
             // ... any one time initialization goes here ...
@@ -14,6 +14,7 @@ export class GoLogger implements Logger {
         return GoLogger.instance;
     }
     public log(value: string) {
+        this.target.textContent = value;
         this.target.innerHTML = value;
     }
 

@@ -34,7 +34,7 @@
 
 }
 
-.log_container {
+.data_container {
     border: 2px solid black;
     min-height: 25px;
     margin-bottom: 5px;
@@ -43,7 +43,7 @@
 
 .goban_area {
     position: relative;
-    border: 1px solid green;
+    border: 3px solid green;
     width: 400px;
     flex-grow: 1;
 }
@@ -62,6 +62,7 @@
     left: 0;
     right: 0; */
     margin: auto;
+    /* border: 2px solid brown; */
 }
 
 

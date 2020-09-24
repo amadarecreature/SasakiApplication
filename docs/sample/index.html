@@ -22,15 +22,20 @@
             <button id="btn_renew" class="btn_base">再描画</button>
             <input type="checkbox" id="ckOkiishiMode" name="onOkiishiMode" /><label>置き石モードON</label>
             <button id="btn_back" class="btn_back">待った</button>
+            <input type="checkbox" id="ckDrawMode" name="onDrawMode" /><label>描画モード</label>
+        </div>
+        <div class="data_continer">
+            <button id="btn_bkifu_read">棋譜読み込み</button>
+            <label id="log">ログ</label>
+            <input id="kifu" type="text" value="" />
         </div>
         <div class="play_field_container">
-            <div class="log_container">
-                <label id="log"></label>
-            </div>
             <div class="goban_container">
                 <div class="goban_area">
                     <canvas id="main_canvas"></canvas>
                     <canvas id="sub_canvas"></canvas>
+                    <canvas id="free_canvas"></canvas>
+                    <!-- <canvas id="candidate_canvas"></canvas> -->
                 </div>
                 <div class="play_info_area">
                     <label>手番 : </label><span id="spnTeban"></span>

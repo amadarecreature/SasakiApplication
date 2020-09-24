@@ -11,6 +11,7 @@ var GoLogger = /** @class */ (function () {
         return GoLogger.instance;
     };
     GoLogger.prototype.log = function (value) {
+        this.target.textContent = value;
         this.target.innerHTML = value;
     };
     return GoLogger;

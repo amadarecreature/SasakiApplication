@@ -1,5 +1,6 @@
 import { GoBoadSetting } from "./GoSetting";
 import { Logger } from "./GoLogger";
+import { setSyntheticTrailingComments } from "node_modules/typescript/lib/typescript";
 
 enum GoishiType {
     BLACK = "B",
@@ -108,7 +109,7 @@ export class GoBoadManager {
      */
     public constructor(canvas: HTMLCanvasElement, goSetting: GoBoadSetting, ro: number) {
 
-        const goBoadInfo = new GoBoadInfo(22, 22, goSetting.gobanLeft, goSetting.gobanTop, ro);
+        const goBoadInfo = new GoBoadInfo(goSetting.roHW, goSetting.roHW, goSetting.gobanLeft, goSetting.gobanTop, ro);
 
         //カンバスが使用できるかチェック
         if (!canvas.getContext) {
@@ -140,7 +141,7 @@ export class GoBoadManager {
         canvas.width = goBoadInfo.width + 20;
         canvas.height = goBoadInfo.height + 20;
 
-        console.log("canvas:", canvas.width, canvas.height);
+        // console.log("canvas:", canvas.width, canvas.height);
 
         // 碁盤の影
         this.drowShadow(this.context, goBoadInfo.left, goBoadInfo.top, goBoadInfo.width, shadow, goBoadInfo.height);
@@ -255,9 +256,9 @@ export class GoishiManager {
     readonly goBoadInfo: GoBoadInfo;
 
     // 一路の横
-    private roWidth = 22;
+    readonly roWidth;
     // 一路の縦
-    private roHeight = 22;
+    readonly roHeight;
 
     // 路数
     readonly roCount: number;
@@ -270,12 +271,14 @@ export class GoishiManager {
      */
     public constructor(canvas: HTMLCanvasElement, goSetting: GoBoadSetting, roCount: number, logger: Logger) {
 
+        this.roWidth = goSetting.roHW;
+        this.roHeight = goSetting.roHW;
         this._turn = GoishiType.BLACK;
         this.logger = logger;
 
         this.roCount = roCount;
 
-        this.goBoadInfo = new GoBoadInfo(this.roWidth, this.roHeight, goSetting.gobanLeft, goSetting.gobanTop, roCount);
+        this.goBoadInfo = new GoBoadInfo(goSetting.roHW, goSetting.roHW, goSetting.gobanLeft, goSetting.gobanTop, roCount);
 
         this.kifu = new Array();
 
@@ -291,7 +294,7 @@ export class GoishiManager {
         this.canvas = canvas;
         this.context = canvas.getContext("2d")!;
 
-        // 現在地の初期化(最初から19路分用意しておく)
+        // 現在地の初期化
         this.realtimePosition = new Array();
         for (var i = 0; i < roCount; i++) {
             this.realtimePosition[i] = new Array();  // （2）
@@ -307,13 +310,34 @@ export class GoishiManager {
         this.initCanvas(this.canvas, this.goBoadInfo);
     }
 
+
+
+    public viewFromKifu(kifuString: string) {
+
+        const kifuList = KifuUtil.convertKifuListFromString(kifuString);
+
+        const positions: GoishiType[][] = new Array();
+        for (var i = 0; i < this.roCount; i++) {
+            positions[i] = new Array();
+            for (var j = 0; j < this.roCount; j++) {
+                positions[i][j] = GoishiType.NONE;
+            }
+        }
+        for (let index = 0; index < kifuList.length; index++) {
+            const element = this.kifu[index];
+            const x = element.position.roX;
+            const y = element.position.roY;
+            positions[x][y] = element.color;
+        }
+        this.viewFromPosition(positions);
+
+    }
+
+
     /**
      * 棋譜の内容をそのまま表示する。
      */
-    public view() {
-        this._view(this.realtimePosition);
-    }
-    private _view(realtimePosition: GoishiType[][]) {
+    public viewFromPosition(realtimePosition: GoishiType[][]) {
 
         this.clearGoishiView();
         for (let x = 0; x < realtimePosition.length; x++) {
@@ -337,15 +361,19 @@ export class GoishiManager {
      * @param y 
      */
     private calcPositionOnGoban(x: number, y: number): PositionOnGoBoad {
-        const x0 = x - this.goBoadInfo.left;
+        const top = this.goBoadInfo.top;
+        const left = this.goBoadInfo.left;
+        console.log(`boad:${top}:${left}`)
+
+        const x0 = x - left;
         // 1区画の半分先までは、手前の路数として判断する
         const xRo = Math.floor((x0 + (this.roWidth / 2)) / this.roWidth) - 1;
 
-        const y0 = y - this.goBoadInfo.top;
+        const y0 = y - top;
         // 1区画の半分先までは、手前の路数として判断する
         const yRo = Math.floor((y0 + (this.roHeight / 2)) / this.roHeight) - 1;
 
-        console.info("ro=" + xRo + ":" + yRo);
+        // console.info("ro=" + xRo + ":" + yRo);
 
 
         return new PositionOnGoBoad(xRo, yRo);
@@ -363,7 +391,7 @@ export class GoishiManager {
         canvas.width = goBoadInfo.width + 20;
         canvas.height = goBoadInfo.height + 20;
 
-        console.log("initCanvas:", canvas.width, canvas.height);
+        // console.log("initCanvas:", canvas.width, canvas.height);
     }
     public clearGoishiView() {
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -379,7 +407,7 @@ export class GoishiManager {
         // 碁石の中心位置を計算する。
         const circleCenterPosition = this.calcCircleCenterPosition(keisen, positionOnGoban);
 
-        console.info("circle=" + circleCenterPosition.x + ":" + circleCenterPosition.y);
+        // console.info("circle=" + circleCenterPosition.x + ":" + circleCenterPosition.y);
 
         if (this.realtimePosition[positionOnGoban.roX][positionOnGoban.roY] != GoishiType.NONE) {
             console.log("既に石がある。")
@@ -389,7 +417,7 @@ export class GoishiManager {
         }
 
 
-        var tmp = this.newMethod(GoishiType.BLACK, circleCenterPosition, positionOnGoban);
+        var tmp = this.drawGoishi(GoishiType.BLACK, circleCenterPosition, positionOnGoban);
 
         // 次を白番にする
         this._turn = GoishiType.WHITE;
@@ -417,7 +445,7 @@ export class GoishiManager {
         const keisen = 1;
         // 碁石の中心位置を計算する。
         const circleCenterPosition = this.calcCircleCenterPosition(keisen, kifuPart.position);
-        var kifu = this.newMethod(kifuPart.color, circleCenterPosition, kifuPart.position);
+        var kifu = this.drawGoishi(kifuPart.color, circleCenterPosition, kifuPart.position);
         this.logger.log(kifu);
 
     }
@@ -429,7 +457,7 @@ export class GoishiManager {
      */
     public chakushu(mouseX: number, mouseY: number) {
 
-        console.info("click=" + mouseX + ":" + mouseY);
+        console.info("click position=" + mouseX + ":" + mouseY);
 
         const nowTurn = this._turn;
 
@@ -450,7 +478,7 @@ export class GoishiManager {
         }
 
 
-        var tmp = this.newMethod(nowTurn, circleCenterPosition, positionOnGoBoad);
+        var tmp = this.drawGoishi(nowTurn, circleCenterPosition, positionOnGoBoad);
 
         // ターンを入れ替える
         this._turn = (nowTurn == GoishiType.BLACK) ? GoishiType.WHITE : GoishiType.BLACK;
@@ -460,9 +488,10 @@ export class GoishiManager {
         // auClick.play();
         // turn = 3 - turn;
     }
-    private newMethod(nowTurn: GoishiType, circleCenterPosition: PositionXY, positionOnGoban: PositionOnGoBoad) {
+    private drawGoishi(nowTurn: GoishiType, circleCenterPosition: PositionXY, positionOnGoban: PositionOnGoBoad) {
         const fillstyle = (nowTurn == GoishiType.BLACK) ? "black" : "white";
-        this.drawCircle(circleCenterPosition.x - (this.roWidth / 2), circleCenterPosition.y - (this.roHeight / 2), 10, this.context, fillstyle);
+        const radius = this.goBoadInfo.roHeight * 0.5; // 半径
+        this.drawCircle(circleCenterPosition.x - (this.roWidth / 2), circleCenterPosition.y - (this.roHeight / 2), radius, this.context, fillstyle);
 
 
         // 棋譜の設定
@@ -531,4 +560,100 @@ export class GoishiManager {
         console.log("color", fillStyle);
     }
 
+}
+export class FreeWriteManager {
+    /**
+     * このクラスが扱うカンバスのコンテキスト
+     * 
+     */
+    readonly context!: CanvasRenderingContext2D;
+
+    /**
+     * このクラスが扱うカンバスの横幅(縦幅)
+     */
+
+    private canvas!: HTMLCanvasElement;
+
+
+    readonly goBoadInfo: GoBoadInfo;
+
+    /**
+     * このクラスが扱うコンテキストと幅(縦も同義)を注入する
+     * @param canvas 
+     * @param goSetting
+     * @param roCount 
+     * @param logger
+     */
+    public constructor(canvas: HTMLCanvasElement, goSetting: GoBoadSetting, roCount: number) {
+
+        this.goBoadInfo = new GoBoadInfo(goSetting.roHW, goSetting.roHW, goSetting.gobanLeft, goSetting.gobanTop, roCount);
+        //カンバスが使用できるかチェック
+        if (!canvas.getContext) {
+            console.log('[Roulette.constructor] カンバスが使用できません');
+            return;
+        }
+
+        //カンバス・コンテキスト・大きさを注入する
+        this.canvas = canvas;
+        this.context = canvas.getContext("2d")!;
+
+        //クラスを通して変わらないカンバス設定
+        this.context.font = "bold 15px '游ゴシック'";
+        this.context.textAlign = 'center';
+        this.context.shadowBlur = 2;
+        this.initCanvas(this.canvas, this.goBoadInfo);
+    }
+    /**
+ * 碁盤を描画します。
+ * @param shadow 影の長さ（高さ/2）
+ * @param context 描画先のコンテキストを指定します。
+ * @since 0.1
+ */
+    private initCanvas(canvas: HTMLCanvasElement, goBoadInfo: GoBoadInfo) {
+
+        // サイズ変更(サイズ変更すると描画内容が消えるので先に変更)
+        canvas.width = goBoadInfo.width + 20;
+        canvas.height = goBoadInfo.height + 20;
+
+        console.log("initCanvas:", canvas.width, canvas.height);
+    }
+    public clearGoishiView() {
+        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    }
+    // 描画中かどうか
+    private isDrawing: boolean = false;
+
+    public start() {
+        this.isDrawing = true;
+
+    }
+    public stop() {
+        this.isDrawing = false;
+    }
+    public draw(mouseX: number, mouseY: number) {
+
+        if (this.isDrawing) {
+            // console.info("position=" + mouseX + ":" + mouseY);
+            const top = this.goBoadInfo.top;
+            const left = this.goBoadInfo.left;
+            this.context.beginPath();
+            this.context.arc(mouseX, mouseY, 2, 0, 2 * Math.PI);
+            this.context.fillStyle = "black";
+            // 透明度
+            // this.context.globalAlpha = 1;
+            this.context.closePath();
+            this.context.fill();
+
+
+
+        }
+    }
+
+}
+class KifuUtil {
+
+    static convertKifuListFromString(value: string): KifuPart[] {
+        // TODO:実装する
+        return new Array();
+    }
 }
