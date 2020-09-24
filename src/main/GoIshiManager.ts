@@ -213,6 +213,31 @@ export class GoishiManager {
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
     }
 
+    public addCandidate(mouseX: number, mouseY: number, word: string) {
+        console.info("click=" + mouseX + ":" + mouseY);
+
+        const positionOnGoban = this.calcPositionOnGoban(mouseX, mouseY)
+
+        const keisen = 1;
+        // 碁石の中心位置を計算する。
+        const circleCenterPosition = this.calcCircleCenterPosition(keisen, positionOnGoban);
+
+        if (this.realtimePosition[positionOnGoban.roX][positionOnGoban.roY] != GoishiType.NONE) {
+            console.log("既に石がある。")
+            this.clearGoishi(circleCenterPosition.x - (this.roWidth / 2), circleCenterPosition.y - (this.roHeight / 2), this.context);
+            this.realtimePosition[positionOnGoban.roX][positionOnGoban.roY] = GoishiType.NONE;
+            return;
+        }
+
+
+        var tmp = this.drawGoishi(GoishiType.BLACK, circleCenterPosition, positionOnGoban);
+
+        // 次を白番にする
+        this._turn = GoishiType.WHITE;
+
+        this.logger.log(tmp);
+    }
+
 
     public addOkiIshi(mouseX: number, mouseY: number) {
         console.info("click=" + mouseX + ":" + mouseY);
@@ -306,8 +331,8 @@ export class GoishiManager {
     }
     private drawGoishi(nowTurn: GoishiType, circleCenterPosition: PositionXY, positionOnGoban: PositionOnGoBoad) {
         const fillstyle = (nowTurn == GoishiType.BLACK) ? "black" : "white";
-        const radius = this.goBoadInfo.roHeight * 0.5; // 半径
-        this.drawCircle(circleCenterPosition.x - (this.roWidth / 2), circleCenterPosition.y - (this.roHeight / 2), radius, this.context, fillstyle);
+        const radius = this.goBoadInfo.roHeight * 0.475; // 半径
+        this.drawCircle(circleCenterPosition.x, circleCenterPosition.y, radius, this.context, fillstyle);
 
 
         // 棋譜の設定
@@ -321,6 +346,15 @@ export class GoishiManager {
             tmp += kifu.color + "(" + kifu.position.roX + ":" + kifu.position.roY + ")";
         });
         return tmp;
+    }
+
+    private drawWord(x: number, y: number, r: number, word: string, context: CanvasRenderingContext2D, maxwidth: number) {
+
+        context.beginPath();
+        context.fillText(word, x, y, maxwidth);
+        context.closePath;
+        context.stroke();
+
     }
 
     private calcCircleCenterPosition(keisen: number, positionOnGoban: PositionOnGoBoad) {
@@ -357,7 +391,8 @@ export class GoishiManager {
      */
     private drawCircle(x: number, y: number, r: number, context: CanvasRenderingContext2D, fillStyle: string) {
         context.beginPath();
-        context.arc(x + r, y + r, r, 0, 2 * Math.PI);
+        // context.arc(x + r, y + r, r, 0, 2 * Math.PI);
+        context.arc(x, y, r, 0, 2 * Math.PI);
         context.fillStyle = fillStyle;
         // 透明度
         context.globalAlpha = 1;
@@ -365,7 +400,7 @@ export class GoishiManager {
 
         // テカリ
         context.beginPath();
-        context.arc(x + r, y + r, r * 0.8, 0, -0.25 * Math.PI, true);
+        context.arc(x, y, r * 0.8, 0, -0.25 * Math.PI, true);
         context.closePath;
         context.strokeStyle = (fillStyle == "black") ? "white" : "black";
         context.lineCap = "round";
