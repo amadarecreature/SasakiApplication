@@ -45,10 +45,10 @@ class Main {
         this.ckDrawMode.addEventListener("change", (e: Event) => this.Fwm.clearAll())
         this.ckCandidateMode.addEventListener("change", (e: Event) => this.gcm.clearAll())
 
-        // 再描画
+        // 新規開始
         this.btnNew.addEventListener("click", (e: Event) => this.new(e))
 
-        // 再描画
+        // 棋譜読み込み
         const btnRenew: HTMLButtonElement = <HTMLButtonElement>document.getElementById("btn_renew");
         btnRenew.addEventListener("click", (e: Event) => this.renew(e));
 
