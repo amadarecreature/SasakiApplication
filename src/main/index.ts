@@ -1,4 +1,7 @@
-import { FreeWriteManager, GoBoadManager, GoishiManager } from "./GoBoardMagnager.js";
+import { GoBoadManager } from "./GoBoardMagnager.js";
+import { FreeWriteManager } from "./FreeWriteManager.js";
+import { GoishiManager } from "./GoIshiManager.js";
+
 import { GoBoadSetting } from "./GoSetting.js";
 import { GoLogger } from "./GoLogger.js"
 
@@ -6,7 +9,7 @@ class Main {
 
     private gbm: GoBoadManager;
     private gim: GoishiManager;
-    readonly setting: GoBoadSetting = new GoBoadSetting(0.9, 20, 20, 40);
+    readonly setting: GoBoadSetting = new GoBoadSetting(0.9, 20, 20, 36);
 
     readonly canvas: HTMLCanvasElement = <HTMLCanvasElement>document.getElementById("main_canvas");
     readonly canvasIshi: HTMLCanvasElement = <HTMLCanvasElement>document.getElementById("sub_canvas");

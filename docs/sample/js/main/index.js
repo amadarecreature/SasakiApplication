@@ -1,4 +1,6 @@
-import { FreeWriteManager, GoBoadManager, GoishiManager } from "./GoBoardMagnager.js";
+import { GoBoadManager } from "./GoBoardMagnager.js";
+import { FreeWriteManager } from "./FreeWriteManager.js";
+import { GoishiManager } from "./GoIshiManager.js";
 import { GoBoadSetting } from "./GoSetting.js";
 import { GoLogger } from "./GoLogger.js";
 var Main = /** @class */ (function () {
@@ -7,7 +9,7 @@ var Main = /** @class */ (function () {
      */
     function Main() {
         var _this = this;
-        this.setting = new GoBoadSetting(0.9, 20, 20, 40);
+        this.setting = new GoBoadSetting(0.9, 20, 20, 36);
         this.canvas = document.getElementById("main_canvas");
         this.canvasIshi = document.getElementById("sub_canvas");
         this.canvasFree = document.getElementById("free_canvas");
