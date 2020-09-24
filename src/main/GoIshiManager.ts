@@ -63,9 +63,11 @@ export class GoishiManager {
 
     private _turn: GoishiType;
 
-    public get turn(): string {
+    public get turn(): GoishiType {
         return this._turn;
     }
+
+    private now: number = -1;
 
     readonly logger: Logger;
 
@@ -155,7 +157,7 @@ export class GoishiManager {
      */
     public viewFromPosition(realtimePosition: GoishiType[][]) {
 
-        this.clearGoishiView();
+        this.clearAll();
         for (let x = 0; x < realtimePosition.length; x++) {
             const col = realtimePosition[x];
             for (let y = 0; y < col.length; y++) {
@@ -209,12 +211,17 @@ export class GoishiManager {
 
         // console.log("initCanvas:", canvas.width, canvas.height);
     }
-    public clearGoishiView() {
+    public clearAll() {
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
     }
 
+    /**
+     * 
+     * @param mouseX 候補手を打つ
+     * @param mouseY 
+     * @param word 
+     */
     public addCandidate(mouseX: number, mouseY: number, word: string) {
-        console.info("click=" + mouseX + ":" + mouseY);
 
         const positionOnGoban = this.calcPositionOnGoban(mouseX, mouseY)
 
@@ -223,19 +230,17 @@ export class GoishiManager {
         const circleCenterPosition = this.calcCircleCenterPosition(keisen, positionOnGoban);
 
         if (this.realtimePosition[positionOnGoban.roX][positionOnGoban.roY] != GoishiType.NONE) {
-            console.log("既に石がある。")
+            console.log("既に候補がある。")
             this.clearGoishi(circleCenterPosition.x - (this.roWidth / 2), circleCenterPosition.y - (this.roHeight / 2), this.context);
             this.realtimePosition[positionOnGoban.roX][positionOnGoban.roY] = GoishiType.NONE;
             return;
         }
 
+        const radius = this.goBoadInfo.roHeight * 0.475; // 半径
 
-        var tmp = this.drawGoishi(GoishiType.BLACK, circleCenterPosition, positionOnGoban);
-
-        // 次を白番にする
-        this._turn = GoishiType.WHITE;
-
-        this.logger.log(tmp);
+        // var tmp = this.drawGoishi(GoishiType.BLACK, circleCenterPosition, positionOnGoban);
+        this.drawCircle(circleCenterPosition.x, circleCenterPosition.y, radius, 0.7, this.context, "green");
+        this.drawWord(circleCenterPosition.x, circleCenterPosition.y, word, this.context, radius);
     }
 
 
@@ -267,10 +272,16 @@ export class GoishiManager {
 
 
     }
-    public chakushBack(count: number) {
-        const now = this.kifu.length - 1;
-        const targetNo = now - count;
+    /**
+     * 待った
+     */
+    public chakushBack() {
+        // const now = this.kifu.length - 1;
+        const targetNo = this.now;
         const targetChakushu = this.kifu[targetNo];
+        // 消す対象を次の手番として設定する。
+        this._turn = targetChakushu.color;
+        this.now = targetNo - 1;
         this.clearGoishiByRo(targetChakushu.position);
     }
     private clearGoishiByRo(positionOnGoban: PositionOnGoBoad) {
@@ -308,8 +319,8 @@ export class GoishiManager {
         // 碁石の中心位置を計算する。
         const circleCenterPosition = this.calcCircleCenterPosition(keisen, positionOnGoBoad);
 
-        console.info("circle=" + circleCenterPosition.x + ":" + circleCenterPosition.y);
-        console.info("positionOnGoBoad=" + positionOnGoBoad.roX + ":" + positionOnGoBoad.roY);
+        // console.info("circle=" + circleCenterPosition.x + ":" + circleCenterPosition.y);
+        // console.info("positionOnGoBoad=" + positionOnGoBoad.roX + ":" + positionOnGoBoad.roY);
 
         if (this.realtimePosition[positionOnGoBoad.roX][positionOnGoBoad.roY] != GoishiType.NONE) {
             console.log("既に石がある。")
@@ -323,6 +334,7 @@ export class GoishiManager {
 
         // ターンを入れ替える
         this._turn = (nowTurn == GoishiType.BLACK) ? GoishiType.WHITE : GoishiType.BLACK;
+        this.now += 1;
 
         this.logger.log(tmp);
 
@@ -332,7 +344,7 @@ export class GoishiManager {
     private drawGoishi(nowTurn: GoishiType, circleCenterPosition: PositionXY, positionOnGoban: PositionOnGoBoad) {
         const fillstyle = (nowTurn == GoishiType.BLACK) ? "black" : "white";
         const radius = this.goBoadInfo.roHeight * 0.475; // 半径
-        this.drawCircle(circleCenterPosition.x, circleCenterPosition.y, radius, this.context, fillstyle);
+        this.drawFillCircle(circleCenterPosition.x, circleCenterPosition.y, radius, this.context, fillstyle);
 
 
         // 棋譜の設定
@@ -348,10 +360,12 @@ export class GoishiManager {
         return tmp;
     }
 
-    private drawWord(x: number, y: number, r: number, word: string, context: CanvasRenderingContext2D, maxwidth: number) {
+    private drawWord(x: number, y: number, word: string, context: CanvasRenderingContext2D, maxwidth: number) {
 
         context.beginPath();
-        context.fillText(word, x, y, maxwidth);
+        context.fillStyle = "white";
+        context.font = "20px 'ＭＳ ゴシック'";
+        context.fillText(word, x - 5, y + 7, maxwidth);
         context.closePath;
         context.stroke();
 
@@ -385,11 +399,10 @@ export class GoishiManager {
      * @param x 左端座標
      * @param y 上端座標
      * @param r 半径
-     * @param shadow 影の長さ（高さ/2）
      * @param context 描画先のコンテキストを指定します。
      * @since 0.1
      */
-    private drawCircle(x: number, y: number, r: number, context: CanvasRenderingContext2D, fillStyle: string) {
+    private drawFillCircle(x: number, y: number, r: number, context: CanvasRenderingContext2D, fillStyle: string) {
         context.beginPath();
         // context.arc(x + r, y + r, r, 0, 2 * Math.PI);
         context.arc(x, y, r, 0, 2 * Math.PI);
@@ -410,7 +423,20 @@ export class GoishiManager {
 
         console.log("color", fillStyle);
     }
+    private drawCircle(x: number, y: number, r: number, globalAlpha: number, context: CanvasRenderingContext2D, fillStyle: string) {
+        context.beginPath();
+        context.arc(x, y, r, 0, 2 * Math.PI);
+        context.globalAlpha = globalAlpha;
+        context.fillStyle = fillStyle;
+        context.fill();
 
+        // 透明度
+        context.lineWidth = 3;
+        context.strokeStyle = "white";
+        context.stroke();
+        context.closePath();
+
+    }
 }
 class KifuUtil {
 

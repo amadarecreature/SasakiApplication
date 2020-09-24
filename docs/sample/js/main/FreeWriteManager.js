@@ -37,7 +37,7 @@ var FreeWriteManager = /** @class */ (function () {
         canvas.height = goBoadInfo.height + 20;
         console.log("initCanvas:", canvas.width, canvas.height);
     };
-    FreeWriteManager.prototype.clearGoishiView = function () {
+    FreeWriteManager.prototype.clearAll = function () {
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
     };
     FreeWriteManager.prototype.start = function () {

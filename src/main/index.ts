@@ -9,16 +9,20 @@ class Main {
 
     private gbm: GoBoadManager;
     private gim: GoishiManager;
+    private gcm: GoishiManager;
     readonly setting: GoBoadSetting = new GoBoadSetting(0.9, 20, 20, 36);
 
     readonly canvas: HTMLCanvasElement = <HTMLCanvasElement>document.getElementById("main_canvas");
     readonly canvasIshi: HTMLCanvasElement = <HTMLCanvasElement>document.getElementById("sub_canvas");
     readonly canvasFree: HTMLCanvasElement = <HTMLCanvasElement>document.getElementById("free_canvas");
+    readonly canvasCandidate: HTMLCanvasElement = <HTMLCanvasElement>document.getElementById("candidate_canvas");
+
     readonly lblLog: HTMLLabelElement = <HTMLLabelElement>document.getElementById("log");
     readonly inpKifu: HTMLInputElement = <HTMLInputElement>document.getElementById("kifu");
 
     readonly ckDrawMode: HTMLInputElement = <HTMLInputElement>document.getElementById("ckDrawMode");
     readonly ckOnOkiishiMode: HTMLInputElement = <HTMLInputElement>document.getElementById("ckOkiishiMode");
+    readonly ckCandidateMode: HTMLInputElement = <HTMLInputElement>document.getElementById("ckCandidateMode");
     readonly slRosu: HTMLSelectElement = <HTMLSelectElement>document.getElementById("sl_rosu");
     readonly Fwm: FreeWriteManager;
     readonly btnNew: HTMLButtonElement = <HTMLButtonElement>document.getElementById("btn_new");
@@ -30,6 +34,7 @@ class Main {
     constructor() {
         this.gbm = new GoBoadManager(this.canvas, this.setting, 9);
         this.gim = new GoishiManager(this.canvasIshi, this.setting, 9, GoLogger.getInstance(this.inpKifu));
+        this.gcm = new GoishiManager(this.canvasCandidate, this.setting, 9, GoLogger.getInstance(this.inpKifu));
         this.Fwm = new FreeWriteManager(this.canvasFree, this.setting, 9);
         this.canvasFree.addEventListener("click", (e: MouseEvent) => this.onMouseClick(e));
 
@@ -37,6 +42,9 @@ class Main {
         this.canvasFree.addEventListener("mousedown", (e: MouseEvent) => this.onMouseDown(e));
         this.canvasFree.addEventListener("mouseup", (e: MouseEvent) => this.onMouseUp(e));
         this.canvasFree.addEventListener("mousemove", (e: MouseEvent) => this.onMouseMove(e));
+        this.ckDrawMode.addEventListener("change", (e: Event) => this.Fwm.clearAll())
+        this.ckCandidateMode.addEventListener("change", (e: Event) => this.gcm.clearAll())
+
         // 再描画
         this.btnNew.addEventListener("click", (e: Event) => this.new(e))
 
@@ -85,9 +93,14 @@ class Main {
 
         if (this.ckOnOkiishiMode.checked) {
             this.gim.addOkiIshi(e.offsetX, e.offsetY);
-        } else {
-            this.gim.chakushu(e.offsetX, e.offsetY);
+            return;
         }
+        if (this.ckCandidateMode.checked) {
+            this.gcm.addCandidate(e.offsetX, e.offsetY, "1");
+            return;
+        }
+
+        this.gim.chakushu(e.offsetX, e.offsetY);
         const spnTeban: HTMLSpanElement = <HTMLSpanElement>document.getElementById("spnTeban");
         spnTeban.innerHTML = this.gim.turn;
     }
@@ -102,7 +115,7 @@ class Main {
         this.gim = new GoishiManager(this.canvasIshi, this.setting, rosu, GoLogger.getInstance(this.inpKifu));
     }
     private mattta(e: Event) {
-        this.gim.chakushBack(0);
+        this.gim.chakushBack();
     }
     private renew(e: Event) {
         this.gim.viewFromKifu(this.inpKifu.value);

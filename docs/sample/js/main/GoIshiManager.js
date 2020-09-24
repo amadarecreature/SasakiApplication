@@ -48,6 +48,7 @@ var GoishiManager = /** @class */ (function () {
      * @param logger
      */
     function GoishiManager(canvas, goSetting, roCount, logger) {
+        this.now = -1;
         this.roWidth = goSetting.roHW;
         this.roHeight = goSetting.roHW;
         this._turn = GoishiType.BLACK;
@@ -107,7 +108,7 @@ var GoishiManager = /** @class */ (function () {
      * 棋譜の内容をそのまま表示する。
      */
     GoishiManager.prototype.viewFromPosition = function (realtimePosition) {
-        this.clearGoishiView();
+        this.clearAll();
         for (var x = 0; x < realtimePosition.length; x++) {
             var col = realtimePosition[x];
             for (var y = 0; y < col.length; y++) {
@@ -152,25 +153,30 @@ var GoishiManager = /** @class */ (function () {
         canvas.height = goBoadInfo.height + 20;
         // console.log("initCanvas:", canvas.width, canvas.height);
     };
-    GoishiManager.prototype.clearGoishiView = function () {
+    GoishiManager.prototype.clearAll = function () {
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
     };
+    /**
+     *
+     * @param mouseX 候補手を打つ
+     * @param mouseY
+     * @param word
+     */
     GoishiManager.prototype.addCandidate = function (mouseX, mouseY, word) {
-        console.info("click=" + mouseX + ":" + mouseY);
         var positionOnGoban = this.calcPositionOnGoban(mouseX, mouseY);
         var keisen = 1;
         // 碁石の中心位置を計算する。
         var circleCenterPosition = this.calcCircleCenterPosition(keisen, positionOnGoban);
         if (this.realtimePosition[positionOnGoban.roX][positionOnGoban.roY] != GoishiType.NONE) {
-            console.log("既に石がある。");
+            console.log("既に候補がある。");
             this.clearGoishi(circleCenterPosition.x - (this.roWidth / 2), circleCenterPosition.y - (this.roHeight / 2), this.context);
             this.realtimePosition[positionOnGoban.roX][positionOnGoban.roY] = GoishiType.NONE;
             return;
         }
-        var tmp = this.drawGoishi(GoishiType.BLACK, circleCenterPosition, positionOnGoban);
-        // 次を白番にする
-        this._turn = GoishiType.WHITE;
-        this.logger.log(tmp);
+        var radius = this.goBoadInfo.roHeight * 0.475; // 半径
+        // var tmp = this.drawGoishi(GoishiType.BLACK, circleCenterPosition, positionOnGoban);
+        this.drawCircle(circleCenterPosition.x, circleCenterPosition.y, radius, 0.7, this.context, "green");
+        this.drawWord(circleCenterPosition.x, circleCenterPosition.y, word, this.context, radius);
     };
     GoishiManager.prototype.addOkiIshi = function (mouseX, mouseY) {
         console.info("click=" + mouseX + ":" + mouseY);
@@ -190,10 +196,16 @@ var GoishiManager = /** @class */ (function () {
         this._turn = GoishiType.WHITE;
         this.logger.log(tmp);
     };
-    GoishiManager.prototype.chakushBack = function (count) {
-        var now = this.kifu.length - 1;
-        var targetNo = now - count;
+    /**
+     * 待った
+     */
+    GoishiManager.prototype.chakushBack = function () {
+        // const now = this.kifu.length - 1;
+        var targetNo = this.now;
         var targetChakushu = this.kifu[targetNo];
+        // 消す対象を次の手番として設定する。
+        this._turn = targetChakushu.color;
+        this.now = targetNo - 1;
         this.clearGoishiByRo(targetChakushu.position);
     };
     GoishiManager.prototype.clearGoishiByRo = function (positionOnGoban) {
@@ -221,8 +233,8 @@ var GoishiManager = /** @class */ (function () {
         var keisen = 1;
         // 碁石の中心位置を計算する。
         var circleCenterPosition = this.calcCircleCenterPosition(keisen, positionOnGoBoad);
-        console.info("circle=" + circleCenterPosition.x + ":" + circleCenterPosition.y);
-        console.info("positionOnGoBoad=" + positionOnGoBoad.roX + ":" + positionOnGoBoad.roY);
+        // console.info("circle=" + circleCenterPosition.x + ":" + circleCenterPosition.y);
+        // console.info("positionOnGoBoad=" + positionOnGoBoad.roX + ":" + positionOnGoBoad.roY);
         if (this.realtimePosition[positionOnGoBoad.roX][positionOnGoBoad.roY] != GoishiType.NONE) {
             console.log("既に石がある。");
             this.clearGoishi(circleCenterPosition.x - (this.roWidth / 2), circleCenterPosition.y - (this.roHeight / 2), this.context);
@@ -232,6 +244,7 @@ var GoishiManager = /** @class */ (function () {
         var tmp = this.drawGoishi(nowTurn, circleCenterPosition, positionOnGoBoad);
         // ターンを入れ替える
         this._turn = (nowTurn == GoishiType.BLACK) ? GoishiType.WHITE : GoishiType.BLACK;
+        this.now += 1;
         this.logger.log(tmp);
         // auClick.play();
         // turn = 3 - turn;
@@ -239,7 +252,7 @@ var GoishiManager = /** @class */ (function () {
     GoishiManager.prototype.drawGoishi = function (nowTurn, circleCenterPosition, positionOnGoban) {
         var fillstyle = (nowTurn == GoishiType.BLACK) ? "black" : "white";
         var radius = this.goBoadInfo.roHeight * 0.475; // 半径
-        this.drawCircle(circleCenterPosition.x, circleCenterPosition.y, radius, this.context, fillstyle);
+        this.drawFillCircle(circleCenterPosition.x, circleCenterPosition.y, radius, this.context, fillstyle);
         // 棋譜の設定
         this.kifu.push(new KifuPart(nowTurn, positionOnGoban.roX, positionOnGoban.roY, false));
         // 配置の設定
@@ -250,9 +263,11 @@ var GoishiManager = /** @class */ (function () {
         });
         return tmp;
     };
-    GoishiManager.prototype.drawWord = function (x, y, r, word, context, maxwidth) {
+    GoishiManager.prototype.drawWord = function (x, y, word, context, maxwidth) {
         context.beginPath();
-        context.fillText(word, x, y, maxwidth);
+        context.fillStyle = "white";
+        context.font = "20px 'ＭＳ ゴシック'";
+        context.fillText(word, x - 5, y + 7, maxwidth);
         context.closePath;
         context.stroke();
     };
@@ -280,11 +295,10 @@ var GoishiManager = /** @class */ (function () {
      * @param x 左端座標
      * @param y 上端座標
      * @param r 半径
-     * @param shadow 影の長さ（高さ/2）
      * @param context 描画先のコンテキストを指定します。
      * @since 0.1
      */
-    GoishiManager.prototype.drawCircle = function (x, y, r, context, fillStyle) {
+    GoishiManager.prototype.drawFillCircle = function (x, y, r, context, fillStyle) {
         context.beginPath();
         // context.arc(x + r, y + r, r, 0, 2 * Math.PI);
         context.arc(x, y, r, 0, 2 * Math.PI);
@@ -301,6 +315,18 @@ var GoishiManager = /** @class */ (function () {
         context.lineWidth = 0.5;
         context.stroke();
         console.log("color", fillStyle);
+    };
+    GoishiManager.prototype.drawCircle = function (x, y, r, globalAlpha, context, fillStyle) {
+        context.beginPath();
+        context.arc(x, y, r, 0, 2 * Math.PI);
+        context.globalAlpha = globalAlpha;
+        context.fillStyle = fillStyle;
+        context.fill();
+        // 透明度
+        context.lineWidth = 3;
+        context.strokeStyle = "white";
+        context.stroke();
+        context.closePath();
     };
     return GoishiManager;
 }());

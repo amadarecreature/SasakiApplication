@@ -56,7 +56,7 @@ export class FreeWriteManager {
 
         console.log("initCanvas:", canvas.width, canvas.height);
     }
-    public clearGoishiView() {
+    public clearAll() {
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
     }
     // 描画中かどうか

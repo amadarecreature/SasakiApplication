@@ -13,20 +13,25 @@ var Main = /** @class */ (function () {
         this.canvas = document.getElementById("main_canvas");
         this.canvasIshi = document.getElementById("sub_canvas");
         this.canvasFree = document.getElementById("free_canvas");
+        this.canvasCandidate = document.getElementById("candidate_canvas");
         this.lblLog = document.getElementById("log");
         this.inpKifu = document.getElementById("kifu");
         this.ckDrawMode = document.getElementById("ckDrawMode");
         this.ckOnOkiishiMode = document.getElementById("ckOkiishiMode");
+        this.ckCandidateMode = document.getElementById("ckCandidateMode");
         this.slRosu = document.getElementById("sl_rosu");
         this.btnNew = document.getElementById("btn_new");
         this.gbm = new GoBoadManager(this.canvas, this.setting, 9);
         this.gim = new GoishiManager(this.canvasIshi, this.setting, 9, GoLogger.getInstance(this.inpKifu));
+        this.gcm = new GoishiManager(this.canvasCandidate, this.setting, 9, GoLogger.getInstance(this.inpKifu));
         this.Fwm = new FreeWriteManager(this.canvasFree, this.setting, 9);
         this.canvasFree.addEventListener("click", function (e) { return _this.onMouseClick(e); });
         // お絵描きモード用イベント
         this.canvasFree.addEventListener("mousedown", function (e) { return _this.onMouseDown(e); });
         this.canvasFree.addEventListener("mouseup", function (e) { return _this.onMouseUp(e); });
         this.canvasFree.addEventListener("mousemove", function (e) { return _this.onMouseMove(e); });
+        this.ckDrawMode.addEventListener("change", function (e) { return _this.Fwm.clearAll(); });
+        this.ckCandidateMode.addEventListener("change", function (e) { return _this.gcm.clearAll(); });
         // 再描画
         this.btnNew.addEventListener("click", function (e) { return _this.new(e); });
         // 再描画
@@ -69,10 +74,13 @@ var Main = /** @class */ (function () {
         }
         if (this.ckOnOkiishiMode.checked) {
             this.gim.addOkiIshi(e.offsetX, e.offsetY);
+            return;
         }
-        else {
-            this.gim.chakushu(e.offsetX, e.offsetY);
+        if (this.ckCandidateMode.checked) {
+            this.gcm.addCandidate(e.offsetX, e.offsetY, "1");
+            return;
         }
+        this.gim.chakushu(e.offsetX, e.offsetY);
         var spnTeban = document.getElementById("spnTeban");
         spnTeban.innerHTML = this.gim.turn;
     };
@@ -86,7 +94,7 @@ var Main = /** @class */ (function () {
         this.gim = new GoishiManager(this.canvasIshi, this.setting, rosu, GoLogger.getInstance(this.inpKifu));
     };
     Main.prototype.mattta = function (e) {
-        this.gim.chakushBack(0);
+        this.gim.chakushBack();
     };
     Main.prototype.renew = function (e) {
         this.gim.viewFromKifu(this.inpKifu.value);
