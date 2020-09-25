@@ -257,8 +257,8 @@ export class GoishiManager {
 
         if (this.realtimePosition[positionOnGoban.roX][positionOnGoban.roY] != GoishiType.NONE) {
             console.log("既に石がある。")
-            this.clearGoishi(circleCenterPosition.x - (this.roWidth / 2), circleCenterPosition.y - (this.roHeight / 2), this.context);
-            this.realtimePosition[positionOnGoban.roX][positionOnGoban.roY] = GoishiType.NONE;
+            // this.clearGoishi(circleCenterPosition.x - (this.roWidth / 2), circleCenterPosition.y - (this.roHeight / 2), this.context);
+            // this.realtimePosition[positionOnGoban.roX][positionOnGoban.roY] = GoishiType.NONE;
             return;
         }
 
