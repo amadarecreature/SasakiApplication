@@ -1,6 +1,8 @@
 import { GoBoadManager } from "./GoBoardMagnager.js";
 import { FreeWriteManager } from "./FreeWriteManager.js";
 import { GoishiManager } from "./GoIshiManager.js";
+import { GoCandidateManager } from "./GoCandidateManager.js";
+
 
 import { GoBoadSetting } from "./GoSetting.js";
 import { GoLogger } from "./GoLogger.js"
@@ -9,7 +11,7 @@ class Main {
 
     private gbm: GoBoadManager;
     private gim: GoishiManager;
-    private gcm: GoishiManager;
+    private gcm: GoCandidateManager;
     readonly setting: GoBoadSetting = new GoBoadSetting(0.9, 20, 20, 36);
 
     readonly canvas: HTMLCanvasElement = <HTMLCanvasElement>document.getElementById("main_canvas");
@@ -34,8 +36,10 @@ class Main {
     constructor() {
         this.gbm = new GoBoadManager(this.canvas, this.setting, 9);
         this.gim = new GoishiManager(this.canvasIshi, this.setting, 9, GoLogger.getInstance(this.inpKifu));
-        this.gcm = new GoishiManager(this.canvasCandidate, this.setting, 9, GoLogger.getInstance(this.inpKifu));
+        this.gcm = new GoCandidateManager(this.canvasCandidate, this.setting, 9);
         this.Fwm = new FreeWriteManager(this.canvasFree, this.setting, 9);
+
+        // クリックイベント
         this.canvasFree.addEventListener("click", (e: MouseEvent) => this.onMouseClick(e));
 
         // お絵描きモード用イベント
@@ -43,6 +47,8 @@ class Main {
         this.canvasFree.addEventListener("mouseup", (e: MouseEvent) => this.onMouseUp(e));
         this.canvasFree.addEventListener("mousemove", (e: MouseEvent) => this.onMouseMove(e));
         this.ckDrawMode.addEventListener("change", (e: Event) => this.Fwm.clearAll())
+
+        // 指導碁用イベント
         this.ckCandidateMode.addEventListener("change", (e: Event) => this.gcm.clearAll())
 
         // 新規開始
@@ -96,7 +102,7 @@ class Main {
             return;
         }
         if (this.ckCandidateMode.checked) {
-            this.gcm.addCandidate(e.offsetX, e.offsetY, "1");
+            this.gcm.addCandidate(e.offsetX, e.offsetY);
             return;
         }
 

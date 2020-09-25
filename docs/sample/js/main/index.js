@@ -1,6 +1,7 @@
 import { GoBoadManager } from "./GoBoardMagnager.js";
 import { FreeWriteManager } from "./FreeWriteManager.js";
 import { GoishiManager } from "./GoIshiManager.js";
+import { GoCandidateManager } from "./GoCandidateManager.js";
 import { GoBoadSetting } from "./GoSetting.js";
 import { GoLogger } from "./GoLogger.js";
 var Main = /** @class */ (function () {
@@ -23,18 +24,20 @@ var Main = /** @class */ (function () {
         this.btnNew = document.getElementById("btn_new");
         this.gbm = new GoBoadManager(this.canvas, this.setting, 9);
         this.gim = new GoishiManager(this.canvasIshi, this.setting, 9, GoLogger.getInstance(this.inpKifu));
-        this.gcm = new GoishiManager(this.canvasCandidate, this.setting, 9, GoLogger.getInstance(this.inpKifu));
+        this.gcm = new GoCandidateManager(this.canvasCandidate, this.setting, 9);
         this.Fwm = new FreeWriteManager(this.canvasFree, this.setting, 9);
+        // クリックイベント
         this.canvasFree.addEventListener("click", function (e) { return _this.onMouseClick(e); });
         // お絵描きモード用イベント
         this.canvasFree.addEventListener("mousedown", function (e) { return _this.onMouseDown(e); });
         this.canvasFree.addEventListener("mouseup", function (e) { return _this.onMouseUp(e); });
         this.canvasFree.addEventListener("mousemove", function (e) { return _this.onMouseMove(e); });
         this.ckDrawMode.addEventListener("change", function (e) { return _this.Fwm.clearAll(); });
+        // 指導碁用イベント
         this.ckCandidateMode.addEventListener("change", function (e) { return _this.gcm.clearAll(); });
-        // 再描画
+        // 新規開始
         this.btnNew.addEventListener("click", function (e) { return _this.new(e); });
-        // 再描画
+        // 棋譜読み込み
         var btnRenew = document.getElementById("btn_renew");
         btnRenew.addEventListener("click", function (e) { return _this.renew(e); });
         // 待った
@@ -77,7 +80,7 @@ var Main = /** @class */ (function () {
             return;
         }
         if (this.ckCandidateMode.checked) {
-            this.gcm.addCandidate(e.offsetX, e.offsetY, "1");
+            this.gcm.addCandidate(e.offsetX, e.offsetY);
             return;
         }
         this.gim.chakushu(e.offsetX, e.offsetY);

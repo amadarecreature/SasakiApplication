@@ -15,8 +15,7 @@ export class GoBoadSetting {
     }
 }
 
-export 
-class GoBoadInfo {
+export class GoBoadInfo {
     // 一路の幅
     readonly roWidth: number;
     // 一路の高さ
@@ -63,5 +62,47 @@ class GoBoadInfo {
         this.areaHeight = this.roHeight * (this.roCount - 1) + 2;
         this.areaLeft = left + Math.floor((this.width - this.areaWidth) / 2);
         this.areaTop = top + Math.floor((this.height - this.areaHeight) / 2);
+    }
+}
+
+export enum GoishiType {
+    BLACK = "B",
+    WHITE = "W",
+    OKI = "O",
+    NONE = "N"
+}
+export class KifuPart {
+    readonly color: GoishiType;
+    readonly position: PositionOnGoBoad;
+    readonly isPassed: boolean;
+    constructor(color: GoishiType, roX: number, roY: number, isPassed: boolean) {
+        this.color = color;
+        this.position = new PositionOnGoBoad(roX, roY);
+        this.isPassed = isPassed;
+    }
+}
+export class PositionXY {
+    readonly x: number;
+    readonly y: number;
+    constructor(x: number, y: number) {
+        this.x = x;
+        this.y = y;
+    }
+}
+
+export class PositionOnGoBoad {
+    readonly roX: number;
+    readonly roY: number;
+    /**
+     * 路数で位置を指定
+     * @param roX 0～18 
+     * @param roY 0～18
+     */
+    constructor(roX: number, roY: number) {
+        if (roX < 0 || roY < 0) {
+            throw new Error("ro must be greater than 0.");
+        }
+        this.roX = roX;
+        this.roY = roY;
     }
 }
