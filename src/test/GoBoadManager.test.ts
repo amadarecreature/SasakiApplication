@@ -1,9 +1,13 @@
 import { GoishiManager } from "../main/GoIshiManager";
 
+
 test('basic', () => {
-    expect(1).toBe(0);
-  });
-  
-  test('basic again', () => {
-    expect(2).toBe(3);
-  });
+  expect(1).toBe(1);
+});
+
+describe('basic again', () => {
+  expect(3).toBe(3);
+});
+
+
+
