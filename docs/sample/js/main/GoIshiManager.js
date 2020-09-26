@@ -47,12 +47,11 @@ var GoishiManager = /** @class */ (function () {
      * @param roCount
      * @param logger
      */
-    function GoishiManager(canvas, goBoadSetting, roCount, logger) {
+    function GoishiManager(canvas, goBoadSetting, roCount) {
         this.now = -1;
         this.roWidth = goBoadSetting.roHW;
         this.roHeight = goBoadSetting.roHW;
         this._turn = GoishiType.BLACK;
-        this.logger = logger;
         this.roCount = roCount;
         this.goBoadInfo = new GoBoadInfo(goBoadSetting.roHW, goBoadSetting.roHW, goBoadSetting.gobanLeft, goBoadSetting.gobanTop, roCount);
         this.kifu = new Array();
@@ -194,8 +193,18 @@ var GoishiManager = /** @class */ (function () {
         var tmp = this.drawGoishi(GoishiType.BLACK, circleCenterPosition, positionOnGoban);
         // 次を白番にする
         this._turn = GoishiType.WHITE;
-        this.logger.log(tmp);
     };
+    Object.defineProperty(GoishiManager.prototype, "kifuString", {
+        get: function () {
+            var tmp = "";
+            this.kifu.forEach(function (kifu) {
+                tmp += kifu.color + "(" + kifu.position.roX + ":" + kifu.position.roY + ")";
+            });
+            return tmp;
+        },
+        enumerable: false,
+        configurable: true
+    });
     /**
      * 待った
      */
@@ -219,7 +228,6 @@ var GoishiManager = /** @class */ (function () {
         // 碁石の中心位置を計算する。
         var circleCenterPosition = this.calcCircleCenterPosition(keisen, kifuPart.position);
         var kifu = this.drawGoishi(kifuPart.color, circleCenterPosition, kifuPart.position);
-        this.logger.log(kifu);
     };
     /**
      * 着手動作
@@ -245,7 +253,6 @@ var GoishiManager = /** @class */ (function () {
         // ターンを入れ替える
         this._turn = (nowTurn == GoishiType.BLACK) ? GoishiType.WHITE : GoishiType.BLACK;
         this.now += 1;
-        this.logger.log(tmp);
         // auClick.play();
         // turn = 3 - turn;
     };
@@ -257,11 +264,6 @@ var GoishiManager = /** @class */ (function () {
         this.kifu.push(new KifuPart(nowTurn, positionOnGoban.roX, positionOnGoban.roY, false));
         // 配置の設定
         this.realtimePosition[positionOnGoban.roX][positionOnGoban.roY] = nowTurn;
-        var tmp = "";
-        this.kifu.forEach(function (kifu) {
-            tmp += kifu.color + "(" + kifu.position.roX + ":" + kifu.position.roY + ")";
-        });
-        return tmp;
     };
     GoishiManager.prototype.drawWord = function (x, y, word, context, maxwidth) {
         context.beginPath();

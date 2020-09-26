@@ -69,8 +69,6 @@ export class GoishiManager {
 
     private now: number = -1;
 
-    readonly logger: Logger;
-
     readonly goBoadInfo: GoBoadInfo;
 
     // 一路の横
@@ -87,12 +85,11 @@ export class GoishiManager {
      * @param roCount 
      * @param logger
      */
-    public constructor(canvas: HTMLCanvasElement, goBoadSetting: GoBoadSetting, roCount: number, logger: Logger) {
+    public constructor(canvas: HTMLCanvasElement, goBoadSetting: GoBoadSetting, roCount: number) {
 
         this.roWidth = goBoadSetting.roHW;
         this.roHeight = goBoadSetting.roHW;
         this._turn = GoishiType.BLACK;
-        this.logger = logger;
 
         this.roCount = roCount;
 
@@ -268,8 +265,14 @@ export class GoishiManager {
         // 次を白番にする
         this._turn = GoishiType.WHITE;
 
-        this.logger.log(tmp);
+    }
 
+    get kifuString(){
+        var tmp = "";
+        this.kifu.forEach(kifu => {
+            tmp += kifu.color + "(" + kifu.position.roX + ":" + kifu.position.roY + ")";
+        });
+        return tmp;
 
     }
     /**
@@ -298,7 +301,6 @@ export class GoishiManager {
         // 碁石の中心位置を計算する。
         const circleCenterPosition = this.calcCircleCenterPosition(keisen, kifuPart.position);
         var kifu = this.drawGoishi(kifuPart.color, circleCenterPosition, kifuPart.position);
-        this.logger.log(kifu);
 
     }
 
@@ -336,7 +338,6 @@ export class GoishiManager {
         this._turn = (nowTurn == GoishiType.BLACK) ? GoishiType.WHITE : GoishiType.BLACK;
         this.now += 1;
 
-        this.logger.log(tmp);
 
         // auClick.play();
         // turn = 3 - turn;
@@ -353,11 +354,6 @@ export class GoishiManager {
         // 配置の設定
         this.realtimePosition[positionOnGoban.roX][positionOnGoban.roY] = nowTurn;
 
-        var tmp = "";
-        this.kifu.forEach(kifu => {
-            tmp += kifu.color + "(" + kifu.position.roX + ":" + kifu.position.roY + ")";
-        });
-        return tmp;
     }
 
     private drawWord(x: number, y: number, word: string, context: CanvasRenderingContext2D, maxwidth: number) {

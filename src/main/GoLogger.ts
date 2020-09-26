@@ -6,7 +6,7 @@ export class GoLogger implements Logger {
     }
 
     readonly target: HTMLElement;
-    static getInstance(target: HTMLInputElement) {
+    static getInstance(target: HTMLElement) {
         if (!GoLogger.instance) {
             GoLogger.instance = new GoLogger(target);
             // ... any one time initialization goes here ...
@@ -14,8 +14,19 @@ export class GoLogger implements Logger {
         return GoLogger.instance;
     }
     public log(value: string) {
-        this.target.textContent = value;
-        this.target.innerHTML = value;
+
+        if (this.target instanceof HTMLInputElement) {
+            const t = <HTMLInputElement>this.target;
+            t.value = value;
+            return;
+        }
+        if (this.target instanceof HTMLLabelElement) {
+            const t = <HTMLLabelElement>this.target;
+            t.innerHTML = value;
+            return;
+        }
+
+        throw new Error("this element isn't the target.");
     }
 
 }

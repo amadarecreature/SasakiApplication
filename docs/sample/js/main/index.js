@@ -27,8 +27,9 @@ var Main = /** @class */ (function () {
         this.slRosu = document.getElementById("sl_rosu");
         this.btnNew = document.getElementById("btn_new");
         this.btnReadKifu = document.getElementById("btn_read_kifu");
+        this.kifuLogger = GoLogger.getInstance(this.inpKifu);
         this.gbm = new GoBoadManager(this.canvas, this.setting, 9);
-        this.gim = new GoishiManager(this.canvasIshi, this.setting, 9, GoLogger.getInstance(this.inpKifu));
+        this.gim = new GoishiManager(this.canvasIshi, this.setting, 9);
         this.gcm = new GoCandidateManager(this.canvasCandidate, this.setting, 9);
         this.fwm = new FreeWriteManager(this.canvasFree, this.setting, 9);
         // クリックイベント
@@ -81,6 +82,7 @@ var Main = /** @class */ (function () {
             return;
         }
         this.gim.chakushu(e.offsetX, e.offsetY);
+        this.kifuLogger.log(this.gim.kifuString);
         var spnTeban = document.getElementById("spnTeban");
         spnTeban.innerHTML = this.gim.turn;
     };
@@ -91,7 +93,7 @@ var Main = /** @class */ (function () {
     Main.prototype.new = function (e) {
         var rosu = parseInt(this.slRosu.options[this.slRosu.selectedIndex].value, 10);
         this.gbm = new GoBoadManager(this.canvas, this.setting, rosu);
-        this.gim = new GoishiManager(this.canvasIshi, this.setting, rosu, GoLogger.getInstance(this.inpKifu));
+        this.gim = new GoishiManager(this.canvasIshi, this.setting, rosu);
     };
     Main.prototype.mattta = function (e) {
         this.gim.chakushBack();

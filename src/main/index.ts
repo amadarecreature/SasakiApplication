@@ -34,13 +34,14 @@ class Main {
     readonly btnNew: HTMLButtonElement = <HTMLButtonElement>document.getElementById("btn_new");
     readonly btnReadKifu: HTMLButtonElement = <HTMLButtonElement>document.getElementById("btn_read_kifu");
 
+    readonly kifuLogger = GoLogger.getInstance(this.inpKifu);
 
     /**
      * メイン処理をここに書く
      */
     constructor() {
         this.gbm = new GoBoadManager(this.canvas, this.setting, 9);
-        this.gim = new GoishiManager(this.canvasIshi, this.setting, 9, GoLogger.getInstance(this.inpKifu));
+        this.gim = new GoishiManager(this.canvasIshi, this.setting, 9);
         this.gcm = new GoCandidateManager(this.canvasCandidate, this.setting, 9);
         this.fwm = new FreeWriteManager(this.canvasFree, this.setting, 9);
 
@@ -103,6 +104,7 @@ class Main {
         }
 
         this.gim.chakushu(e.offsetX, e.offsetY);
+        this.kifuLogger.log(this.gim.kifuString);
         const spnTeban: HTMLSpanElement = <HTMLSpanElement>document.getElementById("spnTeban");
         spnTeban.innerHTML = this.gim.turn;
     }
@@ -114,7 +116,7 @@ class Main {
         const rosu: number = parseInt(this.slRosu.options[this.slRosu.selectedIndex].value, 10);
 
         this.gbm = new GoBoadManager(this.canvas, this.setting, rosu);
-        this.gim = new GoishiManager(this.canvasIshi, this.setting, rosu, GoLogger.getInstance(this.inpKifu));
+        this.gim = new GoishiManager(this.canvasIshi, this.setting, rosu);
     }
     private mattta(e: Event) {
         this.gim.chakushBack();
