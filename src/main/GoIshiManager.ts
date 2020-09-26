@@ -83,20 +83,20 @@ export class GoishiManager {
     /**
      * このクラスが扱うコンテキストと幅(縦も同義)を注入する
      * @param canvas 
-     * @param goSetting
+     * @param goBoadSetting
      * @param roCount 
      * @param logger
      */
-    public constructor(canvas: HTMLCanvasElement, goSetting: GoBoadSetting, roCount: number, logger: Logger) {
+    public constructor(canvas: HTMLCanvasElement, goBoadSetting: GoBoadSetting, roCount: number, logger: Logger) {
 
-        this.roWidth = goSetting.roHW;
-        this.roHeight = goSetting.roHW;
+        this.roWidth = goBoadSetting.roHW;
+        this.roHeight = goBoadSetting.roHW;
         this._turn = GoishiType.BLACK;
         this.logger = logger;
 
         this.roCount = roCount;
 
-        this.goBoadInfo = new GoBoadInfo(goSetting.roHW, goSetting.roHW, goSetting.gobanLeft, goSetting.gobanTop, roCount);
+        this.goBoadInfo = new GoBoadInfo(goBoadSetting.roHW, goBoadSetting.roHW, goBoadSetting.gobanLeft, goBoadSetting.gobanTop, roCount);
 
         this.kifu = new Array();
 

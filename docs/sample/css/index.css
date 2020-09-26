@@ -44,7 +44,7 @@
 .goban_area {
     position: relative;
     border: 3px solid green;
-    width: 400px;
+    width: 100%;
     flex-grow: 1;
 }
 

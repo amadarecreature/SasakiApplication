@@ -43,18 +43,18 @@ var GoishiManager = /** @class */ (function () {
     /**
      * このクラスが扱うコンテキストと幅(縦も同義)を注入する
      * @param canvas
-     * @param goSetting
+     * @param goBoadSetting
      * @param roCount
      * @param logger
      */
-    function GoishiManager(canvas, goSetting, roCount, logger) {
+    function GoishiManager(canvas, goBoadSetting, roCount, logger) {
         this.now = -1;
-        this.roWidth = goSetting.roHW;
-        this.roHeight = goSetting.roHW;
+        this.roWidth = goBoadSetting.roHW;
+        this.roHeight = goBoadSetting.roHW;
         this._turn = GoishiType.BLACK;
         this.logger = logger;
         this.roCount = roCount;
-        this.goBoadInfo = new GoBoadInfo(goSetting.roHW, goSetting.roHW, goSetting.gobanLeft, goSetting.gobanTop, roCount);
+        this.goBoadInfo = new GoBoadInfo(goBoadSetting.roHW, goBoadSetting.roHW, goBoadSetting.gobanLeft, goBoadSetting.gobanTop, roCount);
         this.kifu = new Array();
         //カンバスが使用できるかチェック
         if (!canvas.getContext) {

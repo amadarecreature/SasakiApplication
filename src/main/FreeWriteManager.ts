@@ -51,8 +51,8 @@ export class FreeWriteManager {
     private initCanvas(canvas: HTMLCanvasElement, goBoadInfo: GoBoadInfo) {
 
         // サイズ変更(サイズ変更すると描画内容が消えるので先に変更)
-        canvas.width = goBoadInfo.width + 20;
-        canvas.height = goBoadInfo.height + 20;
+        canvas.width = goBoadInfo.width + 40;
+        canvas.height = goBoadInfo.height + 40;
 
         console.log("initCanvas:", canvas.width, canvas.height);
     }

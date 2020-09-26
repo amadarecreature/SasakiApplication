@@ -6,12 +6,17 @@ import { GoCandidateManager } from "./GoCandidateManager.js";
 
 import { GoBoadSetting } from "./GoSetting.js";
 import { GoLogger } from "./GoLogger.js"
-
+/**
+ * (Required feature)
+ * ・View sample of two-eyed shape
+ */
 class Main {
 
     private gbm: GoBoadManager;
     private gim: GoishiManager;
     private gcm: GoCandidateManager;
+    readonly fwm: FreeWriteManager;
+
     readonly setting: GoBoadSetting = new GoBoadSetting(0.9, 20, 20, 36);
 
     readonly canvas: HTMLCanvasElement = <HTMLCanvasElement>document.getElementById("main_canvas");
@@ -26,8 +31,8 @@ class Main {
     readonly ckOnOkiishiMode: HTMLInputElement = <HTMLInputElement>document.getElementById("ckOkiishiMode");
     readonly ckCandidateMode: HTMLInputElement = <HTMLInputElement>document.getElementById("ckCandidateMode");
     readonly slRosu: HTMLSelectElement = <HTMLSelectElement>document.getElementById("sl_rosu");
-    readonly Fwm: FreeWriteManager;
     readonly btnNew: HTMLButtonElement = <HTMLButtonElement>document.getElementById("btn_new");
+    readonly btnReadKifu: HTMLButtonElement = <HTMLButtonElement>document.getElementById("btn_read_kifu");
 
 
     /**
@@ -37,7 +42,7 @@ class Main {
         this.gbm = new GoBoadManager(this.canvas, this.setting, 9);
         this.gim = new GoishiManager(this.canvasIshi, this.setting, 9, GoLogger.getInstance(this.inpKifu));
         this.gcm = new GoCandidateManager(this.canvasCandidate, this.setting, 9);
-        this.Fwm = new FreeWriteManager(this.canvasFree, this.setting, 9);
+        this.fwm = new FreeWriteManager(this.canvasFree, this.setting, 9);
 
         // クリックイベント
         this.canvasFree.addEventListener("click", (e: MouseEvent) => this.onMouseClick(e));
@@ -46,47 +51,38 @@ class Main {
         this.canvasFree.addEventListener("mousedown", (e: MouseEvent) => this.onMouseDown(e));
         this.canvasFree.addEventListener("mouseup", (e: MouseEvent) => this.onMouseUp(e));
         this.canvasFree.addEventListener("mousemove", (e: MouseEvent) => this.onMouseMove(e));
-        this.ckDrawMode.addEventListener("change", (e: Event) => this.Fwm.clearAll())
+        this.ckDrawMode.addEventListener("change", (e: Event) => this.fwm.clearAll())
 
-        // 指導碁用イベント
+        // 候補モード用イベント
         this.ckCandidateMode.addEventListener("change", (e: Event) => this.gcm.clearAll())
 
-        // 新規開始
+        // 新規開始用イベント
         this.btnNew.addEventListener("click", (e: Event) => this.new(e))
 
         // 棋譜読み込み
-        const btnRenew: HTMLButtonElement = <HTMLButtonElement>document.getElementById("btn_renew");
-        btnRenew.addEventListener("click", (e: Event) => this.renew(e));
+        this.btnReadKifu.addEventListener("click", (e: Event) => this.readKifu(e));
 
         // 待った
         const btnBack: HTMLButtonElement = <HTMLButtonElement>document.getElementById("btn_back");
         btnBack.addEventListener("click", (e: Event) => this.mattta(e));
 
-        // 棋譜読み込み
-        const btnKifuRead: HTMLButtonElement = <HTMLButtonElement>document.getElementById("btn_bkifu_read");
-        btnKifuRead.addEventListener("click", (e: Event) => this.onClickKifuRead(e));
-
     }
     private onMouseMove(e: MouseEvent): any {
         if (this.ckDrawMode.checked) {
-            this.Fwm.draw(e.offsetX, e.offsetY);
+            this.fwm.draw(e.offsetX, e.offsetY);
         }
     }
     private onMouseDown(e: MouseEvent): any {
         if (this.ckDrawMode.checked) {
-            this.Fwm.start();
+            this.fwm.start();
         }
     }
     private onMouseUp(e: MouseEvent): any {
         if (this.ckDrawMode.checked) {
-            this.Fwm.stop();
+            this.fwm.stop();
         }
     }
 
-    private onClickKifuRead(e: Event) {
-        const kifu = this.inpKifu.value;
-        this.gim.viewFromKifu(kifu);
-    }
     /**
      * 
      * @param e 
@@ -111,7 +107,7 @@ class Main {
         spnTeban.innerHTML = this.gim.turn;
     }
     /**
-     * 再描画イベント用
+     * 新規表示
      * @param e 
      */
     private new(e: Event) {
@@ -123,7 +119,7 @@ class Main {
     private mattta(e: Event) {
         this.gim.chakushBack();
     }
-    private renew(e: Event) {
+    private readKifu(e: Event) {
         this.gim.viewFromKifu(this.inpKifu.value);
     }
 }

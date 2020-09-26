@@ -4,6 +4,10 @@ import { GoishiManager } from "./GoIshiManager.js";
 import { GoCandidateManager } from "./GoCandidateManager.js";
 import { GoBoadSetting } from "./GoSetting.js";
 import { GoLogger } from "./GoLogger.js";
+/**
+ * (Required feature)
+ * ・View sample of two-eyed shape
+ */
 var Main = /** @class */ (function () {
     /**
      * メイン処理をここに書く
@@ -22,49 +26,42 @@ var Main = /** @class */ (function () {
         this.ckCandidateMode = document.getElementById("ckCandidateMode");
         this.slRosu = document.getElementById("sl_rosu");
         this.btnNew = document.getElementById("btn_new");
+        this.btnReadKifu = document.getElementById("btn_read_kifu");
         this.gbm = new GoBoadManager(this.canvas, this.setting, 9);
         this.gim = new GoishiManager(this.canvasIshi, this.setting, 9, GoLogger.getInstance(this.inpKifu));
         this.gcm = new GoCandidateManager(this.canvasCandidate, this.setting, 9);
-        this.Fwm = new FreeWriteManager(this.canvasFree, this.setting, 9);
+        this.fwm = new FreeWriteManager(this.canvasFree, this.setting, 9);
         // クリックイベント
         this.canvasFree.addEventListener("click", function (e) { return _this.onMouseClick(e); });
         // お絵描きモード用イベント
         this.canvasFree.addEventListener("mousedown", function (e) { return _this.onMouseDown(e); });
         this.canvasFree.addEventListener("mouseup", function (e) { return _this.onMouseUp(e); });
         this.canvasFree.addEventListener("mousemove", function (e) { return _this.onMouseMove(e); });
-        this.ckDrawMode.addEventListener("change", function (e) { return _this.Fwm.clearAll(); });
-        // 指導碁用イベント
+        this.ckDrawMode.addEventListener("change", function (e) { return _this.fwm.clearAll(); });
+        // 候補モード用イベント
         this.ckCandidateMode.addEventListener("change", function (e) { return _this.gcm.clearAll(); });
-        // 新規開始
+        // 新規開始用イベント
         this.btnNew.addEventListener("click", function (e) { return _this.new(e); });
         // 棋譜読み込み
-        var btnRenew = document.getElementById("btn_renew");
-        btnRenew.addEventListener("click", function (e) { return _this.renew(e); });
+        this.btnReadKifu.addEventListener("click", function (e) { return _this.readKifu(e); });
         // 待った
         var btnBack = document.getElementById("btn_back");
         btnBack.addEventListener("click", function (e) { return _this.mattta(e); });
-        // 棋譜読み込み
-        var btnKifuRead = document.getElementById("btn_bkifu_read");
-        btnKifuRead.addEventListener("click", function (e) { return _this.onClickKifuRead(e); });
     }
     Main.prototype.onMouseMove = function (e) {
         if (this.ckDrawMode.checked) {
-            this.Fwm.draw(e.offsetX, e.offsetY);
+            this.fwm.draw(e.offsetX, e.offsetY);
         }
     };
     Main.prototype.onMouseDown = function (e) {
         if (this.ckDrawMode.checked) {
-            this.Fwm.start();
+            this.fwm.start();
         }
     };
     Main.prototype.onMouseUp = function (e) {
         if (this.ckDrawMode.checked) {
-            this.Fwm.stop();
+            this.fwm.stop();
         }
-    };
-    Main.prototype.onClickKifuRead = function (e) {
-        var kifu = this.inpKifu.value;
-        this.gim.viewFromKifu(kifu);
     };
     /**
      *
@@ -88,7 +85,7 @@ var Main = /** @class */ (function () {
         spnTeban.innerHTML = this.gim.turn;
     };
     /**
-     * 再描画イベント用
+     * 新規表示
      * @param e
      */
     Main.prototype.new = function (e) {
@@ -99,7 +96,7 @@ var Main = /** @class */ (function () {
     Main.prototype.mattta = function (e) {
         this.gim.chakushBack();
     };
-    Main.prototype.renew = function (e) {
+    Main.prototype.readKifu = function (e) {
         this.gim.viewFromKifu(this.inpKifu.value);
     };
     return Main;
