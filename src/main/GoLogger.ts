@@ -26,7 +26,7 @@ export class GoLogger implements Logger {
             return;
         }
 
-        throw new Error("this element isn't the target.");
+        throw new Error("this element isn't the target　types.");
     }
 
 }

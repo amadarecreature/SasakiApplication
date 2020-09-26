@@ -21,7 +21,7 @@ var GoLogger = /** @class */ (function () {
             t.innerHTML = value;
             return;
         }
-        throw new Error("this element isn't the target.");
+        throw new Error("this element isn't the target　types.");
     };
     return GoLogger;
 }());
