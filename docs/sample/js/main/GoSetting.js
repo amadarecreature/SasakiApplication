@@ -17,7 +17,8 @@ var GoBoadInfo = /** @class */ (function () {
      * @param top
      * @param roCount
      */
-    function GoBoadInfo(roWidth, roHeight, left, top, roCount) {
+    function GoBoadInfo(roWidth, roHeight, left, top, roCount, keisenWidth) {
+        if (keisenWidth === void 0) { keisenWidth = 1; }
         this.roWidth = roWidth;
         this.roHeight = roHeight;
         this.roCount = roCount;
@@ -29,6 +30,7 @@ var GoBoadInfo = /** @class */ (function () {
         this.areaHeight = this.roHeight * (this.roCount - 1) + 2;
         this.areaLeft = left + Math.floor((this.width - this.areaWidth) / 2);
         this.areaTop = top + Math.floor((this.height - this.areaHeight) / 2);
+        this.keisenWidth = keisenWidth;
     }
     return GoBoadInfo;
 }());

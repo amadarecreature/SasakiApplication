@@ -74,7 +74,8 @@ var Main = /** @class */ (function () {
             return;
         }
         if (this.ckOnOkiishiMode.checked) {
-            this.gim.addOkiIshi(e.offsetX, e.offsetY);
+            this.gim.addHandicapStone(e.offsetX, e.offsetY);
+            this.kifuLogger.log(this.gim.kifuString);
             return;
         }
         if (this.ckCandidateMode.checked) {

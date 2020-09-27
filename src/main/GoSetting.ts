@@ -40,6 +40,8 @@ export class GoBoadInfo {
     readonly areaLeft: number;
     // 格子全体の上端位置
     readonly areaTop: number;
+    // 罫線の幅
+    readonly keisenWidth: number;
 
     /**
      * 碁盤の構成情報
@@ -49,7 +51,7 @@ export class GoBoadInfo {
      * @param top 
      * @param roCount 
      */
-    constructor(roWidth: number, roHeight: number, left: number, top: number, roCount: number) {
+    constructor(roWidth: number, roHeight: number, left: number, top: number, roCount: number, keisenWidth: number = 1) {
         this.roWidth = roWidth;
         this.roHeight = roHeight;
         this.roCount = roCount;
@@ -62,6 +64,7 @@ export class GoBoadInfo {
         this.areaHeight = this.roHeight * (this.roCount - 1) + 2;
         this.areaLeft = left + Math.floor((this.width - this.areaWidth) / 2);
         this.areaTop = top + Math.floor((this.height - this.areaHeight) / 2);
+        this.keisenWidth = keisenWidth;
     }
 }
 
