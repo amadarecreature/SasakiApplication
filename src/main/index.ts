@@ -28,7 +28,7 @@ class Main {
     readonly inpKifu: HTMLInputElement = <HTMLInputElement>document.getElementById("kifu");
 
     readonly ckDrawMode: HTMLInputElement = <HTMLInputElement>document.getElementById("ckDrawMode");
-    readonly ckOnOkiishiMode: HTMLInputElement = <HTMLInputElement>document.getElementById("ckOkiishiMode");
+    readonly ckOnHandiCapStoneMode: HTMLInputElement = <HTMLInputElement>document.getElementById("ckOkiishiMode");
     readonly ckCandidateMode: HTMLInputElement = <HTMLInputElement>document.getElementById("ckCandidateMode");
     readonly slRosu: HTMLSelectElement = <HTMLSelectElement>document.getElementById("sl_rosu");
     readonly btnNew: HTMLButtonElement = <HTMLButtonElement>document.getElementById("btn_new");
@@ -94,7 +94,7 @@ class Main {
             return;
         }
 
-        if (this.ckOnOkiishiMode.checked) {
+        if (this.ckOnHandiCapStoneMode.checked) {
             this.gim.addHandicapStone(e.offsetX, e.offsetY);
             this.kifuLogger.log(this.gim.kifuString);
             return;

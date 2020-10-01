@@ -68,17 +68,18 @@ export class GoBoadInfo {
     }
 }
 
-export enum GoishiType {
+export enum GoTebanType {
     BLACK = "B",
     WHITE = "W",
-    OKI = "O",
-    NONE = "N"
+    OKI = "AB",
+    OKI_WHITE = "AE",
+    NONE = "NONE"
 }
 export class KifuPart {
-    readonly color: GoishiType;
+    readonly color: GoTebanType;
     readonly position: PositionOnGoBoad;
     readonly isPassed: boolean;
-    constructor(color: GoishiType, roX: number, roY: number, isPassed: boolean) {
+    constructor(color: GoTebanType, roX: number, roY: number, isPassed: boolean = false) {
         this.color = color;
         this.position = new PositionOnGoBoad(roX, roY);
         this.isPassed = isPassed;

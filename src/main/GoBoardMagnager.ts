@@ -1,4 +1,4 @@
-import { GoBoadSetting,GoBoadInfo,GoishiType,KifuPart,PositionOnGoBoad,PositionXY } from "./GoSetting.js";
+import { GoBoadSetting, GoBoadInfo, GoTebanType, KifuPart, PositionOnGoBoad, PositionXY } from "./GoSetting.js";
 
 
 export class GoBoadManager {

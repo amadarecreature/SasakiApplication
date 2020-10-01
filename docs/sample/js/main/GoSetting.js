@@ -35,15 +35,17 @@ var GoBoadInfo = /** @class */ (function () {
     return GoBoadInfo;
 }());
 export { GoBoadInfo };
-export var GoishiType;
-(function (GoishiType) {
-    GoishiType["BLACK"] = "B";
-    GoishiType["WHITE"] = "W";
-    GoishiType["OKI"] = "O";
-    GoishiType["NONE"] = "N";
-})(GoishiType || (GoishiType = {}));
+export var GoTebanType;
+(function (GoTebanType) {
+    GoTebanType["BLACK"] = "B";
+    GoTebanType["WHITE"] = "W";
+    GoTebanType["OKI"] = "AB";
+    GoTebanType["OKI_WHITE"] = "AE";
+    GoTebanType["NONE"] = "NONE";
+})(GoTebanType || (GoTebanType = {}));
 var KifuPart = /** @class */ (function () {
     function KifuPart(color, roX, roY, isPassed) {
+        if (isPassed === void 0) { isPassed = false; }
         this.color = color;
         this.position = new PositionOnGoBoad(roX, roY);
         this.isPassed = isPassed;

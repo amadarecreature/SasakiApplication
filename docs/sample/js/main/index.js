@@ -22,7 +22,7 @@ var Main = /** @class */ (function () {
         this.lblLog = document.getElementById("log");
         this.inpKifu = document.getElementById("kifu");
         this.ckDrawMode = document.getElementById("ckDrawMode");
-        this.ckOnOkiishiMode = document.getElementById("ckOkiishiMode");
+        this.ckOnHandiCapStoneMode = document.getElementById("ckOkiishiMode");
         this.ckCandidateMode = document.getElementById("ckCandidateMode");
         this.slRosu = document.getElementById("sl_rosu");
         this.btnNew = document.getElementById("btn_new");
@@ -73,7 +73,7 @@ var Main = /** @class */ (function () {
             // 描画モードの場合
             return;
         }
-        if (this.ckOnOkiishiMode.checked) {
+        if (this.ckOnHandiCapStoneMode.checked) {
             this.gim.addHandicapStone(e.offsetX, e.offsetY);
             this.kifuLogger.log(this.gim.kifuString);
             return;
