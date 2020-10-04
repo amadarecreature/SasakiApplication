@@ -95,6 +95,8 @@ var Main = /** @class */ (function () {
         var rosu = parseInt(this.slRosu.options[this.slRosu.selectedIndex].value, 10);
         this.gbm = new GoBoadManager(this.canvas, this.setting, rosu);
         this.gim = new GoishiManager(this.canvasIshi, this.setting, rosu);
+        this.gcm = new GoCandidateManager(this.canvasFree, this.setting, rosu);
+        this.fwm = new FreeWriteManager(this.canvasFree, this.setting, rosu);
     };
     Main.prototype.mattta = function (e) {
         this.gim.chakushBack();

@@ -15,7 +15,7 @@ class Main {
     private gbm: GoBoadManager;
     private gim: GoishiManager;
     private gcm: GoCandidateManager;
-    readonly fwm: FreeWriteManager;
+    private fwm: FreeWriteManager;
 
     readonly setting: GoBoadSetting = new GoBoadSetting(0.9, 20, 20, 36);
 
@@ -118,6 +118,8 @@ class Main {
 
         this.gbm = new GoBoadManager(this.canvas, this.setting, rosu);
         this.gim = new GoishiManager(this.canvasIshi, this.setting, rosu);
+        this.gcm = new GoCandidateManager(this.canvasFree, this.setting, rosu);
+        this.fwm = new FreeWriteManager(this.canvasFree, this.setting, rosu);
     }
     private mattta(e: Event) {
         this.gim.chakushBack();
