@@ -41,24 +41,27 @@ var GoBoadManager = /** @class */ (function () {
         // 木目
         // drawWood(x, y, width, height, context);
         // 格子
-        this.drowKoushi(this.context, goBoadInfo.areaLeft, goBoadInfo.roCount, goBoadInfo.areaTop, goBoadInfo.roWidth, goBoadInfo.areaWidth, goBoadInfo.roHeight, goBoadInfo.areaHeight);
+        this.drowKoushi(this.context, goBoadInfo, goBoadInfo.areaLeft, goBoadInfo.roWidth, goBoadInfo.areaWidth, goBoadInfo.roHeight, goBoadInfo.areaHeight);
     };
-    GoBoadManager.prototype.drowKoushi = function (context, gx, ro, gy, dy, gwidth, dx, gheight) {
+    GoBoadManager.prototype.drowKoushi = function (context, goBoadInfo, gx, dy, gwidth, dx, gheight) {
         context.fillStyle = "black";
         var y1, lwidth;
+        var lineBaseWidth = goBoadInfo.keisenWidth;
         // 横の格子線
         var x2;
-        var y2 = gy;
+        var y2 = goBoadInfo.areaTop;
+        var gy = goBoadInfo.areaTop;
+        var ro = goBoadInfo.roCount;
         for (var col = 1; col <= ro; col++) {
             if (col == 1)
                 x2 = gx + (col - 1) * dx;
             else
                 x2 = gx + 1 + (col - 1) * dx;
             if (col == 1 || col == ro) {
-                lwidth = 2;
+                lwidth = lineBaseWidth * 2;
             }
             else {
-                lwidth = 1;
+                lwidth = lineBaseWidth;
             }
             context.beginPath();
             context.rect(x2, y2, lwidth, gheight);
@@ -66,7 +69,7 @@ var GoBoadManager = /** @class */ (function () {
             console.log("格子横:" + col, x2);
         }
         // （横の格子線）
-        var x1 = gx;
+        var x1 = goBoadInfo.areaLeft;
         for (var row = 1; row <= ro; row++) {
             if (row == 1)
                 y1 = gy + (row - 1) * dy;

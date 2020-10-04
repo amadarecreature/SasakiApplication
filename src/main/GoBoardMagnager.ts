@@ -60,17 +60,21 @@ export class GoBoadManager {
         // 木目
         // drawWood(x, y, width, height, context);
         // 格子
-        this.drowKoushi(this.context, goBoadInfo.areaLeft, goBoadInfo.roCount, goBoadInfo.areaTop, goBoadInfo.roWidth, goBoadInfo.areaWidth, goBoadInfo.roHeight, goBoadInfo.areaHeight);
+        this.drowKoushi(this.context, goBoadInfo, goBoadInfo.areaLeft, goBoadInfo.roWidth, goBoadInfo.areaWidth, goBoadInfo.roHeight, goBoadInfo.areaHeight);
 
     }
 
-    private drowKoushi(context: CanvasRenderingContext2D, gx: number, ro: number, gy: number, dy: number, gwidth: number, dx: number, gheight: number) {
+    private drowKoushi(context: CanvasRenderingContext2D, goBoadInfo: GoBoadInfo, gx: number, dy: number, gwidth: number, dx: number, gheight: number) {
         context.fillStyle = "black";
 
         let y1, lwidth;
+        const lineBaseWidth = goBoadInfo.keisenWidth;
         // 横の格子線
         let x2;
-        const y2 = gy;
+        const y2 = goBoadInfo.areaTop;
+
+        const gy = goBoadInfo.areaTop;
+        const ro = goBoadInfo.roCount;
         for (var col = 1; col <= ro; col++) {
             if (col == 1)
                 x2 = gx + (col - 1) * dx;
@@ -78,10 +82,10 @@ export class GoBoadManager {
             else
                 x2 = gx + 1 + (col - 1) * dx;
             if (col == 1 || col == ro) {
-                lwidth = 2;
+                lwidth = lineBaseWidth *2;
 
             } else {
-                lwidth = 1;
+                lwidth = lineBaseWidth;
             }
             context.beginPath();
             context.rect(x2, y2, lwidth, gheight);
@@ -90,7 +94,7 @@ export class GoBoadManager {
         }
 
         // （横の格子線）
-        const x1 = gx;
+        const x1 = goBoadInfo.areaLeft;
         for (var row = 1; row <= ro; row++) {
             if (row == 1)
                 y1 = gy + (row - 1) * dy;
