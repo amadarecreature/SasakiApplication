@@ -1,4 +1,4 @@
-import { GoBoadInfo, GoBoadSetting } from "./GoSetting.js";
+import { GoBoadInfo, GoBoadSetting } from "./GoSetting";
 import { Logger } from "./GoLogger";
 enum ChakushuType {
     BLACK_TURN = "B",

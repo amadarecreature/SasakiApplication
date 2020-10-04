@@ -1,4 +1,4 @@
-import { GoBoadSetting, GoBoadInfo, GoMoveType, KifuPart, PositionOnGoBoad, PositionXY } from "./GoSetting.js";
+import { GoBoadSetting, GoBoadInfo } from "./GoSetting";
 
 
 export class GoBoadManager {
@@ -64,7 +64,7 @@ export class GoBoadManager {
 
     }
 
-    private drowKoushi(context: CanvasRenderingContext2D, goBoadInfo: GoBoadInfo, gx: number, dy: number, gwidth: number, dx: number, gheight: number) {
+    public drowKoushi(context: CanvasRenderingContext2D, goBoadInfo: GoBoadInfo, gx: number, dy: number, gwidth: number, dx: number, gheight: number) {
         context.fillStyle = "black";
 
         let y1, lwidth;

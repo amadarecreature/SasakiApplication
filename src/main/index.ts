@@ -1,11 +1,11 @@
-import { GoBoadManager } from "./GoBoardMagnager.js";
-import { FreeWriteManager } from "./FreeWriteManager.js";
-import { GoishiManager } from "./GoIshiManager.js";
-import { GoCandidateManager } from "./GoCandidateManager.js";
+import { GoBoadManager } from "./GoBoardMagnager";
+import { FreeWriteManager } from "./FreeWriteManager";
+import { GoishiManager } from "./GoIshiManager";
+import { GoCandidateManager } from "./GoCandidateManager";
 
 
-import { GoBoadSetting } from "./GoSetting.js";
-import { GoLogger } from "./GoLogger.js"
+import { GoBoadSetting } from "./GoSetting";
+import { GoLogger } from "./GoLogger"
 /**
  * (Required feature)
  * ・View sample of two-eyed shape

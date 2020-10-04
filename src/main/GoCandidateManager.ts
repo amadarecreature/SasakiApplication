@@ -1,4 +1,4 @@
-import { GoBoadSetting, GoBoadInfo, GoMoveType, KifuPart, PositionOnGoBoad, PositionXY } from "./GoSetting.js";
+import { GoBoadSetting, GoBoadInfo, GoMoveType, KifuPart, PositionOnGoBoad, PositionXY } from "./GoSetting";
 import { Logger } from "./GoLogger";
 
 /**

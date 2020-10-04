@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "lint": "tsc --noEmit",
-    "test": "jest --runInBand"
+    "test": "jest --runInBand",
+    "build": "webpack",
+    "watch": "wabpack /w"
   },
   "repository": {
     "type": "git",
@@ -23,7 +25,12 @@
   },
   "devDependencies": {
     "@types/jest": "^26.0.14",
+    "@types/jsdom": "^16.2.4",
     "jest": "^26.4.2",
-    "ts-jest": "^26.4.0"
+    "jsdom": "^16.4.0",
+    "ts-jest": "^26.4.0",
+    "ts-loader": "^8.0.4",
+    "webpack": "^4.44.2",
+    "webpack-cli": "^3.3.12"
   }
 }
