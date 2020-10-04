@@ -35,14 +35,14 @@ var GoBoadInfo = /** @class */ (function () {
     return GoBoadInfo;
 }());
 export { GoBoadInfo };
-export var GoTebanType;
-(function (GoTebanType) {
-    GoTebanType["BLACK"] = "B";
-    GoTebanType["WHITE"] = "W";
-    GoTebanType["OKI"] = "AB";
-    GoTebanType["OKI_WHITE"] = "AE";
-    GoTebanType["NONE"] = "NONE";
-})(GoTebanType || (GoTebanType = {}));
+export var GoMoveType;
+(function (GoMoveType) {
+    GoMoveType["BLACK"] = "B";
+    GoMoveType["WHITE"] = "W";
+    GoMoveType["OKI"] = "AB";
+    GoMoveType["OKI_WHITE"] = "AE";
+    GoMoveType["NONE"] = "NONE";
+})(GoMoveType || (GoMoveType = {}));
 var KifuPart = /** @class */ (function () {
     function KifuPart(color, roX, roY, isPassed) {
         if (isPassed === void 0) { isPassed = false; }

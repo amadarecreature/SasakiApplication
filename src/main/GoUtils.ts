@@ -1,21 +1,50 @@
-import { GoTebanType, KifuPart } from "./GoSetting";
+import { GoMoveType, KifuPart } from "./GoSetting";
+enum PositionWord {
+    a = 1, b = 2, c = 3,
+    d = 4, e = 5, f = 6,
+    g = 7, h = 8, i = 9,
+    j = 10, k = 11, l = 12,
+    m = 13, n = 14, o = 15,
+    p = 16, q = 17, r = 18,
+    s = 19, t = 20, u = 21,
+    v = 22, w = 23, x = 24,
+    y = 25, z = 26,
+
+}
+enum KifuParts {
+    POS_START = "[",
+    POS_END = "]"
+}
 
 export class KifuUtil {
+
+    static getPositionNo(alphabet: string): number {
+        const list = Object.keys(PositionWord);
+        for (const key in list) {
+            if (PositionWord[key] == alphabet) {
+                const num = Number(key);
+                return num;
+            }
+            // console.log("key:" + key);
+        }
+        return 0;
+    }
+
     /**
      * 位置をアルファベットに変換する処理が後々必要
      */
 
-    static readonly part01 = "[";
-    static readonly part02 = "]";
     static readonly part03 = ",";
 
     static convertFromString(inputKifu: string): KifuPart[] {
 
+        const part01 = KifuParts.POS_START;
+        const part02 = KifuParts.POS_END;
 
 
         // ')'で区切って1手単位にする。
-        const valueList = inputKifu.split(this.part02);
-        console.log(inputKifu);
+        const valueList = inputKifu.split(part02);
+        // console.log(inputKifu);
         const result = new Array();
 
         // 1手単位に処理 ex) B(10,9
@@ -23,16 +52,16 @@ export class KifuUtil {
 
             const one_te = valueList[index];
             if (one_te == "") {
-                // 最後の「)」の後に空白要素が追加される為、1件不要な要素が存在することになる。
+                // 最後のかっこの後に空白要素が追加される為、1件不要な要素が存在することになる。
                 continue;
             }
 
             // 「(」の有無チェック
-            if (one_te.indexOf(this.part01) == -1) {
-                throw new Error("value:" + one_te + ",reason:'" + this.part01 + "' is nothing.");
+            if (one_te.indexOf(part01) == -1) {
+                throw new Error("value:" + one_te + ",reason:'" + part01 + "' is nothing.");
             }
 
-            const one_te_parts = one_te.split(this.part01);
+            const one_te_parts = one_te.split(part01);
             const color: string = one_te_parts[0];
             const positionText: string = one_te_parts[1];
 
@@ -40,26 +69,28 @@ export class KifuUtil {
             // console.log("positionText:" + positionText);
 
             // カンマチェック
-            if (positionText.indexOf(",") == -1) {
-                throw new Error("value:" + one_te + ",reason:There is no '" + this.part03 + "'.");
+            // if (positionText.indexOf(",") == -1) {
+            //     throw new Error("value:" + one_te + ",reason:There is no '" + this.part03 + "'.");
+            // }
+            if (positionText.length != 2) {
+                throw new Error("value:" + one_te + ",reason:There is not 2 position values.");
             }
+            // const positions = positionText.split(this.part03);
 
-            const positions = positionText.split(this.part03);
-
-            const x: string = positions[0];
-            const y: string = positions[1];
+            const x: string = positionText.slice(0,1);
+            const y: string = positionText.slice(1,2);
 
             // console.log("xy:" + x + y);
 
             // 色チェック
             if (color == "W") {
-                result.push(new KifuPart(GoTebanType.WHITE, Number(x), Number(y)));
-                console.log("convertFromString:" + GoTebanType.WHITE);
+                result.push(new KifuPart(GoMoveType.WHITE, this.getPositionNo(x), this.getPositionNo(y)));
+                // console.log("convertFromString:" + GoTebanType.WHITE);
                 continue;
             }
             if (color == "B") {
-                result.push(new KifuPart(GoTebanType.BLACK, Number(x), Number(y)));
-                console.log("convertFromString:" + GoTebanType.BLACK);
+                result.push(new KifuPart(GoMoveType.BLACK, this.getPositionNo(x), this.getPositionNo(y)));
+                // console.log("convertFromString:" + GoTebanType.BLACK);
                 continue;
             }
             // 色がBWのどちらでもなければ
@@ -73,6 +104,9 @@ export class KifuUtil {
      * @param kifuList 
      */
     static convertToString(kifuList: KifuPart[]): string {
+        const part01 = KifuParts.POS_START;
+        const part02 = KifuParts.POS_END;
+
         var result = "";
         for (let index = 0; index < kifuList.length; index++) {
             const kifu = kifuList[index];
@@ -86,17 +120,17 @@ export class KifuUtil {
                 posX = "t";
                 posY = "t";
             } else {
-                posX = kifu.position.roX.toString()
-                posY = kifu.position.roY.toString();
+                posX = PositionWord[kifu.position.roX];
+                posY = PositionWord[kifu.position.roY];
             }
 
             // 結果を更新
             result += kifu.color;
-            result += this.part01;
+            result += part01;
             result += posX;
-            result += this.part03;
+            // result += this.part03;
             result += posY;
-            result += this.part02;
+            result += part02;
 
         }
         return result;

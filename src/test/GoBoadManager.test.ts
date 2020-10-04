@@ -1,9 +1,8 @@
 import { GoishiManager } from "../main/GoIshiManager";
 
 
-// test('basic', () => {
-//   expect(1).toBe(1);
-// });
-
-
-
+describe('Name of the group', () => {
+    it('should ', () => {
+        
+    });
+});
