@@ -51,7 +51,7 @@ export class GoBoadManager {
         canvas.width = goBoadInfo.width + 20;
         canvas.height = goBoadInfo.height + 20;
 
-        // console.log("canvas:", canvas.width, canvas.height);
+        console.log("canvas(inner):", canvas.width, canvas.height);
 
         // 碁盤の影
         this.drowShadow(this.context, goBoadInfo.left, goBoadInfo.top, goBoadInfo.width, shadow, goBoadInfo.height);
@@ -64,52 +64,56 @@ export class GoBoadManager {
 
     }
 
-    public drowKoushi(context: CanvasRenderingContext2D, goBoadInfo: GoBoadInfo, gx: number, dy: number, gwidth: number, dx: number, gheight: number) {
+    private drowKoushi(context: CanvasRenderingContext2D, goBoadInfo: GoBoadInfo, koushiLeft: number, cellHeight: number, gwidth: number, cellWidth: number, gheight: number) {
         context.fillStyle = "black";
 
-        let y1, lwidth;
+        const koushiTop = goBoadInfo.areaTop;
+        const ro = goBoadInfo.roCount;
+
+        let lineWidth;
+        // 罫線の太さ(端以外)
         const lineBaseWidth = goBoadInfo.keisenWidth;
         // 横の格子線
-        let x2;
-        const y2 = goBoadInfo.areaTop;
+        let startX1;
+        const startY2 = goBoadInfo.areaTop;
 
-        const gy = goBoadInfo.areaTop;
-        const ro = goBoadInfo.roCount;
         for (var col = 1; col <= ro; col++) {
-            if (col == 1)
-                x2 = gx + (col - 1) * dx;
-
-            else
-                x2 = gx + 1 + (col - 1) * dx;
-            if (col == 1 || col == ro) {
-                lwidth = lineBaseWidth *2;
+            if (col == 1) {
+                startX1 = koushiLeft + (col - 1) * cellWidth;
 
             } else {
-                lwidth = lineBaseWidth;
+                startX1 = koushiLeft + lineBaseWidth + (col - 1) * cellWidth;
+            }
+
+            if (col == 1 || col == ro) {
+                lineWidth = lineBaseWidth * 2;
+            } else {
+                lineWidth = lineBaseWidth;
             }
             context.beginPath();
-            context.rect(x2, y2, lwidth, gheight);
+            context.rect(startX1, startY2, lineWidth, gheight);
             context.fill();
-            console.log("格子横:" + col, x2);
+            // console.log("格子横:" + col, x2);
         }
-
         // （横の格子線）
+        let y1, lineWidth2;
         const x1 = goBoadInfo.areaLeft;
         for (var row = 1; row <= ro; row++) {
             if (row == 1)
-                y1 = gy + (row - 1) * dy;
+                y1 = koushiTop + (row - 1) * cellHeight;
             else
-                y1 = gy + 1 + (row - 1) * dy;
-            if (row == 1 || row == ro)
-                lwidth = 2;
-
-            else
-                lwidth = 1;
+                y1 = koushiTop + lineBaseWidth + (row - 1) * cellHeight;
+            if (row == 1 || row == ro) {
+                lineWidth2 = lineBaseWidth * 2;
+            }
+            else {
+                lineWidth2 = lineBaseWidth;
+            }
             context.beginPath();
 
-            context.rect(x1, y1, gwidth, lwidth);
+            context.rect(x1, y1, gwidth, lineWidth2);
             context.fill();
-            console.log("格子縦:" + row, y1);
+            // console.log("格子縦:" + row, y1);
         }
 
         // 星の点

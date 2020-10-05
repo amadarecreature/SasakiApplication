@@ -3,7 +3,7 @@ module.exports = {
         "<rootDir>/src"
     ],
     "testMatch": [
-        "**/test/**/*.+(ts|tsx|js)",
+        // "**/test/**/*\.test\.(ts|tsx|js)",
         "**/?(*.)+(spec|test).+(ts|tsx|js)",
         "!**/node_modules/**"
     ],

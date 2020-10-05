@@ -57,3 +57,11 @@ mail to: xxxx@mail.com
 ## License
 
 This software is released under the MIT License, see LICENSE.txt.
+
+## memo
+
+1.Jsdom without canvas dependencies will behave like '\<div\>'.
+
+<https://www.npmjs.com/package/canvas>
+
+<https://github.com/jsdom/jsdom>
