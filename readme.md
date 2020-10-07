@@ -35,16 +35,22 @@ docker run --name InstructionGo -v /{furllPath}InstructionGo\docs\sample:/usr/sh
 2. B
 3. C
 
+## Sample
+
+<https://amadarecreature.github.io/InstructionGo/sample/>
+
 ## Installation
 
 $ git clone <https://github.com/amadarecreature/InstructionGo.git>
 $ cd InstructionGo
 
-## Test
+## Deployment
+
+### Test
 
 1. execute test
 
-## Deploy
+### Deploy
 
 1. deploy
 2. deploy

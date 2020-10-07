@@ -1,2 +1,2 @@
-[refactoring][+1][bug][setting]
+[refactoring][+1][bug][setting][readme]
 
