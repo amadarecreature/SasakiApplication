@@ -65,3 +65,15 @@ This software is released under the MIT License, see LICENSE.txt.
 <https://www.npmjs.com/package/canvas>
 
 <https://github.com/jsdom/jsdom>
+
+## canvasのテスト
+
+ -imgeデータの構造
+    1ピクセルにつき、RDGAの4つのデータが存在する。
+    RGBAはそれぞれ0～255の8bitデータ
+    つまり、1ピクセルで配列4個を使用する。
+    ピクセル(x,y)の開始位置index(Rの位置)
+    index=(4*y)*幅+(4*x)=4*(y*幅+x)
+    G=index+1
+    B=index+2
+    A=index+3
