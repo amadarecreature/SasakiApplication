@@ -3,43 +3,38 @@
 <meta charset="UTF-8" />
 
 <head>
-    <!-- <script type="module" src="js/main/GoBoardMagnager.js"></script>
-    <script type="module" src="js/main/GoIshiManager.js"></script>
-    <script type="module" src="js/main/GoCandidateManager.js"></script>
-    <script type="module" src="js/main/GoSetting.js"></script>
-    <script type="module" src="js/main/GoLogger.js"></script>
-    <script type="module" src="js/main/index.js"></script> -->
-
-    <script  src="js/index.bundle.js"></script>
+    <script src="js/index.bundle.js"></script>
     <link rel="stylesheet" type="text/css" href="css/index.css" />
 </head>
 
 <body>
     <div class="main_container">
-        <div class="goban_controller_container">
-            <select id="sl_rosu">
-                <option value="9">9</option>
-                <option value="13">13</option>
-                <option value="19">19</option>
-            </select>
-            <button id="btn_new" class="btn_base">新規</button>
-            <input type="checkbox" id="ckOkiishiMode" name="onOkiishiMode" /><label for="ckOkiishiMode">置き石モードON</label>
-            <button id="btn_back" class="btn_back">待った</button>
-        </div>
-        <div class="goban_controller_container">
-            <input type="checkbox" id="ckDrawMode" name="onDrawMode" /><label for="ckDrawMode">描画モード</label>
-            <input type="checkbox" id="ckCandidateMode" name="onDrawMode" /><label for="ckCandidateMode">候補モード</label>
-        </div>
-        <div class="data_continer">
-            <button id="btn_read_kifu" class="btn_base">棋譜読み込み</button>
-            <input id="kifu" type="text" value="" />
-            <label id="log">ログ</label>
-        </div>
         <div class="play_field_container">
+            <div class="goban_controller_container">
+                <select id="sl_rosu">
+                    <option value="9">9</option>
+                    <option value="13">13</option>
+                    <option value="19">19</option>
+                </select>
+                <button id="btn_new" class="btn_base">新規</button>
+                <input type="checkbox" id="ckOkiishiMode" name="onOkiishiMode" /><label
+                    for="ckOkiishiMode">置き石モードON</label>
+                <button id="btn_back" class="btn_back">待った</button>
+            </div>
+            <div class="goban_controller_container">
+                <input type="checkbox" id="ckDrawMode" name="onDrawMode" /><label for="ckDrawMode">描画モード</label>
+                <input type="checkbox" id="ckCandidateMode" name="onDrawMode" /><label
+                    for="ckCandidateMode">候補モード</label>
+            </div>
+            <div class="data_continer">
+                <button id="btn_read_kifu" class="btn_base">棋譜読み込み</button>
+                <input id="kifu" type="text" value="" />
+                <label id="log">ログ</label>
+            </div>
             <div class="goban_container">
                 <div class="goban_area">
-                    <canvas id="main_canvas" style="z-index: 0;"></canvas>
-                    <canvas id="sub_canvas" style="z-index: 10;"></canvas>
+                    <canvas id="goboad_canvas" style="z-index: 0;"></canvas>
+                    <canvas id="goishi_canvas" style="z-index: 10;"></canvas>
                     <canvas id="candidate_canvas" style="z-index: 60;"></canvas>
                     <canvas id="free_canvas" style="z-index: 100;"></canvas>
                 </div>
@@ -54,8 +49,14 @@
                 </div>
             </div>
         </div>
-
-    </div>
+        <div class="sample_field_container">
+            <div class="goban_container">
+                <div class="goban_area">
+                    <canvas id="sample_goboad_canvas" style="z-index: 0;"></canvas>
+                    <canvas id="sample_goishi_canvas" style="z-index: 10;"></canvas>
+                </div>
+            </div>
+        </div>
 </body>
 
 </html>

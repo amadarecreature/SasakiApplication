@@ -17,12 +17,19 @@ class Main {
     private gcm: GoCandidateManager;
     private fwm: FreeWriteManager;
 
+    private sampleGbm: GoBoadManager;
+    private sampleGim: GoishiManager;
+
     readonly setting: GoBoadSetting = new GoBoadSetting(0.9, 20, 20, 36);
 
-    readonly canvas: HTMLCanvasElement = <HTMLCanvasElement>document.getElementById("main_canvas");
-    readonly canvasIshi: HTMLCanvasElement = <HTMLCanvasElement>document.getElementById("sub_canvas");
+    readonly canvasGoboad: HTMLCanvasElement = <HTMLCanvasElement>document.getElementById("goboad_canvas");
+    readonly canvasIshi: HTMLCanvasElement = <HTMLCanvasElement>document.getElementById("goishi_canvas");
     readonly canvasFree: HTMLCanvasElement = <HTMLCanvasElement>document.getElementById("free_canvas");
     readonly canvasCandidate: HTMLCanvasElement = <HTMLCanvasElement>document.getElementById("candidate_canvas");
+
+    readonly sampleCanvasGoboad: HTMLCanvasElement = <HTMLCanvasElement>document.getElementById("sample_goboad_canvas");
+    readonly sampleCanvasGoishi: HTMLCanvasElement = <HTMLCanvasElement>document.getElementById("sample_goishi_canvas");
+
 
     readonly lblLog: HTMLLabelElement = <HTMLLabelElement>document.getElementById("log");
     readonly inpKifu: HTMLInputElement = <HTMLInputElement>document.getElementById("kifu");
@@ -40,10 +47,15 @@ class Main {
      * メイン処理をここに書く
      */
     constructor() {
-        this.gbm = new GoBoadManager(this.canvas, this.setting, 9);
+        // 本体描画
+        this.gbm = new GoBoadManager(this.canvasGoboad, this.setting, 9);
         this.gim = new GoishiManager(this.canvasIshi, this.setting, 9);
         this.gcm = new GoCandidateManager(this.canvasCandidate, this.setting, 9);
         this.fwm = new FreeWriteManager(this.canvasFree, this.setting, 9);
+
+        // サンプル描画
+        this.sampleGbm = new GoBoadManager(this.sampleCanvasGoboad, this.setting, 9);
+        this.sampleGim = new GoishiManager(this.sampleCanvasGoishi, this.setting, 9);
 
         // クリックイベント
         this.canvasFree.addEventListener("click", (e: MouseEvent) => this.onMouseClick(e));
@@ -116,7 +128,7 @@ class Main {
     private new(e: Event) {
         const rosu: number = parseInt(this.slRosu.options[this.slRosu.selectedIndex].value, 10);
 
-        this.gbm = new GoBoadManager(this.canvas, this.setting, rosu);
+        this.gbm = new GoBoadManager(this.canvasGoboad, this.setting, rosu);
         this.gim = new GoishiManager(this.canvasIshi, this.setting, rosu);
         this.gcm = new GoCandidateManager(this.canvasFree, this.setting, rosu);
         this.fwm = new FreeWriteManager(this.canvasFree, this.setting, rosu);
