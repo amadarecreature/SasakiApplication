@@ -56,6 +56,7 @@ class Main {
         // サンプル描画
         this.sampleGbm = new GoBoadManager(this.sampleCanvasGoboad, this.setting, 9);
         this.sampleGim = new GoishiManager(this.sampleCanvasGoishi, this.setting, 9);
+        this.sampleGim.roadFromKifu("B[ab]B[bb]B[cb]B[db]B[da]B[ba]W[bd]W[ad]W[be]W[bf]W[af]W[bg]W[bh]W[ah]B[gb]B[ga]B[ha]B[ib]B[hc]B[ic]");
 
         // クリックイベント
         this.canvasFree.addEventListener("click", (e: MouseEvent) => this.onMouseClick(e));
@@ -137,7 +138,7 @@ class Main {
         this.gim.chakushBack();
     }
     private readKifu(e: Event) {
-        this.gim.viewFromKifu(this.inpKifu.value);
+        this.gim.roadFromKifu(this.inpKifu.value);
     }
 }
 // Mainクラスを実行する。

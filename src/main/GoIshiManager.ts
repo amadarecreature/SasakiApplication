@@ -1,4 +1,5 @@
-import { GoBoadInfo, GoBoadSetting,KifuPart,GoMoveType} from "./GoSetting";
+import { GoBoadInfo, GoBoadSetting, KifuPart, GoMoveType } from "./GoSetting";
+import { KifuController } from "./KifuController";
 
 enum GoishiColor {
     BLACK = "black",
@@ -117,10 +118,13 @@ export class GoishiManager {
 
 
 
-    public viewFromKifu(kifuString: string) {
+    public roadFromKifu(kifuString: string) {
 
-        const kifuList = KifuUtil.convertFromString(kifuString);
+        const kifuList = KifuController.convertFromString(kifuString);
+        console.log(kifuString);
 
+
+        // ポジションの初期化
         const positions: GoMoveType[][] = new Array();
         for (var i = 0; i < this.roCount; i++) {
             positions[i] = new Array();
@@ -129,11 +133,14 @@ export class GoishiManager {
             }
         }
         for (let index = 0; index < kifuList.length; index++) {
-            const element = this.kifu[index];
-            const x = element.position.roX;
-            const y = element.position.roY;
+
+            const element = kifuList[index];
+            const x = element.position.roX-1;
+            const y = element.position.roY-1;
+            console.log("xxxxxxxx:" + element.color + ":" + x + ":" + y);
             positions[x][y] = element.color;
         }
+        console.log("*****************:" + positions);
         this.viewFromPosition(positions);
 
     }
@@ -247,11 +254,12 @@ export class GoishiManager {
     }
 
     get kifuString() {
-        var tmp = "";
-        this.kifu.forEach(kifu => {
-            tmp += kifu.color + "(" + kifu.position.roX + ":" + kifu.position.roY + ")";
-        });
-        return tmp;
+        return KifuController.convertToString(this.kifu);
+        // var tmp = "";
+        // this.kifu.forEach(kifu => {
+        //     tmp += kifu.color + "(" + kifu.position.roX + ":" + kifu.position.roY + ")";
+        // });
+        // return tmp;
 
     }
     /**

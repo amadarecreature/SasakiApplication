@@ -1,4 +1,4 @@
-import { GoMoveType, PositionOnGoBoad,KifuPart } from "./GoSetting";
+import { GoMoveType, PositionOnGoBoad, KifuPart } from "./GoSetting";
 
 enum KifuBlockComponent {
     POS_START = "[",
@@ -34,14 +34,10 @@ export class KifuController {
     /**
      * 位置をアルファベットに変換する処理が後々必要
      */
-
-    static readonly part03 = ",";
-
     static convertFromString(inputKifu: string): KifuPart[] {
 
         const part01 = KifuBlockComponent.POS_START;
         const part02 = KifuBlockComponent.POS_END;
-
 
         // ')'で区切って1手単位にする。
         const valueList = inputKifu.split(part02);
@@ -78,8 +74,8 @@ export class KifuController {
             }
             // const positions = positionText.split(this.part03);
 
-            const x: string = positionText.slice(0, 1);
-            const y: string = positionText.slice(1, 2);
+            const x: string = positionText.slice(0, 1).toLowerCase();
+            const y: string = positionText.slice(1, 2).toLowerCase();
 
             // console.log("xy:" + x + y);
 
@@ -121,8 +117,8 @@ export class KifuController {
                 posX = "t";
                 posY = "t";
             } else {
-                posX = PositionWord[kifu.position.roX];
-                posY = PositionWord[kifu.position.roY];
+                posX = PositionWord[kifu.position.roX + 1];
+                posY = PositionWord[kifu.position.roY + 1];
             }
 
             // 結果を更新
