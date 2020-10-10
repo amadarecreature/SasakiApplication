@@ -8,8 +8,11 @@ This application is written by Typescript.
 
 ## Features
 
-- sample function
-- sample UI
+### implemented
+
+### not yet
+
+- view sample and enable to change this cases with select box
 
 ## Requirement
 

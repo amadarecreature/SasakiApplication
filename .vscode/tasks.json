@@ -7,6 +7,14 @@
             "label": "run1",
             "type": "shell",
             "command": "docker run --name some-nginx -d -p 8080:80 some-content-nginx"
+        },
+        {
+            "type": "npm",
+            "script": "watch",
+            "group": "build",
+            "problemMatcher": [],
+            "label": "npm: watch",
+            "detail": "wabpack --watch"
         }
     ]
 }

@@ -1,26 +1,11 @@
-import { GoBoadInfo, GoBoadSetting } from "./GoSetting";
-import { Logger } from "./GoLogger";
-enum ChakushuType {
-    BLACK_TURN = "B",
-    WHITE_TURN = "W",
-    OKI = "O",
-    NONE = "N"
-}
+import { GoBoadInfo, GoBoadSetting,KifuPart,GoMoveType} from "./GoSetting";
+
 enum GoishiColor {
     BLACK = "black",
     WHITE = "white",
     NONE = "NONE"
 }
-class KifuPart {
-    readonly color: ChakushuType;
-    readonly position: PositionOnGoBoad;
-    readonly isPassed: boolean;
-    constructor(color: ChakushuType, roX: number, roY: number, isPassed: boolean) {
-        this.color = color;
-        this.position = new PositionOnGoBoad(roX, roY);
-        this.isPassed = isPassed;
-    }
-}
+
 class PointerPosition {
     readonly x: number;
     readonly y: number;
@@ -52,7 +37,7 @@ class PositionOnGoBoad {
 export class GoishiManager {
     readonly kifu: KifuPart[];
 
-    readonly realtimePosition: ChakushuType[][];
+    readonly realtimePosition: GoMoveType[][];
 
     /**
      * このクラスが扱うカンバスのコンテキスト
@@ -66,9 +51,9 @@ export class GoishiManager {
 
     private canvas!: HTMLCanvasElement;
 
-    private _turn: ChakushuType;
+    private _turn: GoMoveType;
 
-    public get turn(): ChakushuType {
+    public get turn(): GoMoveType {
         return this._turn;
     }
 
@@ -94,7 +79,7 @@ export class GoishiManager {
 
         this.roWidth = goBoadSetting.roHW;
         this.roHeight = goBoadSetting.roHW;
-        this._turn = ChakushuType.BLACK_TURN;
+        this._turn = GoMoveType.BLACK;
 
         this.roCount = roCount;
 
@@ -119,7 +104,7 @@ export class GoishiManager {
         for (var i = 0; i < roCount; i++) {
             this.realtimePosition[i] = new Array();  // （2）
             for (var j = 0; j < roCount; j++) {
-                this.realtimePosition[i][j] = ChakushuType.NONE;  // （3）
+                this.realtimePosition[i][j] = GoMoveType.NONE;  // （3）
             }
         }
 
@@ -136,11 +121,11 @@ export class GoishiManager {
 
         const kifuList = KifuUtil.convertFromString(kifuString);
 
-        const positions: ChakushuType[][] = new Array();
+        const positions: GoMoveType[][] = new Array();
         for (var i = 0; i < this.roCount; i++) {
             positions[i] = new Array();
             for (var j = 0; j < this.roCount; j++) {
-                positions[i][j] = ChakushuType.NONE;
+                positions[i][j] = GoMoveType.NONE;
             }
         }
         for (let index = 0; index < kifuList.length; index++) {
@@ -157,7 +142,7 @@ export class GoishiManager {
     /**
      * 棋譜の内容をそのまま表示する。
      */
-    public viewFromPosition(realtimePosition: ChakushuType[][]) {
+    public viewFromPosition(realtimePosition: GoMoveType[][]) {
 
         this.clearAll();
         for (let x = 0; x < realtimePosition.length; x++) {
@@ -165,7 +150,7 @@ export class GoishiManager {
             for (let y = 0; y < col.length; y++) {
                 const color = realtimePosition[x][y];
                 const kifuPart = new KifuPart(color, x, y, false);
-                if (kifuPart.color == ChakushuType.NONE) {
+                if (kifuPart.color == GoMoveType.NONE) {
                     // 何もしない
                 } else {
                     this.addGoishi(kifuPart);
@@ -236,7 +221,7 @@ export class GoishiManager {
     private isDuplicatePosition(mouseX: number, mouseY: number, goBoadInfo: GoBoadInfo) {
         const positionOnGoban = this.calcPositionOnGoban(new PointerPosition(mouseX, mouseY), goBoadInfo)
 
-        if (this.realtimePosition[positionOnGoban.roX][positionOnGoban.roY] != ChakushuType.NONE) {
+        if (this.realtimePosition[positionOnGoban.roX][positionOnGoban.roY] != GoMoveType.NONE) {
             console.log("既に石がある。")
             return true;
         }
@@ -253,10 +238,10 @@ export class GoishiManager {
         const positionOnBoad = this.drawGoIshiByPosition(new PointerPosition(mouseX, mouseY), GoishiColor.BLACK);
 
         // 棋譜の設定
-        this.kifu.push(new KifuPart(ChakushuType.BLACK_TURN, positionOnBoad.roX, positionOnBoad.roY, false));
+        this.kifu.push(new KifuPart(GoMoveType.BLACK, positionOnBoad.roX, positionOnBoad.roY, false));
 
         // 次を白番にする
-        this._turn = ChakushuType.WHITE_TURN;
+        this._turn = GoMoveType.WHITE;
         this.now += 1;
 
     }
@@ -316,25 +301,25 @@ export class GoishiManager {
         // console.info("circle=" + circleCenterPosition.x + ":" + circleCenterPosition.y);
         // console.info("positionOnGoBoad=" + positionOnGoBoad.roX + ":" + positionOnGoBoad.roY);
 
-        if (this.realtimePosition[positionOnGoBoad.roX][positionOnGoBoad.roY] != ChakushuType.NONE) {
+        if (this.realtimePosition[positionOnGoBoad.roX][positionOnGoBoad.roY] != GoMoveType.NONE) {
             console.log("既に石がある。")
             this.clearGoishi(circleCenterPosition.x - (this.roWidth / 2), circleCenterPosition.y - (this.roHeight / 2), this.context);
-            this.realtimePosition[positionOnGoBoad.roX][positionOnGoBoad.roY] = ChakushuType.NONE;
+            this.realtimePosition[positionOnGoBoad.roX][positionOnGoBoad.roY] = GoMoveType.NONE;
             return;
         }
 
         var tmp = this.drawGoishi(nowTurn, circleCenterPosition, positionOnGoBoad);
 
         // ターンを入れ替える
-        this._turn = (nowTurn == ChakushuType.BLACK_TURN) ? ChakushuType.WHITE_TURN : ChakushuType.BLACK_TURN;
+        this._turn = (nowTurn == GoMoveType.BLACK) ? GoMoveType.WHITE : GoMoveType.BLACK;
         this.now += 1;
 
 
         // auClick.play();
         // turn = 3 - turn;
     }
-    private drawGoishi(nowTurn: ChakushuType, circleCenterPosition: PointerPosition, positionOnGoban: PositionOnGoBoad) {
-        const fillstyle = (nowTurn == ChakushuType.BLACK_TURN) ? "black" : "white";
+    private drawGoishi(nowTurn: GoMoveType, circleCenterPosition: PointerPosition, positionOnGoban: PositionOnGoBoad) {
+        const fillstyle = (nowTurn == GoMoveType.BLACK) ? "black" : "white";
         const radius = this._goBoadInfo.roHeight * 0.475; // 半径
         this.drawFillCircle(circleCenterPosition.x, circleCenterPosition.y, radius, this.context, fillstyle);
 
@@ -431,14 +416,14 @@ class KifuUtil {
 
 }
 class GoishiUtil {
-    static convertColor(chakushu: ChakushuType): GoishiColor {
-        if (chakushu == ChakushuType.BLACK_TURN) {
+    static convertColor(chakushu: GoMoveType): GoishiColor {
+        if (chakushu == GoMoveType.BLACK) {
             return GoishiColor.BLACK;
         }
-        if (chakushu == ChakushuType.WHITE_TURN) {
+        if (chakushu == GoMoveType.WHITE) {
             return GoishiColor.WHITE;
         }
-        if (chakushu == ChakushuType.OKI) {
+        if (chakushu == GoMoveType.OKI) {
             return GoishiColor.BLACK;
         }
         return GoishiColor.NONE;

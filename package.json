@@ -7,7 +7,8 @@
     "lint": "tsc --noEmit",
     "test": "jest --runInBand",
     "build": "webpack",
-    "watch": "wabpack --w"
+    "watch": "wabpack --watch",
+    "sample":"webpack "
   },
   "repository": {
     "type": "git",
