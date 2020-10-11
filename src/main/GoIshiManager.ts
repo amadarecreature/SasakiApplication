@@ -255,24 +255,19 @@ export class GoishiManager {
 
     get kifuString() {
         return KifuController.convertToString(this.kifu);
-        // var tmp = "";
-        // this.kifu.forEach(kifu => {
-        //     tmp += kifu.color + "(" + kifu.position.roX + ":" + kifu.position.roY + ")";
-        // });
-        // return tmp;
-
     }
     /**
      * 待った
      */
     public chakushBack() {
-        // const now = this.kifu.length - 1;
         const targetNo = this.now;
         const targetChakushu = this.kifu[targetNo];
+        this.kifu.pop();
         // 消す対象を次の手番として設定する。
         this._turn = targetChakushu.color;
         this.now = targetNo - 1;
         this.clearGoishiByRo(targetChakushu.position);
+
     }
     private clearGoishiByRo(positionOnGoban: PositionOnGoBoad) {
         // 碁石の中心位置を計算する。
