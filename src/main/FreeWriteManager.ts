@@ -44,11 +44,11 @@ export class FreeWriteManager {
         this.initCanvas(this.canvas, this.goBoadInfo);
     }
     /**
- * 碁盤を描画します。
- * @param shadow 影の長さ（高さ/2）
- * @param context 描画先のコンテキストを指定します。
- * @since 0.1
- */
+     * 碁盤を描画します。
+     * @param shadow 影の長さ（高さ/2）
+     * @param context 描画先のコンテキストを指定します。
+     * @since 0.1
+     */
     private initCanvas(canvas: HTMLCanvasElement, goBoadInfo: GoBoadInfo) {
 
         // サイズ変更(サイズ変更すると描画内容が消えるので先に変更)
@@ -92,15 +92,14 @@ export class FreeWriteManager {
             const left = this.goBoadInfo.left;
             this.context.beginPath();
 
-            const distanceX = (mouseX - this.lastPointX) / 5;
-            const distanceY = (mouseY - this.lastPointY) / 5;
-            this.context.arc(mouseX - (distanceX * 4), mouseY - (distanceY * 4), 2, 0, 2 * Math.PI);
-            this.context.arc(mouseX - (distanceX * 3), mouseY - (distanceY * 3), 2, 0, 2 * Math.PI);
-            this.context.arc(mouseX - (distanceX * 2), mouseY - (distanceY * 2), 2, 0, 2 * Math.PI);
-            this.context.arc(mouseX - (distanceX * 1), mouseY - (distanceY * 1), 2, 0, 2 * Math.PI);
-
+            const splitCount = 10;
+            const splitedDistanceX = (mouseX - this.lastPointX) / splitCount;
+            const splitedDistanceY = (mouseY - this.lastPointY) / splitCount;
+            for (let index = 0; index < splitCount; index++) {
+                // 終端から～前回の点まで、splitCountで分割して点を打つ。
+                this.setArc(index, mouseX, splitedDistanceX, mouseY, splitedDistanceY);
+            }
             //先端
-            this.context.arc(mouseX, mouseY, 2, 0, 2 * Math.PI);
             this.context.fillStyle = "black";
             // 透明度
             this.context.closePath();
@@ -110,4 +109,16 @@ export class FreeWriteManager {
         }
     }
 
+
+    /**
+     * 指定したポイントよりも、一定の距離だけ戻って描画する。
+     * @param count 指定した点より戻る回数
+     * @param mouseX 基準点X
+     * @param distanceX 1回あたりの戻る距離X
+     * @param mouseY 基準点Y
+     * @param distanceY 1回あたりの戻る距離Y
+     */
+    private setArc(count: number, mouseX: number, distanceX: number, mouseY: number, distanceY: number) {
+        this.context.arc(mouseX - (distanceX * count), mouseY - (distanceY * count), 2, 0, 2 * Math.PI);
+    }
 }
