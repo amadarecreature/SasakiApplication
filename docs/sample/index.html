@@ -17,17 +17,22 @@
                     <option value="19">19</option>
                 </select>
                 <button id="btn_new" class="btn_base">新規</button>
-                <input type="checkbox" id="ckOkiishiMode" name="onOkiishiMode" /><label
-                    for="ckOkiishiMode">置き石モードON</label>
                 <button id="btn_back" class="btn_back">待った</button>
             </div>
             <div class="goban_controller_container">
-                <input type="checkbox" id="ckDrawMode" name="onDrawMode" /><label for="ckDrawMode">描画モード</label>
-                <input type="checkbox" id="ckCandidateMode" name="onDrawMode" /><label
-                    for="ckCandidateMode">候補モード</label>
+                <div>
+                    <input type="radio" id="rdoNone" name="rdogrpLeadMode" />
+                    <label for="rdoNone">なし</label>
+                    <input type="radio" id="rdoHandicapMode" name="rdogrpLeadMode" />
+                    <label for="rdoHandicapMode">置き石モードON</label>
+                    <input type="radio" id="rdoDrawMode" value="draw" name="rdogrpLeadMode" />
+                    <label for="rdoDrawMode">描画モード</label>
+                    <input type="radio" id="rdoCandidateMode" value="free" name="rdogrpLeadMode" />
+                    <label for="rdoCandidateMode">候補モード</label>
+                </div>
+                <button id="btn_candidate_clear" class="btn_base">クリア</button>
             </div>
             <div class="data_continer">
-                <button id="btn_read_kifu" class="btn_base">棋譜読み込み</button>
                 <input id="kifu" type="text" value="" />
                 <label id="log">ログ</label>
             </div>

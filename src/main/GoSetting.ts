@@ -79,8 +79,15 @@ export class KifuPart {
     readonly color: GoMoveType;
     readonly position: PositionOnGoBoad;
     readonly isPassed: boolean;
-    constructor(color: GoMoveType, roX: number, roY: number, isPassed: boolean = false) {
-        this.color = color;
+    /**
+     * 
+     * @param moveType 着手内容
+     * @param roX 左端からの路数(0～)
+     * @param roY 上端からの路数(0～)
+     * @param isPassed true:パス
+     */
+    constructor(moveType: GoMoveType, roX: number, roY: number, isPassed: boolean = false) {
+        this.color = moveType;
         this.position = new PositionOnGoBoad(roX, roY);
         this.isPassed = isPassed;
     }
