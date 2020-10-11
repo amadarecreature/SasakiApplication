@@ -7,12 +7,11 @@ export class FreeWriteManager {
      */
     readonly context!: CanvasRenderingContext2D;
 
-    /**
-     * このクラスが扱うカンバスの横幅(縦幅)
-     */
-
     private canvas!: HTMLCanvasElement;
 
+    /**
+     * なめらかに線を引くために、前回の描画した場所を保存しておく。
+     */
     private lastPointX: number = 0;
     private lastPointY: number = 0;
 
@@ -64,15 +63,28 @@ export class FreeWriteManager {
     // 描画中かどうか
     private isDrawing: boolean = false;
 
+    /**
+     * 描画を開始する
+     * @param mouseX 
+     * @param mouseY 
+     */
     public start(mouseX: number, mouseY: number) {
         this.lastPointX = mouseX;
         this.lastPointY = mouseY;
         this.isDrawing = true;
 
     }
+    /**
+     * 描画を終了する
+     */
     public stop() {
         this.isDrawing = false;
     }
+    /**
+     * 指定した点と、前回の点を結んだ線を描画する。
+     * @param mouseX 
+     * @param mouseY 
+     */
     public draw(mouseX: number, mouseY: number) {
 
         if (this.isDrawing) {
