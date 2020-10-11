@@ -97,7 +97,7 @@ export class KifuController {
 
     }
     /**
-     * TODO 実装する
+     * 
      * @param kifuList 
      */
     static convertToString(kifuList: KifuPart[]): string {
