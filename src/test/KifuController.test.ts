@@ -88,32 +88,32 @@ describe("KifuUtil_getPositionNo", () => {
 describe("KifuUtil_convertToString", () => {
     describe("正常系", () => {
         it("1手", () => {
-            const input = [new KifuPart(GoMoveType.BLACK, 10, 12)];
+            const input = [new KifuPart(GoMoveType.BLACK, 9, 11)];
             const actual = KifuController.convertToString(input);
             expect(actual).toBe("B[jl]");
         })
         it("2手", () => {
             const input = [
-                new KifuPart(GoMoveType.WHITE, 1, 13),
-                new KifuPart(GoMoveType.BLACK, 10, 12)
+                new KifuPart(GoMoveType.WHITE, 0, 12),
+                new KifuPart(GoMoveType.BLACK, 9, 11)
             ];
             const actual = KifuController.convertToString(input);
             expect(actual).toBe("W[am]B[jl]");
         })
         it("一部パス", () => {
             const input = [
-                new KifuPart(GoMoveType.BLACK, 10, 12),
-                new KifuPart(GoMoveType.WHITE, 3, 4, true),
-                new KifuPart(GoMoveType.BLACK, 19, 1),
+                new KifuPart(GoMoveType.BLACK, 9, 11),
+                new KifuPart(GoMoveType.WHITE, 2, 3, true),
+                new KifuPart(GoMoveType.BLACK, 18, 0),
             ];
             const actual = KifuController.convertToString(input);
             expect(actual).toBe("B[jl]W[tt]B[sa]");
         })
         it("連続パス", () => {
             const input = [
-                new KifuPart(GoMoveType.BLACK, 10, 12, true),
-                new KifuPart(GoMoveType.WHITE, 3, 4, true),
-                new KifuPart(GoMoveType.BLACK, 19, 1),
+                new KifuPart(GoMoveType.BLACK, 9, 11, true),
+                new KifuPart(GoMoveType.WHITE, 2, 3, true),
+                new KifuPart(GoMoveType.BLACK, 18, 0),
             ];
             const actual = KifuController.convertToString(input);
             expect(actual).toBe("B[tt]W[tt]B[sa]");
