@@ -13,6 +13,8 @@ export class FreeWriteManager {
 
     private canvas!: HTMLCanvasElement;
 
+    private lastPointX: number = 0;
+    private lastPointY: number = 0;
 
     readonly goBoadInfo: GoBoadInfo;
 
@@ -62,7 +64,9 @@ export class FreeWriteManager {
     // 描画中かどうか
     private isDrawing: boolean = false;
 
-    public start() {
+    public start(mouseX: number, mouseY: number) {
+        this.lastPointX = mouseX;
+        this.lastPointY = mouseY;
         this.isDrawing = true;
 
     }
@@ -72,19 +76,25 @@ export class FreeWriteManager {
     public draw(mouseX: number, mouseY: number) {
 
         if (this.isDrawing) {
-            // console.info("position=" + mouseX + ":" + mouseY);
             const top = this.goBoadInfo.top;
             const left = this.goBoadInfo.left;
             this.context.beginPath();
+
+            const distanceX = (mouseX - this.lastPointX) / 5;
+            const distanceY = (mouseY - this.lastPointY) / 5;
+            this.context.arc(mouseX - (distanceX * 4), mouseY - (distanceY * 4), 2, 0, 2 * Math.PI);
+            this.context.arc(mouseX - (distanceX * 3), mouseY - (distanceY * 3), 2, 0, 2 * Math.PI);
+            this.context.arc(mouseX - (distanceX * 2), mouseY - (distanceY * 2), 2, 0, 2 * Math.PI);
+            this.context.arc(mouseX - (distanceX * 1), mouseY - (distanceY * 1), 2, 0, 2 * Math.PI);
+
+            //先端
             this.context.arc(mouseX, mouseY, 2, 0, 2 * Math.PI);
             this.context.fillStyle = "black";
             // 透明度
-            // this.context.globalAlpha = 1;
             this.context.closePath();
             this.context.fill();
-
-
-
+            this.lastPointX = mouseX;
+            this.lastPointY = mouseY;
         }
     }
 

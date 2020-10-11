@@ -83,7 +83,7 @@ class Main {
     }
     private onMouseDown(e: MouseEvent): any {
         if (this.rdoDrawMode.checked) {
-            this.fwm.start();
+            this.fwm.start(e.offsetX, e.offsetY);
         }
     }
     private onMouseUp(e: MouseEvent): any {
