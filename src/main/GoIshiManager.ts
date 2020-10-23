@@ -1,3 +1,4 @@
+import { GoPlayStatsuManager } from "./GoPlayStatusManager";
 import { GoBoadInfo, GoBoadSetting, KifuPart, GoMoveType } from "./GoSetting";
 import { KifuController } from "./KifuController";
 
@@ -135,8 +136,8 @@ export class GoishiManager {
         for (let index = 0; index < kifuList.length; index++) {
 
             const element = kifuList[index];
-            const x = element.position.roX-1;
-            const y = element.position.roY-1;
+            const x = element.position.roX - 1;
+            const y = element.position.roY - 1;
             console.log("xxxxxxxx:" + element.color + ":" + x + ":" + y);
             positions[x][y] = element.color;
         }
@@ -209,6 +210,16 @@ export class GoishiManager {
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
     }
 
+    /**
+     * syncLoop
+interval :number     */
+    public startSyncLoop(interval: number, statusManager: GoPlayStatsuManager) {
+        
+        statusManager.syncLoop(interval, this);
+    }
+    public endSyncLoop(statusManager: GoPlayStatsuManager) {
+        statusManager.isLoop = false;
+    }
     /**
      * 指定した座標に石を描画する。
      * @param mouseX 
