@@ -6,7 +6,7 @@
         {
             "label": "run1",
             "type": "shell",
-            "command": "docker run --name some-nginx -d -p 8080:80 some-content-nginx"
+            "command": "docker run --name nginx -v C:/git_rep/InstructionGo/docs/sample:/usr/share/nginx/html:ro -d -p 80:80  nginx"
         },
         {
             "type": "npm",
@@ -15,6 +15,14 @@
             "problemMatcher": [],
             "label": "npm: watch",
             "detail": "wabpack --watch"
+        },
+        {
+            "type": "npm",
+            "script": "build_W",
+            "group": "build",
+            "problemMatcher": [],
+            "label": "npm: build_W",
+            "detail": "webpack"
         }
     ]
 }
