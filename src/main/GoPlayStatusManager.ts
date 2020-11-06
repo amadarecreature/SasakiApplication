@@ -6,8 +6,9 @@ export class GoPlayStatsuManager {
     private apiUrl: string = "https://localhost:5001/api/GoGameRecord/";
     private key: string
     private playRecord: string = "";
-    constructor(key: string) {
+    constructor(key: string, url: string) {
         this.key = key;
+        this.apiUrl = url + "api/GoGameRecord/";
         // axios.defaults.baseURL = 'http://localhost:5001';
         // axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
     }

@@ -46,7 +46,7 @@ class Main {
 
     readonly kifuLogger = GoLogger.getInstance(this.inpKifu);
 
-    readonly statusManager = new GoPlayStatsuManager("abcKey");
+    readonly statusManager = new GoPlayStatsuManager("abcKey","http://dev-instruction-go-api.westus.azurecontainer.io/");
     /**
      * メイン処理をここに書く
      */
@@ -74,7 +74,7 @@ class Main {
         this.btnNew.addEventListener("click", (e: Event) => this.new(e))
 
         // 同期
-        this.btn_auto_sync.addEventListener("click", (e: Event) => this.sync(e));
+        this.btn_auto_sync.addEventListener("click", (e: Event) => this.autoSync(e));
 
         // 棋譜読み込み
         this.btn_candidate_clear.addEventListener("click", (e: Event) => this.clearCandidateView(e));
@@ -83,10 +83,10 @@ class Main {
         const btnBack: HTMLButtonElement = <HTMLButtonElement>document.getElementById("btn_back");
         btnBack.addEventListener("click", (e: Event) => this.mattta(e));
 
-        this.btn_auto_sync.addEventListener("click", (e: Event) => this.sync(e));
+        this.btn_auto_sync.addEventListener("click", (e: Event) => this.autoSync(e));
 
     }
-    private sync(e: Event) {
+    private autoSync(e: Event) {
         // var kifu = await this.statusManager.sync();
         // console.log("同期:" + kifu);
         // this.gim.roadFromKifu(kifu);
