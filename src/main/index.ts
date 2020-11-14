@@ -49,7 +49,7 @@ class Main {
 
     readonly kifuLogger = GoLogger.getInstance(this.inpKifu);
 
-    readonly statusManager = new GoPlayStatsuManager("abcKey","http://dev-instruction-go-api.westus.azurecontainer.io/");
+    readonly statusManager = new GoPlayStatsuManager("abcKey","https://dev-instruction-go-api.westus.azurecontainer.io/");
     /**
      * メイン処理をここに書く
      */
