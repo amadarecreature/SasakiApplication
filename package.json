@@ -6,7 +6,8 @@
   "scripts": {
     "lint": "tsc --noEmit",
     "test": "jest --runInBand",
-    "build_W": "webpack"
+    "build_W_local": "webpack",
+    "build_W_prd": "webpack"
   },
   "repository": {
     "type": "git",

@@ -212,7 +212,8 @@ export class GoishiManager {
 
     /**
      * syncLoop
-interval :number     */
+     * interval :number     
+     */
     public startSyncLoop(interval: number, statusManager: GoPlayStatsuManager) {
         
         statusManager.syncLoop(interval, this);

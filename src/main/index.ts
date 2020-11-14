@@ -42,7 +42,10 @@ class Main {
     readonly btn_candidate_clear: HTMLButtonElement = <HTMLButtonElement>document.getElementById("btn_candidate_clear");
 
     // 自動同期ボタン
-    readonly btn_auto_sync: HTMLButtonElement = <HTMLButtonElement>document.getElementById("btn_auto_sync");
+    readonly btn_auto_sync_start: HTMLButtonElement = <HTMLButtonElement>document.getElementById("btn_auto_start_sync");
+    readonly btn_auto_sync_stop: HTMLButtonElement = <HTMLButtonElement>document.getElementById("btn_auto_start_stop");
+    readonly btn_sync_upLoad: HTMLButtonElement = <HTMLButtonElement>document.getElementById("btn_sync_upLoad");
+    readonly btn_sync_pull: HTMLButtonElement = <HTMLButtonElement>document.getElementById("btn_auto_start_stop");
 
     readonly kifuLogger = GoLogger.getInstance(this.inpKifu);
 
@@ -73,8 +76,14 @@ class Main {
         // 新規開始用イベント
         this.btnNew.addEventListener("click", (e: Event) => this.new(e))
 
-        // 同期
-        this.btn_auto_sync.addEventListener("click", (e: Event) => this.autoSync(e));
+        // 自動同期
+        this.btn_auto_sync_start.addEventListener("click", (e: Event) => this.autoSyncStart(e));
+        this.btn_auto_sync_stop.addEventListener("click", (e: Event) => this.autoSyncStop(e));
+
+        // 手動更新
+        this.btn_sync_upLoad.addEventListener("click", (e: Event) => this.syncUpLoad(e);
+        this.btn_sync_pull.addEventListener("click", (e: Event) => this.sync(e));
+
 
         // 棋譜読み込み
         this.btn_candidate_clear.addEventListener("click", (e: Event) => this.clearCandidateView(e));
@@ -83,16 +92,21 @@ class Main {
         const btnBack: HTMLButtonElement = <HTMLButtonElement>document.getElementById("btn_back");
         btnBack.addEventListener("click", (e: Event) => this.mattta(e));
 
-        this.btn_auto_sync.addEventListener("click", (e: Event) => this.autoSync(e));
+        this.btn_auto_sync_start.addEventListener("click", (e: Event) => this.autoSyncStart(e));
 
     }
-    private autoSync(e: Event) {
-        // var kifu = await this.statusManager.sync();
-        // console.log("同期:" + kifu);
-        // this.gim.roadFromKifu(kifu);
-        console.log("同期ボタン開始");
+    private syncUpLoad(e: Event){
+        this.statusManager.update(this.gim.kifuString);
+    }
+    private sync(e: Event){
+        this.statusManager.sync();
+    }
+
+    private autoSyncStart(e: Event) {
         this.gim.startSyncLoop(500, this.statusManager);
-        console.log("同期ボタン終了");
+    }
+    private autoSyncStop(e: Event) {
+        this.gim.endSyncLoop(this.statusManager);
     }
     private onMouseMove(e: MouseEvent): any {
         if (this.rdoDrawMode.checked) {
@@ -164,9 +178,6 @@ class Main {
     private clearCandidateView(e: Event) {
         this.fwm.clearAll();
         this.gcm.clearAll();
-
-        // TODO:後で消す
-        this.gim.endSyncLoop(this.statusManager);
     }
 }
 // Mainクラスを実行する。
