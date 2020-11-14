@@ -42,10 +42,10 @@ class Main {
     readonly btn_candidate_clear: HTMLButtonElement = <HTMLButtonElement>document.getElementById("btn_candidate_clear");
 
     // 自動同期ボタン
-    readonly btn_auto_sync_start: HTMLButtonElement = <HTMLButtonElement>document.getElementById("btn_auto_start_sync");
-    readonly btn_auto_sync_stop: HTMLButtonElement = <HTMLButtonElement>document.getElementById("btn_auto_start_stop");
+    readonly btn_auto_sync_start: HTMLButtonElement = <HTMLButtonElement>document.getElementById("btn_auto_sync_start");
+    readonly btn_auto_sync_stop: HTMLButtonElement = <HTMLButtonElement>document.getElementById("btn_auto_sync_stop");
     readonly btn_sync_upLoad: HTMLButtonElement = <HTMLButtonElement>document.getElementById("btn_sync_upLoad");
-    readonly btn_sync_pull: HTMLButtonElement = <HTMLButtonElement>document.getElementById("btn_auto_start_stop");
+    readonly btn_sync_pull: HTMLButtonElement = <HTMLButtonElement>document.getElementById("btn_sync_pull");
 
     readonly kifuLogger = GoLogger.getInstance(this.inpKifu);
 
@@ -81,7 +81,7 @@ class Main {
         this.btn_auto_sync_stop.addEventListener("click", (e: Event) => this.autoSyncStop(e));
 
         // 手動更新
-        this.btn_sync_upLoad.addEventListener("click", (e: Event) => this.syncUpLoad(e);
+        this.btn_sync_upLoad.addEventListener("click", (e: Event) => this.syncUpLoad(e));
         this.btn_sync_pull.addEventListener("click", (e: Event) => this.sync(e));
 
 
