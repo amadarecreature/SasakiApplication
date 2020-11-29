@@ -51,7 +51,7 @@ class Main {
 
     readonly kifuLogger = GoLogger.getInstance(this.inpKifu);
 
-    readonly statusManage;
+    readonly statusManager;
     /**
      * メイン処理をここに書く
      */
@@ -60,7 +60,7 @@ class Main {
         const rosu: number = parseInt(this.slRosu.options[this.slRosu.selectedIndex].value, 10);
 
         const key = this.inpSyncKey.value;
-        this.statusManage = new GoPlayStatsuManager(key, "https://dev-instruction-go-api.westus.azurecontainer.io/");
+        this.statusManager = new GoPlayStatsuManager(key, "https://dev-instruction-go-api.westus.azurecontainer.io/");
 
         // 本体描画
         new GoBoadManager(this.canvasGoboad, this.setting, rosu);
