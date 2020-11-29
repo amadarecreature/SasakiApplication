@@ -54,15 +54,19 @@ class Main {
      * メイン処理をここに書く
      */
     constructor() {
+
+        const rosu: number = parseInt(this.slRosu.options[this.slRosu.selectedIndex].value, 10);
+
+
         // 本体描画
-        new GoBoadManager(this.canvasGoboad, this.setting, 9);
-        this.gim = new GoishiManager(this.canvasIshi, this.setting, 9);
-        this.gcm = new GoCandidateManager(this.canvasCandidate, this.setting, 9);
-        this.fwm = new FreeWriteManager(this.canvasFree, this.setting, 9);
+        new GoBoadManager(this.canvasGoboad, this.setting, rosu);
+        this.gim = new GoishiManager(this.canvasIshi, this.setting, rosu);
+        this.gcm = new GoCandidateManager(this.canvasCandidate, this.setting, rosu);
+        this.fwm = new FreeWriteManager(this.canvasFree, this.setting, rosu);
 
         // サンプル描画
-        new GoBoadManager(this.sampleCanvasGoboad, this.setting, 9);
-        this.sampleGim = new GoishiManager(this.sampleCanvasGoishi, this.setting, 9);
+        new GoBoadManager(this.sampleCanvasGoboad, this.setting, rosu);
+        this.sampleGim = new GoishiManager(this.sampleCanvasGoishi, this.setting, rosu);
         this.sampleGim.roadFromKifu("B[ab]B[bb]B[cb]B[db]B[da]B[ba]W[bd]W[ad]W[be]W[bf]W[af]W[bg]W[bh]W[ah]B[gb]B[ga]B[ha]B[ib]B[hc]B[ic]");
 
         // 碁盤付近のクリックイベント
