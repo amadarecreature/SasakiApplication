@@ -33,6 +33,8 @@ class Main {
 
     readonly lblLog: HTMLLabelElement = <HTMLLabelElement>document.getElementById("log");
     readonly inpKifu: HTMLInputElement = <HTMLInputElement>document.getElementById("kifu");
+    readonly inpSyncKey: HTMLInputElement = <HTMLInputElement>document.getElementById("synckey");
+
 
     readonly rdoDrawMode: HTMLInputElement = <HTMLInputElement>document.getElementById("rdoDrawMode");
     readonly rdoHandiCapStoneMode: HTMLInputElement = <HTMLInputElement>document.getElementById("rdoHandicapMode");
@@ -49,7 +51,7 @@ class Main {
 
     readonly kifuLogger = GoLogger.getInstance(this.inpKifu);
 
-    readonly statusManager = new GoPlayStatsuManager("abcKey","https://dev-instruction-go-api.westus.azurecontainer.io/");
+    readonly statusManage;
     /**
      * メイン処理をここに書く
      */
@@ -57,6 +59,8 @@ class Main {
 
         const rosu: number = parseInt(this.slRosu.options[this.slRosu.selectedIndex].value, 10);
 
+        const key = this.inpSyncKey.value;
+        this.statusManage = new GoPlayStatsuManager(key, "https://dev-instruction-go-api.westus.azurecontainer.io/");
 
         // 本体描画
         new GoBoadManager(this.canvasGoboad, this.setting, rosu);
@@ -99,10 +103,10 @@ class Main {
         this.btn_auto_sync_start.addEventListener("click", (e: Event) => this.autoSyncStart(e));
 
     }
-    private syncUpLoad(e: Event){
+    private syncUpLoad(e: Event) {
         this.statusManager.update(this.gim.kifuString);
     }
-    private sync(e: Event){
+    private sync(e: Event) {
         this.statusManager.sync();
     }
 
