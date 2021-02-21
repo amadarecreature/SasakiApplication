@@ -20,7 +20,7 @@ Before execute,you need to have installed docker.
 
 docker build -t instructiongo_sample_nginx .
 
-docker run --name InstructionGo -v /{furllPath}InstructionGo\docs\sample:/usr/share/nginx/html -p 80:80 instructiongo_sample_nginx
+docker run --name InstructionGo -v /{furllPath}InstructionGo/docs/sample:/usr/share/nginx/html -p 80:80 instructiongo_sample_nginx
 
 #accsess http://localhost on your browser
 
@@ -80,3 +80,10 @@ This software is released under the MIT License, see LICENSE.txt.
     G=index+1
     B=index+2
     A=index+3
+
+
+# npminstall on WSL2
+
+https://docs.microsoft.com/ja-jp/windows/nodejs/setup-on-wsl2
+
+
