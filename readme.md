@@ -87,3 +87,15 @@ This software is released under the MIT License, see LICENSE.txt.
 https://docs.microsoft.com/ja-jp/windows/nodejs/setup-on-wsl2
 
 
+
+
+# package management
+
+https://www.npmjs.com/package/npm-check-updates
+```
+npm install -g npm-check-updates
+ncu
+ncu -u
+npm install
+```
+
