@@ -34,10 +34,13 @@ class PositionOnGoBoad {
     }
 }
 /**
- * 碁石を管理するクラス
+ * 碁石、棋譜を管理するクラス
+ * 
  */
 export class GoishiManager {
     readonly kifu: KifuPart[];
+
+
 
     readonly realtimePosition: GoMoveType[][];
 
@@ -45,7 +48,7 @@ export class GoishiManager {
      * このクラスが扱うカンバスのコンテキスト
      * 
      */
-    readonly context!: CanvasRenderingContext2D;
+    readonly _context!: CanvasRenderingContext2D;
 
     /**
      * このクラスが扱うカンバスの横幅(縦幅)
@@ -58,6 +61,25 @@ export class GoishiManager {
     public get turn(): GoMoveType {
         return this._turn;
     }
+
+
+    // private _agehamaB: number = 0;
+    // private _agehamaW: number = 0;
+    
+    
+    // アゲハマ
+    public get agehamaW(): number {
+
+        const list = this.kifu.filter(x=>(x.color==GoMoveType.AGEHAMA_W));
+        return list.length;
+    }
+
+    public get agehamaB(): number {
+        const list = this.kifu.filter(x=>(x.color==GoMoveType.AGEHAMA_B));
+        return list.length;
+    }
+
+
 
     private now: number = -1;
 
@@ -99,7 +121,7 @@ export class GoishiManager {
 
         //カンバス・コンテキスト・大きさを注入する
         this.canvas = canvas;
-        this.context = canvas.getContext("2d")!;
+        this._context = canvas.getContext("2d")!;
 
         // 現在地の初期化
         this.realtimePosition = new Array();
@@ -111,9 +133,9 @@ export class GoishiManager {
         }
 
         //クラスを通して変わらないカンバス設定
-        this.context.font = "bold 15px '游ゴシック'";
-        this.context.textAlign = 'center';
-        this.context.shadowBlur = 2;
+        this._context.font = "bold 15px '游ゴシック'";
+        this._context.textAlign = 'center';
+        this._context.shadowBlur = 2;
         this.initCanvas(this.canvas, this._goBoadInfo);
     }
 
@@ -207,7 +229,7 @@ export class GoishiManager {
         // console.log("initCanvas:", canvas.width, canvas.height);
     }
     public clearAll() {
-        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this._context.clearRect(0, 0, this.canvas.width, this.canvas.height);
     }
 
     /**
@@ -215,7 +237,7 @@ export class GoishiManager {
      * interval :number     
      */
     public startSyncLoop(interval: number, statusManager: GoPlayStatsuManager) {
-        
+
         statusManager.syncLoop(interval, this);
     }
     public endSyncLoop(statusManager: GoPlayStatsuManager) {
@@ -223,6 +245,7 @@ export class GoishiManager {
     }
     /**
      * 指定した座標に石を描画する。
+     * 棋譜操作なし
      * @param mouseX 
      * @param mouseY 
      * @param color 
@@ -232,21 +255,31 @@ export class GoishiManager {
         const circleCenterPosition = this.calcCircleCenterPosition(this._goBoadInfo, positionOnGoban);
         const fillstyle: string = color;
         const radius = this._goBoadInfo.roHeight * 0.475; // 半径
-        this.drawFillCircle(circleCenterPosition.x, circleCenterPosition.y, radius, this.context, fillstyle);
+        this.drawFillCircle(circleCenterPosition.x, circleCenterPosition.y, radius, this._context, fillstyle);
 
         return positionOnGoban;
     }
 
+    /**
+     * 重複チェック
+     * @param mouseX 
+     * @param mouseY 
+     * @param goBoadInfo 
+     * @returns true:重複している
+     * 
+     */
     private isDuplicatePosition(mouseX: number, mouseY: number, goBoadInfo: GoBoadInfo) {
-        const positionOnGoban = this.calcPositionOnGoban(new PointerPosition(mouseX, mouseY), goBoadInfo)
+        const positionOnGoban = this.calcPositionOnGoban(new PointerPosition(mouseX, mouseY), goBoadInfo);
 
         if (this.realtimePosition[positionOnGoban.roX][positionOnGoban.roY] != GoMoveType.NONE) {
             console.log("既に石がある。")
             return true;
         }
         return false;
-
     }
+    /**
+     * 置き石を配置
+     */
     public addHandicapStone(mouseX: number, mouseY: number) {
         console.info("click=" + mouseX + ":" + mouseY);
 
@@ -271,7 +304,7 @@ export class GoishiManager {
     /**
      * 待った
      */
-    public chakushBack() {
+    public matta() {
         const targetNo = this.now;
         const targetChakushu = this.kifu[targetNo];
         this.kifu.pop();
@@ -281,10 +314,15 @@ export class GoishiManager {
         this.clearGoishiByRo(targetChakushu.position);
 
     }
+    /**
+     * 碁石を消す
+     * ※棋譜関連なし
+     * @param positionOnGoban 路上の位置
+     */
     private clearGoishiByRo(positionOnGoban: PositionOnGoBoad) {
         // 碁石の中心位置を計算する。
         const circleCenterPosition = this.calcCircleCenterPosition(this._goBoadInfo, positionOnGoban);
-        this.clearGoishi(circleCenterPosition.x - (this.roWidth / 2), circleCenterPosition.y - (this.roHeight / 2), this.context);
+        this.clearGoishi(circleCenterPosition.x - (this.roWidth / 2), circleCenterPosition.y - (this.roHeight / 2));
 
     }
 
@@ -296,6 +334,41 @@ export class GoishiManager {
 
     }
 
+    /**
+     * アゲハマをとる
+     * @param mouseX 
+     * @param mouseY 
+     * @returns None:石がなかった場合. None以外:とった石 
+     */
+    public getAgehama(mouseX: number, mouseY: number) {
+
+        // 碁盤上の位置
+        const positionOnGoban = this.calcPositionOnGoban(new PointerPosition(mouseX, mouseY), this._goBoadInfo);
+
+        var resultMove = GoMoveType.NONE;
+
+        if (this.isDuplicatePosition(mouseX, mouseY, this._goBoadInfo)) {
+            this.clearGoishiByRo(positionOnGoban);
+
+            // とった石
+            resultMove = this.realtimePosition[positionOnGoban.roX][positionOnGoban.roY];
+
+            // データ的に消す
+            this.realtimePosition[positionOnGoban.roX][positionOnGoban.roY] = GoMoveType.NONE;
+
+            // アゲハマを設定
+            if(resultMove==GoMoveType.BLACK){
+                this.kifu.push(new KifuPart(GoMoveType.AGEHAMA_B,positionOnGoban.roX,positionOnGoban.roY,false));
+                // this._agehamaB++;
+            }
+            if(resultMove==GoMoveType.WHITE){
+                this.kifu.push(new KifuPart(GoMoveType.AGEHAMA_W,positionOnGoban.roX,positionOnGoban.roY,false));
+                // this._agehamaW++;
+            }
+            
+        }
+        return resultMove;
+    }
     /**
      * 着手動作
      * @param mouseX 
@@ -318,8 +391,8 @@ export class GoishiManager {
 
         if (this.realtimePosition[positionOnGoBoad.roX][positionOnGoBoad.roY] != GoMoveType.NONE) {
             console.log("既に石がある。")
-            this.clearGoishi(circleCenterPosition.x - (this.roWidth / 2), circleCenterPosition.y - (this.roHeight / 2), this.context);
-            this.realtimePosition[positionOnGoBoad.roX][positionOnGoBoad.roY] = GoMoveType.NONE;
+            // this.clearGoishi(circleCenterPosition.x - (this.roWidth / 2), circleCenterPosition.y - (this.roHeight / 2));
+            // this.realtimePosition[positionOnGoBoad.roX][positionOnGoBoad.roY] = GoMoveType.NONE;
             return;
         }
 
@@ -336,7 +409,7 @@ export class GoishiManager {
     private drawGoishi(nowTurn: GoMoveType, circleCenterPosition: PointerPosition, positionOnGoban: PositionOnGoBoad) {
         const fillstyle = (nowTurn == GoMoveType.BLACK) ? "black" : "white";
         const radius = this._goBoadInfo.roHeight * 0.475; // 半径
-        this.drawFillCircle(circleCenterPosition.x, circleCenterPosition.y, radius, this.context, fillstyle);
+        this.drawFillCircle(circleCenterPosition.x, circleCenterPosition.y, radius, this._context, fillstyle);
 
 
         // 棋譜の設定
@@ -358,13 +431,14 @@ export class GoishiManager {
 
     /**
      * 円形オブジェクトを消します。
+     * ※棋譜関連なし
      * @param x 左端座標
      * @param y 上端座標
      * @param context 描画先のコンテキストを指定します。
      * @since 0.1
      */
-    private clearGoishi(x: number, y: number, context: CanvasRenderingContext2D) {
-        context.clearRect(x, y, this.roWidth, this.roHeight);
+    private clearGoishi(x: number, y: number) {
+        this._context.clearRect(x, y, this.roWidth, this.roHeight);
         // 透明度
 
         console.log("color", "clear");
