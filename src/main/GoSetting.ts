@@ -73,6 +73,8 @@ export enum GoMoveType {
     WHITE = "W",
     OKI = "AB",
     OKI_WHITE = "AE",
+    AGEHAMA_B = "XAGB",
+    AGEHAMA_W = "XAGW",
     NONE = "NONE"
 }
 export class KifuPart {

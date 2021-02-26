@@ -5,7 +5,7 @@ import { GoCandidateManager } from "./GoCandidateManager";
 import { GoPlayStatsuManager } from "./GoPlayStatusManager"
 
 
-import { GoBoadSetting } from "./GoSetting";
+import { GoBoadSetting, GoMoveType } from "./GoSetting";
 import { GoLogger } from "./GoLogger"
 /**
  * (Required feature)
@@ -36,18 +36,30 @@ class Main {
     readonly inpSyncKey: HTMLInputElement = <HTMLInputElement>document.getElementById("synckey");
 
 
-    readonly rdoDrawMode: HTMLInputElement = <HTMLInputElement>document.getElementById("rdoDrawMode");
-    readonly rdoHandiCapStoneMode: HTMLInputElement = <HTMLInputElement>document.getElementById("rdoHandicapMode");
-    readonly rdoCandidateMode: HTMLInputElement = <HTMLInputElement>document.getElementById("rdoCandidateMode");
+    readonly rdoDrawMode: HTMLInputElement = <HTMLInputElement>document.getElementById("rdoDrawMode_on");
+    readonly rdoHandiCapStoneMode: HTMLInputElement = <HTMLInputElement>document.getElementById("rdoHandicapMode_on");
+    readonly rdoCandidateMode: HTMLInputElement = <HTMLInputElement>document.getElementById("rdoCandidateMode_on");
     readonly slRosu: HTMLSelectElement = <HTMLSelectElement>document.getElementById("sl_rosu");
     readonly btnNew: HTMLButtonElement = <HTMLButtonElement>document.getElementById("btn_new");
     readonly btn_candidate_clear: HTMLButtonElement = <HTMLButtonElement>document.getElementById("btn_candidate_clear");
+
+
+    // アゲハマモード
+    readonly rdo_agehamaMode_on: HTMLInputElement = <HTMLInputElement>document.getElementById("rdo_agehamaMode_on");
+
+    readonly spn_agehama_W:HTMLSpanElement = <HTMLSpanElement>document.getElementById("spn_agehama_W");
+    readonly spn_agehama_B:HTMLSpanElement = <HTMLSpanElement>document.getElementById("spn_agehama_B");
 
     // 自動同期ボタン
     readonly btn_auto_sync_start: HTMLButtonElement = <HTMLButtonElement>document.getElementById("btn_auto_sync_start");
     readonly btn_auto_sync_stop: HTMLButtonElement = <HTMLButtonElement>document.getElementById("btn_auto_sync_stop");
     readonly btn_sync_upLoad: HTMLButtonElement = <HTMLButtonElement>document.getElementById("btn_sync_upLoad");
     readonly btn_sync_pull: HTMLButtonElement = <HTMLButtonElement>document.getElementById("btn_sync_pull");
+
+
+    readonly btn_turn_back: HTMLButtonElement = <HTMLButtonElement>document.getElementById("btn_turn_back");
+    readonly btn_turn_forward: HTMLButtonElement = <HTMLButtonElement>document.getElementById("btn_turn_forward");
+
 
     readonly kifuLogger = GoLogger.getInstance(this.inpKifu);
 
@@ -99,6 +111,13 @@ class Main {
         // 待った
         const btnBack: HTMLButtonElement = <HTMLButtonElement>document.getElementById("btn_back");
         btnBack.addEventListener("click", (e: Event) => this.mattta(e));
+
+        this.btn_turn_back.addEventListener("click", (e: Event) => this.turnBack(e));
+        this.btn_turn_forward.addEventListener("click", (e: Event) => this.turnForward(e));
+
+
+        
+
 
         this.btn_auto_sync_start.addEventListener("click", (e: Event) => this.autoSyncStart(e));
 
@@ -152,6 +171,15 @@ class Main {
             return;
         }
 
+        // アゲハマ取るモード
+        if (this.rdo_agehamaMode_on.checked) {
+            let targetMove = this.gim.getAgehama(e.offsetX, e.offsetY);
+            this.spn_agehama_B.innerText = this.gim.agehamaB + "個";
+            this.spn_agehama_W.innerText = this.gim.agehamaW + "個";
+            return;
+
+        }
+
         this.gim.chakushu(e.offsetX, e.offsetY);
         this.kifuLogger.log(this.gim.kifuString);
         this.statusManager.update(this.gim.kifuString);
@@ -174,8 +202,16 @@ class Main {
         this.statusManager.sync();
 
     }
+
+    private turnBack(e: Event) {
+
+    }
+    private turnForward(e: Event) {
+
+    }
+
     private mattta(e: Event) {
-        this.gim.chakushBack();
+        this.gim.matta();
         this.kifuLogger.log(this.gim.kifuString);
 
     }

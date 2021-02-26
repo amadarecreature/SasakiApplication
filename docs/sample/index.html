@@ -21,6 +21,15 @@
                     <option value="19">19</option>
                 </select>
                 <button id="btn_new" class="btn_base">新規</button>
+
+                <div class="radio_box">
+                    <input type="radio" id="rdoHandicapModeOff" name="rdogrpHandicapMode" checked />
+                    <label for="rdoNone">なし</label>
+                    <input type="radio" id="rdoHandicapMode_on" name="rdogrpHandicapMode" />
+                    <label for="rdoHandicapMode_on">置き石モードON</label>
+                </div>
+
+
                 <button id="btn_back" class="btn_back">待った</button>
 
                 <label id="lblSynckey" for="Synckey">データキー</label>
@@ -33,15 +42,13 @@
 
             </div>
             <div class="goban_controller_container">
-                <div>
+                <div class="radio_box">
                     <input type="radio" id="rdoNone" name="rdogrpLeadMode" checked />
                     <label for="rdoNone">なし</label>
-                    <input type="radio" id="rdoHandicapMode" name="rdogrpLeadMode" />
-                    <label for="rdoHandicapMode">置き石モードON</label>
-                    <input type="radio" id="rdoDrawMode" value="draw" name="rdogrpLeadMode" />
-                    <label for="rdoDrawMode">描画モード</label>
-                    <input type="radio" id="rdoCandidateMode" value="free" name="rdogrpLeadMode" />
-                    <label for="rdoCandidateMode">候補モード</label>
+                    <input type="radio" id="rdoDrawMode_on" value="draw" name="rdogrpLeadMode" />
+                    <label for="rdoDrawMode_on">描画モード</label>
+                    <input type="radio" id="rdoCandidateMode_on" value="free" name="rdogrpLeadMode" />
+                    <label for="rdoCandidateMode_on">候補モード</label>
                 </div>
                 <button id="btn_candidate_clear" class="btn_base">クリア</button>
             </div>
@@ -56,13 +63,31 @@
                     <canvas id="candidate_canvas" style="z-index: 60;"></canvas>
                     <canvas id="free_canvas" style="z-index: 100;"></canvas>
                 </div>
-                <div class="play_info_area">
-                    <label>手番 : </label><span id="spnTeban"></span>
-                    <div class="own_info">
-                        <label>アゲハマ(白) : </label><span id="spnAgehamaW"></span>
+                <div class="play_option_area">
+                    <div class="play_info">
+                        <label>手番 : </label><span id="spnTeban"></span>
+                        <div class="own_info">
+                            <label>アゲハマ(白) : </label><span id="spn_agehama_W"></span>
+                        </div>
+                        <div class="enemy_info">
+                            <label>アゲハマ(黒) : </label><span id="spn_agehama_B"></span>
+                        </div>
+                        <div class="radio_box">
+                            <input type="radio" id="rdo_agehamaMode_off" name="rdoAgehamaMode" checked />
+                            <label for="rdo_agehamaMode_off">なし</label>
+                            <input type="radio" id="rdo_agehamaMode_on" name="rdoAgehamaMode" />
+                            <label for="rdo_agehamaMode_on">アゲハマモードON</label>
+                        </div>
                     </div>
-                    <div class="enemy_info">
-                        <label>アゲハマ(黒) : </label><span id="spnAgehamaB"></span>
+                    <div class="play_controller">
+                        <div class="turn_controller">
+                            <button type="button" id="btn_turn_back">
+                                <img src="img/left_button.png" />
+                            </button>
+                            <button type="button" id="btn_turn_forward">
+                                <img src="img/right_button.png" />
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>

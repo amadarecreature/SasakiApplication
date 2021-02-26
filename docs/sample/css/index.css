@@ -7,7 +7,6 @@
     align-items: center;
     border: 2px solid violet;
     background-color: antiquewhite;
-
 }
 
 .goban_controller_container {
@@ -37,11 +36,11 @@
 }
 
 .goban_container {
+    min-height: 512px;
     border: 1px;
     border-style: solid;
     border-color: brown;
     display: flex;
-
 }
 
 .data_container {
@@ -49,7 +48,6 @@
     min-height: 25px;
     margin-bottom: 5px;
 }
-
 
 .goban_area {
     width: 400px;
@@ -59,12 +57,30 @@
     flex-grow: 1;
 }
 
-.play_info_area {
+.play_option_area {
     flex-grow: 1;
     border: 1px solid blue;
-
 }
 
+.play_controller {
+    border: 1px solid blue;
+    height: 50%;
+}
+
+.turn_controller {
+    padding-top: 2px;
+    padding-bottom: 2px;
+    width: 120px;
+}
+
+.turn_controller button {
+    padding: auto;
+    width: 45%;
+}
+
+.turn_controller img {
+    width: 100%;
+}
 
 .goban_area canvas {
     position: absolute;
@@ -76,7 +92,6 @@
     /* border: 2px solid brown; */
 }
 
-
 .btn_base {
     margin-top: 10px;
     margin-bottom: 10px;
@@ -85,4 +100,16 @@
 .btn_back {
     margin-top: 10px;
     margin-bottom: 10px;
+}
+
+
+/* 汎用的なもの  */
+
+.radio_box {
+    width: 90%;
+    box-shadow: 2px 2px 5px 1px rgb(112, 107, 107) inset;
+    padding-top: 2px;
+    padding-right: 4px;
+    padding-left: 4px;
+    padding-bottom: 2px;
 }

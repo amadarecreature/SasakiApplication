@@ -1,6 +1,9 @@
 import axios from 'axios';
 import { GoishiManager } from './GoIshiManager';
 
+/**
+ * 対局のデータ同期を管理
+ */
 export class GoPlayStatsuManager {
 
     private apiUrl: string = "https://localhost:5001/api/GoGameRecord/";
