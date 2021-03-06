@@ -29,6 +29,7 @@ export class FreeWriteManager {
         this.goBoadInfo = new GoBoadInfo(goSetting.roHW, goSetting.roHW, goSetting.gobanLeft, goSetting.gobanTop, roCount);
         //カンバスが使用できるかチェック
         if (!canvas.getContext) {
+
             console.log('[Roulette.constructor] カンバスが使用できません');
             return;
         }
@@ -51,15 +52,20 @@ export class FreeWriteManager {
      */
     private initCanvas(canvas: HTMLCanvasElement, goBoadInfo: GoBoadInfo) {
 
-        // サイズ変更(サイズ変更すると描画内容が消えるので先に変更)
+        // サイズ変更 ( サイズ変更すると描画内容が消えるので先に変更)
         canvas.width = goBoadInfo.width + 40;
         canvas.height = goBoadInfo.height + 40;
 
         console.log("initCanvas:", canvas.width, canvas.height);
+
     }
+    /**
+     * 
+     */
     public clearAll() {
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
     }
+
     // 描画中かどうか
     private isDrawing: boolean = false;
 
@@ -82,6 +88,7 @@ export class FreeWriteManager {
     }
     /**
      * 指定した点と、前回の点を結んだ線を描画する。
+     * 
      * @param mouseX 
      * @param mouseY 
      */
@@ -92,9 +99,11 @@ export class FreeWriteManager {
             const left = this.goBoadInfo.left;
             this.context.beginPath();
 
+            // 
             const splitCount = 10;
             const splitedDistanceX = (mouseX - this.lastPointX) / splitCount;
             const splitedDistanceY = (mouseY - this.lastPointY) / splitCount;
+
             for (let index = 0; index < splitCount; index++) {
                 // 終端から～前回の点まで、splitCountで分割して点を打つ。
                 this.setArc(index, mouseX, splitedDistanceX, mouseY, splitedDistanceY);
