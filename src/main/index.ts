@@ -1,6 +1,6 @@
-import { GoBoadManager } from "./GoBoardMagnager";
+import { GoBoadManager } from "./GoBoardManager";
 import { FreeWriteManager } from "./FreeWriteManager";
-import { GoishiManager } from "./GoIshiManager";
+import { GoStoneManager } from "./GoStoneManager";
 import { GoCandidateManager } from "./GoCandidateManager";
 import { GoPlayStatsuManager } from "./GoPlayStatusManager"
 
@@ -13,11 +13,11 @@ import { GoLogger } from "./GoLogger"
  */
 class Main {
 
-    private gim: GoishiManager;
+    private gim: GoStoneManager;
     private gcm: GoCandidateManager;
     private fwm: FreeWriteManager;
 
-    private sampleGim: GoishiManager;
+    private sampleGsm: GoStoneManager;
 
     // 碁盤の設定
     readonly setting: GoBoadSetting = new GoBoadSetting(0.9, 20, 20, 36);
@@ -76,14 +76,14 @@ class Main {
 
         // 本体描画
         new GoBoadManager(this.canvasGoboad, this.setting, rosu);
-        this.gim = new GoishiManager(this.canvasIshi, this.setting, rosu);
+        this.gim = new GoStoneManager(this.canvasIshi, this.setting, rosu);
         this.gcm = new GoCandidateManager(this.canvasCandidate, this.setting, rosu);
         this.fwm = new FreeWriteManager(this.canvasFree, this.setting, rosu);
 
         // サンプル描画
         new GoBoadManager(this.sampleCanvasGoboad, this.setting, rosu);
-        this.sampleGim = new GoishiManager(this.sampleCanvasGoishi, this.setting, rosu);
-        this.sampleGim.roadFromKifu("B[ab]B[bb]B[cb]B[db]B[da]B[ba]W[bd]W[ad]W[be]W[bf]W[af]W[bg]W[bh]W[ah]B[gb]B[ga]B[ha]B[ib]B[hc]B[ic]");
+        this.sampleGsm = new GoStoneManager(this.sampleCanvasGoishi, this.setting, rosu);
+        this.sampleGsm.roadFromKifu("B[ab]B[bb]B[cb]B[db]B[da]B[ba]W[bd]W[ad]W[be]W[bf]W[af]W[bg]W[bh]W[ah]B[gb]B[ga]B[ha]B[ib]B[hc]B[ic]");
 
         // 碁盤付近のクリックイベント
         this.canvasFree.addEventListener("click", (e: MouseEvent) => this.onMouseClick(e));
@@ -194,7 +194,7 @@ class Main {
         const rosu: number = parseInt(this.slRosu.options[this.slRosu.selectedIndex].value, 10);
 
         new GoBoadManager(this.canvasGoboad, this.setting, rosu);
-        this.gim = new GoishiManager(this.canvasIshi, this.setting, rosu);
+        this.gim = new GoStoneManager(this.canvasIshi, this.setting, rosu);
         this.gcm = new GoCandidateManager(this.canvasFree, this.setting, rosu);
         this.fwm = new FreeWriteManager(this.canvasFree, this.setting, rosu);
 

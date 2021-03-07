@@ -1,6 +1,7 @@
 import { GoBoadInfo, GoBoadSetting } from "../main/GoSetting";
-import { GoBoadManager } from "../main/GoBoardMagnager";
+import { GoBoadManager } from "../main/GoBoardManager";
 import { JSDOM } from "jsdom";
+
 
 
 describe('GoBoadManager', () => {
@@ -8,21 +9,20 @@ describe('GoBoadManager', () => {
         const goSetting = new GoBoadSetting(10, 20, 1, 5);
         const goBoadInfo = new GoBoadInfo(goSetting.roHW, goSetting.roHW, goSetting.gobanLeft, goSetting.gobanTop, 19);
 
-        // 結果
-        const dummyJsdom = new JSDOM("<html><canvas id='cv1' style='width:20px,height:20px'></canvas></html>");
-        const dummyCanvas: HTMLCanvasElement = <HTMLCanvasElement>dummyJsdom.window.document.getElementById('cv1');
+        // prepare
+        const dummyCanvas: HTMLCanvasElement = createCanvas("dcv1");
         const dummyContext = dummyCanvas.getContext("2d")!;
         const dummy = new DummyGoBoadManager(dummyCanvas, goSetting, 19);
+        // set result
         const expected = dummyContext.getImageData(dummyCanvas.offsetLeft, dummyCanvas.offsetTop, dummyCanvas.width, dummyCanvas.height);
 
-        // テスト
-        const jsdom = new JSDOM("<html><canvas id='cv1' style='width:20px,height:20px'></canvas></html>");
-        const canvas: HTMLCanvasElement = <HTMLCanvasElement>jsdom.window.document.getElementById('cv1');
+        // execute
+        const canvas: HTMLCanvasElement = createCanvas("cv1");
         const context = canvas.getContext("2d")!;
         const gbm = new GoBoadManager(canvas, goSetting, 19);
-        
+
         const actual = context.getImageData(dummyCanvas.offsetLeft, dummyCanvas.offsetTop, dummyCanvas.width, dummyCanvas.height);
-        
+
 
         expect(actual).toEqual(expected);
 
@@ -111,7 +111,7 @@ class DummyGoBoadManager {
             else
                 x2 = gx + 1 + (col - 1) * dx;
             if (col == 1 || col == ro) {
-                lwidth = lineBaseWidth *2;
+                lwidth = lineBaseWidth * 2;
 
             } else {
                 lwidth = lineBaseWidth;
@@ -167,5 +167,11 @@ class DummyGoBoadManager {
         context.fill();
     }
 
+}
+
+function createCanvas(id: string) {
+    const dummyJsdom = new JSDOM("<html><canvas id='" + id + "' style='width:20px,height:20px'></canvas></html>");
+    const dummyCanvas: HTMLCanvasElement = <HTMLCanvasElement>dummyJsdom.window.document.getElementById(id);
+    return dummyCanvas;
 }
 

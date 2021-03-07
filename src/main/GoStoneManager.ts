@@ -37,7 +37,7 @@ class PositionOnGoBoad {
  * 碁石、棋譜を管理するクラス
  * 
  */
-export class GoishiManager {
+export class GoStoneManager {
     readonly kifu: KifuPart[];
 
 
@@ -312,6 +312,7 @@ export class GoishiManager {
         this._turn = targetChakushu.color;
         this.now = targetNo - 1;
         this.clearGoishiByRo(targetChakushu.position);
+        // TODO:今の碁石の位置を消していないのでバッグってる可能性あり
 
     }
     /**

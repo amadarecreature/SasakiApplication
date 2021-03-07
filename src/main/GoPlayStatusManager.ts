@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { GoishiManager } from './GoIshiManager';
+import { GoStoneManager } from './GoStoneManager';
 
 /**
  * 対局のデータ同期を管理
@@ -43,7 +43,7 @@ export class GoPlayStatsuManager {
     }
 
     public isLoop: boolean = false;
-    public async syncLoop(interval: number, goishiManager: GoishiManager) {
+    public async syncLoop(interval: number, goishiManager: GoStoneManager) {
         if (this.isLoop) {
             console.log("syncLoop起動中");
             return;
