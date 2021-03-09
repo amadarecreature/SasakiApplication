@@ -56,6 +56,7 @@ export class GoStoneManager {
 
     private canvas!: HTMLCanvasElement;
 
+    // 次の手番(アゲハマ作業などは無視)
     private _turn: GoMoveType;
 
     public get turn(): GoMoveType {
@@ -65,23 +66,27 @@ export class GoStoneManager {
 
     // private _agehamaB: number = 0;
     // private _agehamaW: number = 0;
-    
-    
+
+
     // アゲハマ
     public get agehamaW(): number {
 
-        const list = this.kifu.filter(x=>(x.color==GoMoveType.AGEHAMA_W));
+        const list = this.kifu.filter(x => (x.color == GoMoveType.AGEHAMA_W));
         return list.length;
     }
 
     public get agehamaB(): number {
-        const list = this.kifu.filter(x=>(x.color==GoMoveType.AGEHAMA_B));
+        const list = this.kifu.filter(x => (x.color == GoMoveType.AGEHAMA_B));
         return list.length;
     }
 
 
+    public get now(): number {
+        return this._now;
+    }
 
-    private now: number = -1;
+
+    private _now: number = -1;
 
     readonly _goBoadInfo: GoBoadInfo;
 
@@ -272,7 +277,7 @@ export class GoStoneManager {
         const positionOnGoban = this.calcPositionOnGoban(new PointerPosition(mouseX, mouseY), goBoadInfo);
 
         if (this.realtimePosition[positionOnGoban.roX][positionOnGoban.roY] != GoMoveType.NONE) {
-            console.log("既に石がある。")
+            console.log("既に石がある。=>" + positionOnGoban.roX + ":" +positionOnGoban.roY)
             return true;
         }
         return false;
@@ -294,7 +299,7 @@ export class GoStoneManager {
 
         // 次を白番にする
         this._turn = GoMoveType.WHITE;
-        this.now += 1;
+        this._now += 1;
 
     }
 
@@ -305,15 +310,29 @@ export class GoStoneManager {
      * 待った
      */
     public matta() {
-        const targetNo = this.now;
-        const targetChakushu = this.kifu[targetNo];
-        this.kifu.pop();
-        // 消す対象を次の手番として設定する。
-        this._turn = targetChakushu.color;
-        this.now = targetNo - 1;
-        this.clearGoishiByRo(targetChakushu.position);
-        // TODO:今の碁石の位置を消していないのでバッグってる可能性あり
 
+
+        const targetNo = this._now;
+
+        const targetChakushu = this.kifu[targetNo];
+
+        var move;
+        // アゲハマの時だけ取った石を戻す必要がある
+        if (targetChakushu.color == GoMoveType.AGEHAMA_B || targetChakushu.color == GoMoveType.AGEHAMA_W) {
+            move = targetChakushu.color;
+        } else {
+            move = GoMoveType.NONE;
+            this._turn = targetChakushu.color;
+        }
+
+
+        // 消す対象を次の手番として設定する。(1ターン戻す)
+        this.kifu.pop();
+        // 現在ターンを戻す
+        this._now = targetNo - 1;
+        this.clearGoishiByRo(targetChakushu.position);
+        this.realtimePosition[targetChakushu.position.roX][targetChakushu.position.roY] = GoMoveType.NONE;
+        console.log("取り消し=>" + targetChakushu.position.roX + ":" + targetChakushu.position.roY);
     }
     /**
      * 碁石を消す
@@ -358,16 +377,17 @@ export class GoStoneManager {
             this.realtimePosition[positionOnGoban.roX][positionOnGoban.roY] = GoMoveType.NONE;
 
             // アゲハマを設定
-            if(resultMove==GoMoveType.BLACK){
-                this.kifu.push(new KifuPart(GoMoveType.AGEHAMA_B,positionOnGoban.roX,positionOnGoban.roY,false));
+            if (resultMove == GoMoveType.BLACK) {
+                this.kifu.push(new KifuPart(GoMoveType.AGEHAMA_B, positionOnGoban.roX, positionOnGoban.roY, false));
                 // this._agehamaB++;
             }
-            if(resultMove==GoMoveType.WHITE){
-                this.kifu.push(new KifuPart(GoMoveType.AGEHAMA_W,positionOnGoban.roX,positionOnGoban.roY,false));
+            if (resultMove == GoMoveType.WHITE) {
+                this.kifu.push(new KifuPart(GoMoveType.AGEHAMA_W, positionOnGoban.roX, positionOnGoban.roY, false));
                 // this._agehamaW++;
             }
-            
+
         }
+        this._now += 1;
         return resultMove;
     }
     /**
@@ -391,7 +411,7 @@ export class GoStoneManager {
         // console.info("positionOnGoBoad=" + positionOnGoBoad.roX + ":" + positionOnGoBoad.roY);
 
         if (this.realtimePosition[positionOnGoBoad.roX][positionOnGoBoad.roY] != GoMoveType.NONE) {
-            console.log("既に石がある。")
+            console.log("既に石がある。=>" + positionOnGoBoad.roX + ":" +positionOnGoBoad.roY)
             // this.clearGoishi(circleCenterPosition.x - (this.roWidth / 2), circleCenterPosition.y - (this.roHeight / 2));
             // this.realtimePosition[positionOnGoBoad.roX][positionOnGoBoad.roY] = GoMoveType.NONE;
             return;
@@ -401,7 +421,7 @@ export class GoStoneManager {
 
         // ターンを入れ替える
         this._turn = (nowTurn == GoMoveType.BLACK) ? GoMoveType.WHITE : GoMoveType.BLACK;
-        this.now += 1;
+        this._now += 1;
 
 
         // auClick.play();
@@ -519,4 +539,11 @@ class GoishiUtil {
         return GoishiColor.NONE;
 
     }
+}
+
+function getAgehamaColor(targetChakushu: KifuPart): GoMoveType {
+    return targetChakushu.color;
+}
+function isHandicapMove(targetChakushu: KifuPart) {
+    return targetChakushu.color == GoMoveType.OKI || targetChakushu.color == GoMoveType.OKI_WHITE;
 }
