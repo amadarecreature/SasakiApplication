@@ -10,18 +10,18 @@
         },
         {
             "type": "npm",
-            "script": "watch",
-            "group": "build",
-            "problemMatcher": [],
-            "label": "npm: watch",
-            "detail": "wabpack --watch"
-        },
-        {
-            "type": "npm",
             "script": "build_W_local",
             "group": "build",
             "problemMatcher": [],
             "label": "npm: build_W_local",
+            "detail": "webpack"
+        },
+        {
+            "type": "npm",
+            "script": "test_watch",
+            "group": "build",
+            "problemMatcher": [],
+            "label": "npm: test_watch",
             "detail": "webpack"
         },
         {
