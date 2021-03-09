@@ -5,7 +5,9 @@
     "main": "index.js",
     "scripts": {
         "lint": "tsc --noEmit",
-        "test": "jest --runInBand",
+        "test": "jest --coverage=true --verbose",
+        "test_only_changed": "jest --coverage=true --verbose --changedFilesWithAncestor",
+        "test_watch": "jest --coverage=true --verbose --watch",
         "build_W_local": "webpack",
         "build_W_prd": "webpack"
     },

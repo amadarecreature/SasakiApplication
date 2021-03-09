@@ -103,3 +103,14 @@ npm install
 ## use canvas on Ubuntu
 https://github.com/Automattic/node-canvas/wiki/Installation:-Ubuntu-and-other-Debian-based-systems
 
+
+# Test
+
+https://jestjs.io/docs/ja/cli
+
+    "--runInBand"
+    "--noStackTrace"
+    "--verbose"
+
+
+
