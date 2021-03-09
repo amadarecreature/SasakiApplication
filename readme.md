@@ -112,5 +112,8 @@ https://jestjs.io/docs/ja/cli
     "--noStackTrace"
     "--verbose"
 
+# Git
+## To set commit template
+git config commit.template .gitmessage
 
 
