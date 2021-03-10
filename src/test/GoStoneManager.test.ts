@@ -4,7 +4,7 @@ import { GoStoneManager } from "../main/GoStoneManager"
 import { JSDOM } from "jsdom";
 
 describe('GoStoneManager', () => {
-    it('着手×4 アゲハマ', () => {
+    it('着手×3 アゲハマ 着手×1', () => {
         const roSize = 5;
         const gobanTop = 10;
         const gobanLeft = 20;
@@ -75,7 +75,41 @@ describe('GoStoneManager', () => {
         expect(actualNow).toEqual(expectedNow);
 
     });
+    it('着手×4 & アゲハマ ', () => {
 
+        const roSize = 5;
+        const gobanTop = 10;
+        const gobanLeft = 20;
+
+        const goSetting = new GoBoadSetting(gobanTop, gobanLeft, 1, roSize);
+
+        // prepare
+        const dummyCanvas: HTMLCanvasElement = createCanvas("dcv1");
+
+        const dummyInstance = new GoStoneManager(dummyCanvas, goSetting, 19);
+        // set expected
+        const expected: string = "B[kl]W[ji]B[cn]W[nc]XAGW[ji]";
+        const expectedRealtimePosition: string = "B[x=2:y=13]B[x=10:y=11]W[x=13:y=2]"
+        const expectedNow : number = 4;
+
+        // execute
+        const canvas: HTMLCanvasElement = createCanvas("cv1");
+        dummyInstance.chakushu(gobanLeft + 2.5 + roSize * 10, gobanTop + 2.5 + roSize * 11);
+        dummyInstance.chakushu(gobanLeft + 2.5 + roSize * 9, gobanTop + 2.5 + roSize * 8);
+        dummyInstance.chakushu(gobanLeft + 2.5 + roSize * 2, gobanTop + 2.5 + roSize * 13);
+        dummyInstance.chakushu(gobanLeft + 2.5 + roSize * 13, gobanTop + 2.5 + roSize * 2);
+        dummyInstance.getAgehama(gobanLeft + 2.5 + roSize * 9, gobanTop + 2.5 + roSize * 8); // 白
+
+        const actualKifu = dummyInstance.kifuString;
+        const actualRealtimePosition = expectStoneFromRealTimePosition(dummyInstance.realtimePosition);
+        const actualNow = dummyInstance.now;
+
+        // check
+        expect(actualKifu).toEqual(expected);
+        expect(actualRealtimePosition).toEqual(expectedRealtimePosition);
+        expect(actualNow).toEqual(expectedNow);
+
+    });
     it('着手×4 & アゲハマ & matta ', () => {
 
         const roSize = 5;
@@ -90,7 +124,7 @@ describe('GoStoneManager', () => {
         const dummyInstance = new GoStoneManager(dummyCanvas, goSetting, 19);
         // set expected
         const expected: string = "B[kl]W[ji]B[cn]W[nc]";
-        const expectedRealtimePosition: string = "B[x=2:y=13]B[x=10:y=11]W[x=13:y=2]"
+        const expectedRealtimePosition: string = "B[x=2:y=13]W[x=9:y=8]B[x=10:y=11]W[x=13:y=2]"
         const expectedNow : number = 3;
 
         // execute
@@ -101,7 +135,6 @@ describe('GoStoneManager', () => {
         dummyInstance.chakushu(gobanLeft + 2.5 + roSize * 13, gobanTop + 2.5 + roSize * 2);
         dummyInstance.getAgehama(gobanLeft + 2.5 + roSize * 9, gobanTop + 2.5 + roSize * 8); // 白
         dummyInstance.matta();
-        // dummyInstance.chakushu(gobanLeft + 2.5 + roSize * 3, gobanTop + 2.5 + roSize * 4);
 
         const actualKifu = dummyInstance.kifuString;
         const actualRealtimePosition = expectStoneFromRealTimePosition(dummyInstance.realtimePosition);
@@ -113,7 +146,7 @@ describe('GoStoneManager', () => {
         expect(actualNow).toEqual(expectedNow);
 
     });
-    it('着手×4 & アゲハマ & matta &再着手', () => {
+    it('着手×4 & アゲハマ & 再着手', () => {
 
         const roSize = 5;
         const gobanTop = 10;
@@ -126,9 +159,9 @@ describe('GoStoneManager', () => {
 
         const dummyInstance = new GoStoneManager(dummyCanvas, goSetting, 19);
         // set expected
-        const expected: string = "B[kl]W[ji]B[dn]W[nc]B[ji]";
+        const expected: string = "B[kl]W[ji]B[dn]W[nc]XAGW[ji]B[ji]";
         const expectedRealtimePosition: string = "B[x=3:y=13]B[x=9:y=8]B[x=10:y=11]W[x=13:y=2]"
-        const expectedNow : number = 4;
+        const expectedNow : number = 5;
 
         // execute
         const canvas: HTMLCanvasElement = createCanvas("cv1");
@@ -137,7 +170,7 @@ describe('GoStoneManager', () => {
         dummyInstance.chakushu(gobanLeft + 2.5 + roSize * 3, gobanTop + 2.5 + roSize * 13);
         dummyInstance.chakushu(gobanLeft + 2.5 + roSize * 13, gobanTop + 2.5 + roSize * 2);
         dummyInstance.getAgehama(gobanLeft + 2.5 + roSize * 9, gobanTop + 2.5 + roSize * 8); // 白
-        dummyInstance.matta();
+        // dummyInstance.matta();
         dummyInstance.chakushu(gobanLeft + 2.5 + roSize * 9, gobanTop + 2.5 + roSize * 8); // 黒
 
         // dummyInstance.chakushu(gobanLeft + 2.5 + roSize * 3, gobanTop + 2.5 + roSize * 4);
