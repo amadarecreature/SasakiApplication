@@ -337,7 +337,7 @@ export class GoStoneManager {
             // アゲハマターンでなければ、次の着手を前着手の色に戻す。
             move = GoMoveType.NONE;
             this._turn = targetChakushu.color;
-            this.clearGoishiByRo(targetChakushu.position);
+            this.clearStoneByRo(targetChakushu.position);
         }
 
 
@@ -355,7 +355,7 @@ export class GoStoneManager {
      * ※棋譜関連なし
      * @param positionOnGoban 路上の位置
      */
-    private clearGoishiByRo(positionOnGoban: PositionOnGoBoad) {
+    private clearStoneByRo(positionOnGoban: PositionOnGoBoad) {
         // 碁石の中心位置を計算する。
         const circleCenterPosition = this.calcCircleCenterPosition(this._goBoadInfo, positionOnGoban);
         this.clearGoishi(circleCenterPosition.x - (this.roWidth / 2), circleCenterPosition.y - (this.roHeight / 2));
@@ -390,7 +390,7 @@ export class GoStoneManager {
         var resultMove = GoMoveType.NONE;
 
         if (this.isDuplicatePosition(mouseX, mouseY, this._goBoadInfo)) {
-            this.clearGoishiByRo(positionOnGoban);
+            this.clearStoneByRo(positionOnGoban);
 
             // とった石
             resultMove = this.realtimePosition[positionOnGoban.roX][positionOnGoban.roY];
