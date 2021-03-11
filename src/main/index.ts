@@ -186,7 +186,7 @@ class Main {
         this.kifuLogger.log(this.gim.kifuString);
         this.statusManager.update(this.gim.kifuString);
         const spnTeban: HTMLSpanElement = <HTMLSpanElement>document.getElementById("spnTeban");
-        spnTeban.innerHTML = this.gim.turn;
+        spnTeban.innerHTML = this.gim.nextTurn;
     }
     /**
      * 新規表示
