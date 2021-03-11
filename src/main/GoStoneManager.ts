@@ -57,10 +57,10 @@ export class GoStoneManager {
     private canvas!: HTMLCanvasElement;
 
     // 次の手番(アゲハマ作業などは無視)
-    private _turn: GoMoveType;
+    private _nextTurn: GoMoveType;
 
-    public get turn(): GoMoveType {
-        return this._turn;
+    public get nextTurn(): GoMoveType {
+        return this._nextTurn;
     }
 
 
@@ -81,12 +81,16 @@ export class GoStoneManager {
     }
 
 
-    public get now(): number {
-        return this._now;
+    /**
+     * Gets now count
+     * 今の棋譜の位置
+     */
+    public get nowCount(): number {
+        return this._nowCount;
     }
 
 
-    private _now: number = -1;
+    private _nowCount: number = -1;
 
     readonly _goBoadInfo: GoBoadInfo;
 
@@ -108,7 +112,7 @@ export class GoStoneManager {
 
         this.roWidth = goBoadSetting.roHW;
         this.roHeight = goBoadSetting.roHW;
-        this._turn = GoMoveType.BLACK;
+        this._nextTurn = GoMoveType.BLACK;
 
         this.roCount = roCount;
 
@@ -298,8 +302,8 @@ export class GoStoneManager {
         this.kifu.push(new KifuPart(GoMoveType.BLACK, positionOnBoad.roX, positionOnBoad.roY, false));
 
         // 次を白番にする
-        this._turn = GoMoveType.WHITE;
-        this._now += 1;
+        this._nextTurn = GoMoveType.WHITE;
+        this._nowCount += 1;
 
     }
 
@@ -314,38 +318,48 @@ export class GoStoneManager {
 
         console.log("before:kifu:" + this.kifuString);
 
-        const targetNo = this._now;
+        const targetNo = this._nowCount;
 
+        // 待ったの対象となっている着手
         const targetChakushu = this.kifu[targetNo];
 
+        const beforeNextTurn = this._nextTurn;
+
         var move;
+        var afterNextTurn;
         // アゲハマの時だけ取った石を戻す必要がある
         if (targetChakushu.color == GoMoveType.AGEHAMA_B) {
             move = GoMoveType.BLACK;
             const position = targetChakushu.position;
             const kifu = new KifuPart(move, position.roX, position.roY);
-
+            afterNextTurn = beforeNextTurn;
             this.drawStoneFromKifu(kifu);
         } else if (targetChakushu.color == GoMoveType.AGEHAMA_W) {
             move = GoMoveType.WHITE;
             const position = targetChakushu.position;
             const kifu = new KifuPart(move, position.roX, position.roY);
 
+            // 次の着手は変えない
+            afterNextTurn = beforeNextTurn;
+
             this.drawStoneFromKifu(kifu);
 
         } else {
             // アゲハマターンでなければ、次の着手を前着手の色に戻す。
+            afterNextTurn = targetChakushu.color;
+            // クリアする
             move = GoMoveType.NONE;
-            this._turn = targetChakushu.color;
             this.clearStoneByRo(targetChakushu.position);
         }
-
 
         // 消す対象を次の手番として設定する。(1ターン戻す)
         this.kifu.pop();
         // 現在ターンを戻す
-        this._now = targetNo - 1;
+        this._nowCount = targetNo - 1;
+        // 配置を登録
         this.realtimePosition[targetChakushu.position.roX][targetChakushu.position.roY] = move;
+
+        this._nextTurn = afterNextTurn;
 
         console.log("after:kifu:" + this.kifuString);
         console.log("取り消し=>" + targetChakushu.position.roX + ":" + targetChakushu.position.roY);
@@ -409,7 +423,7 @@ export class GoStoneManager {
             }
 
         }
-        this._now += 1;
+        this._nowCount += 1;
         return resultMove;
     }
     /**
@@ -419,9 +433,9 @@ export class GoStoneManager {
      */
     public chakushu(mouseX: number, mouseY: number) {
 
-        console.info("click position=" + mouseX + ":" + mouseY);
+        console.debug("click position=" + mouseX + ":" + mouseY);
 
-        const nowTurn = this._turn;
+        const nowTurn = this._nextTurn;
 
         const positionOnGoBoad = this.calcPositionOnGoban(new PointerPosition(mouseX, mouseY), this._goBoadInfo);
 
@@ -444,8 +458,8 @@ export class GoStoneManager {
         // this.registerKifu(nowTurn, positionOnGoBoad);
 
         // ターンを入れ替える
-        this._turn = (nowTurn == GoMoveType.BLACK) ? GoMoveType.WHITE : GoMoveType.BLACK;
-        this._now += 1;
+        this._nextTurn = (nowTurn == GoMoveType.BLACK) ? GoMoveType.WHITE : GoMoveType.BLACK;
+        this._nowCount += 1;
 
 
     }
