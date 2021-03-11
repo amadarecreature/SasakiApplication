@@ -6,6 +6,7 @@
     <title>Instruction Go Sample</title>
     <script src="js/index.bundle.js"></script>
     <link rel="stylesheet" type="text/css" href="css/index.css" />
+    <link rel="stylesheet" type="text/css" href="css/parts.css" />
 </head>
 
 <body>
@@ -72,12 +73,20 @@
                         <div class="enemy_info">
                             <label>アゲハマ(黒) : </label><span id="spn_agehama_B"></span>
                         </div>
-                        <div class="radio_box">
+                        <div>
+                            <label for="agehama_switch" class="agehama_swich_parts">アゲハマモード</label>
+                            <div class="org_switch_area agehama_swich_parts">
+                                <input type="checkbox" id="agehama_switch">
+                                <label for="agehama_switch"><span></span></label>
+                                <div class="switch_image"></div>
+                            </div>
+                        </div>
+                        <!-- <div class="radio_box">
                             <input type="radio" id="rdo_agehamaMode_off" name="rdoAgehamaMode" checked />
                             <label for="rdo_agehamaMode_off">なし</label>
                             <input type="radio" id="rdo_agehamaMode_on" name="rdoAgehamaMode" />
                             <label for="rdo_agehamaMode_on">アゲハマモードON</label>
-                        </div>
+                        </div> -->
                     </div>
                     <div class="play_controller">
                         <div class="turn_controller">
