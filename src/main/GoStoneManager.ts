@@ -277,7 +277,7 @@ export class GoStoneManager {
         const positionOnGoban = this.calcPositionOnGoban(new PointerPosition(mouseX, mouseY), goBoadInfo);
 
         if (this.realtimePosition[positionOnGoban.roX][positionOnGoban.roY] != GoMoveType.NONE) {
-            console.log("既に石がある。=>" + positionOnGoban.roX + ":" +positionOnGoban.roY)
+            console.log("既に石がある。=>" + positionOnGoban.roX + ":" + positionOnGoban.roY)
             return true;
         }
         return false;
@@ -331,7 +331,7 @@ export class GoStoneManager {
         // 現在ターンを戻す
         this._now = targetNo - 1;
         this.clearGoishiByRo(targetChakushu.position);
-        this.realtimePosition[targetChakushu.position.roX][targetChakushu.position.roY] = GoMoveType.NONE;
+        this.realtimePosition[targetChakushu.position.roX][targetChakushu.position.roY] = move;
         console.log("取り消し=>" + targetChakushu.position.roX + ":" + targetChakushu.position.roY);
     }
     /**
@@ -411,7 +411,7 @@ export class GoStoneManager {
         // console.info("positionOnGoBoad=" + positionOnGoBoad.roX + ":" + positionOnGoBoad.roY);
 
         if (this.realtimePosition[positionOnGoBoad.roX][positionOnGoBoad.roY] != GoMoveType.NONE) {
-            console.log("既に石がある。=>" + positionOnGoBoad.roX + ":" +positionOnGoBoad.roY)
+            console.log("既に石がある。=>" + positionOnGoBoad.roX + ":" + positionOnGoBoad.roY)
             // this.clearGoishi(circleCenterPosition.x - (this.roWidth / 2), circleCenterPosition.y - (this.roHeight / 2));
             // this.realtimePosition[positionOnGoBoad.roX][positionOnGoBoad.roY] = GoMoveType.NONE;
             return;
