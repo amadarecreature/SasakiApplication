@@ -46,9 +46,10 @@ class Main {
 
     // アゲハマモード
     readonly rdo_agehamaMode_on: HTMLInputElement = <HTMLInputElement>document.getElementById("rdo_agehamaMode_on");
+    readonly chk_agehama_switch: HTMLInputElement = <HTMLInputElement>document.getElementById("agehama_switch");
 
-    readonly spn_agehama_W:HTMLSpanElement = <HTMLSpanElement>document.getElementById("spn_agehama_W");
-    readonly spn_agehama_B:HTMLSpanElement = <HTMLSpanElement>document.getElementById("spn_agehama_B");
+    readonly spn_agehama_W: HTMLSpanElement = <HTMLSpanElement>document.getElementById("spn_agehama_W");
+    readonly spn_agehama_B: HTMLSpanElement = <HTMLSpanElement>document.getElementById("spn_agehama_B");
 
     // 自動同期ボタン
     readonly btn_auto_sync_start: HTMLButtonElement = <HTMLButtonElement>document.getElementById("btn_auto_sync_start");
@@ -116,7 +117,7 @@ class Main {
         this.btn_turn_forward.addEventListener("click", (e: Event) => this.turnForward(e));
 
 
-        
+
 
 
         this.btn_auto_sync_start.addEventListener("click", (e: Event) => this.autoSyncStart(e));
@@ -172,7 +173,8 @@ class Main {
         }
 
         // アゲハマ取るモード
-        if (this.rdo_agehamaMode_on.checked) {
+        // if (this.rdo_agehamaMode_on.checked) {
+        if (this.chk_agehama_switch.checked) {
             let targetMove = this.gim.getAgehama(e.offsetX, e.offsetY);
             this.spn_agehama_B.innerText = this.gim.agehamaB + "個";
             this.spn_agehama_W.innerText = this.gim.agehamaW + "個";
