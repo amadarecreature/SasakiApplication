@@ -23,8 +23,7 @@ export class GoBoadManager {
 
         //カンバスが使用できるかチェック
         if (!canvas.getContext) {
-            console.log('[Roulette.constructor] カンバスが使用できません');
-            // this.roCount = 0;
+            console.log('カンバスが使用できません');
             return;
         }
 
@@ -36,7 +35,7 @@ export class GoBoadManager {
         this.context.font = "bold 15px '游ゴシック'";
         this.context.textAlign = 'center';
         this.context.shadowBlur = 2;
-        this.drawBoard(5, this.canvas, this.context, goBoadInfo);
+        this.drawBoard(5, this.canvas, goBoadInfo);
     }
 
     /**
@@ -45,22 +44,22 @@ export class GoBoadManager {
      * @param context 描画先のコンテキストを指定します。
      * @since 0.1
      */
-    private drawBoard(shadow: number, canvas: HTMLCanvasElement, context: CanvasRenderingContext2D, goBoadInfo: GoBoadInfo) {
+    private drawBoard(shadow: number, canvas: HTMLCanvasElement, goBoadInfo: GoBoadInfo) {
+
+        const context: CanvasRenderingContext2D = canvas.getContext("2d")!;
 
         // canvasのサイズ変更(サイズ変更すると描画内容が消えるので先に変更)
         canvas.width = goBoadInfo.width + 20;
         canvas.height = goBoadInfo.height + 20;
 
-        console.log("canvas(inner):", canvas.width, canvas.height);
-
         // 碁盤の影
-        this.drowShadow(this.context, goBoadInfo.left, goBoadInfo.top, goBoadInfo.width, shadow, goBoadInfo.height);
+        this.drowShadow(context, goBoadInfo.left, goBoadInfo.top, goBoadInfo.width, shadow, goBoadInfo.height);
         // 碁盤
-        this.drowGoban(this.context, goBoadInfo.left, goBoadInfo.top, goBoadInfo.width, goBoadInfo.height);
+        this.drowGoban(context, goBoadInfo.left, goBoadInfo.top, goBoadInfo.width, goBoadInfo.height);
         // 木目
         // drawWood(x, y, width, height, context);
         // 格子
-        this.drowKoushi(this.context, goBoadInfo, goBoadInfo.areaLeft, goBoadInfo.roWidth, goBoadInfo.areaWidth, goBoadInfo.roHeight, goBoadInfo.areaHeight);
+        this.drowKoushi(context, goBoadInfo, goBoadInfo.areaLeft, goBoadInfo.roWidth, goBoadInfo.areaWidth, goBoadInfo.roHeight, goBoadInfo.areaHeight);
 
     }
 
@@ -93,8 +92,8 @@ export class GoBoadManager {
             context.beginPath();
             context.rect(startX1, startY2, lineWidth, gheight);
             context.fill();
-            // console.log("格子横:" + col, x2);
         }
+
         // （横の格子線）
         let y1, lineWidth2;
         const x1 = goBoadInfo.areaLeft;
@@ -110,10 +109,8 @@ export class GoBoadManager {
                 lineWidth2 = lineBaseWidth;
             }
             context.beginPath();
-
             context.rect(x1, y1, gwidth, lineWidth2);
             context.fill();
-            // console.log("格子縦:" + row, y1);
         }
 
         // 星の点

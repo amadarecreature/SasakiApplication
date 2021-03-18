@@ -18,7 +18,8 @@ describe('GoStoneManager', () => {
         const expRealtimePosition: string = "B[x=2:y=13]B[x=10:y=11]W[x=13:y=2]"
         const expNowCount: number = 4;
         const expNextTurn: GoMoveType = GoMoveType.BLACK;
-
+        const expAgehamaB = 0;
+        const expAgehamaW = 1;
         // execute
         dummyInstance.chakushu(gobanLeft + 2.5 + roSize * 10, gobanTop + 2.5 + roSize * 11);
         dummyInstance.chakushu(gobanLeft + 2.5 + roSize * 9, gobanTop + 2.5 + roSize * 8);
@@ -26,16 +27,14 @@ describe('GoStoneManager', () => {
         dummyInstance.getAgehama(gobanLeft + 2.5 + roSize * 9, gobanTop + 2.5 + roSize * 8); // 白
         dummyInstance.chakushu(gobanLeft + 2.5 + roSize * 13, gobanTop + 2.5 + roSize * 2);
 
-        const actKifu = dummyInstance.kifuString;
-        const actRealtimePosition = expectStoneFromRealTimePosition(dummyInstance.realtimePosition);
-        const actNowCount = dummyInstance.nowCount;
-        const actNextTurn = dummyInstance.nextTurn;
-
         // check
-        expect(actKifu).toEqual(expKifu);
-        expect(actRealtimePosition).toEqual(expRealtimePosition);
-        expect(actNowCount).toEqual(expNowCount);
-        expect(actNextTurn).toEqual(expNextTurn);
+        expect(dummyInstance.kifuString).toEqual(expKifu);
+        const actualRealtimePosition = expectStoneFromRealTimePosition(dummyInstance.realtimePosition);
+        expect(actualRealtimePosition).toEqual(expRealtimePosition);
+        expect(dummyInstance.nowCount).toEqual(expNowCount);
+        expect(dummyInstance.nextTurn).toEqual(expNextTurn);
+        expect(dummyInstance.agehamaB).toEqual(expAgehamaB);
+        expect(dummyInstance.agehamaW).toEqual(expAgehamaW);
 
 
     });
@@ -49,9 +48,11 @@ describe('GoStoneManager', () => {
         const dummyInstance = new GoStoneManager(dummyCanvas, goSetting, 19);
         // set expected
         const expectedKifu: string = "B[kl]W[ji]B[cn]";
-        const expectedRealtimePosition: string = "B[x=2:y=13]W[x=9:y=8]B[x=10:y=11]"
+        const expRealtimePosition: string = "B[x=2:y=13]W[x=9:y=8]B[x=10:y=11]"
         const expNowCount: number = 2;
         const expNextTurn: GoMoveType = GoMoveType.WHITE;
+        const expAgehamaB = 0;
+        const expAgehamaW = 0;
 
         // execute
         const canvas: HTMLCanvasElement = createCanvas("cv1");
@@ -61,16 +62,14 @@ describe('GoStoneManager', () => {
         dummyInstance.chakushu(gobanLeft + 2.5 + roSize * 13, gobanTop + 2.5 + roSize * 2);
         dummyInstance.matta();
 
-        const actualKifu = dummyInstance.kifuString;
-        const actualRealtimePosition = expectStoneFromRealTimePosition(dummyInstance.realtimePosition);
-        const actualNow = dummyInstance.nowCount;
-        const actNextTurn = dummyInstance.nextTurn;
-
         // check
-        expect(actualKifu).toEqual(expectedKifu);
-        expect(actualRealtimePosition).toEqual(expectedRealtimePosition);
-        expect(actualNow).toEqual(expNowCount);
-        expect(actNextTurn).toEqual(expNextTurn);
+        expect(dummyInstance.kifuString).toEqual(expectedKifu);
+        const actualRealtimePosition = expectStoneFromRealTimePosition(dummyInstance.realtimePosition);
+        expect(actualRealtimePosition).toEqual(expRealtimePosition);
+        expect(dummyInstance.nowCount).toEqual(expNowCount);
+        expect(dummyInstance.nextTurn).toEqual(expNextTurn);
+        expect(dummyInstance.agehamaB).toEqual(expAgehamaB);
+        expect(dummyInstance.agehamaW).toEqual(expAgehamaW);
 
     });
     it('着手×4 & アゲハマ ', () => {
@@ -83,10 +82,12 @@ describe('GoStoneManager', () => {
         const dummyInstance = new GoStoneManager(dummyCanvas, goSetting, 19);
 
         // set expected
-        const expected: string = "B[kl]W[ji]B[cn]W[nc]XAGW[ji]";
-        const expectedRealtimePosition: string = "B[x=2:y=13]B[x=10:y=11]W[x=13:y=2]"
+        const expected: string = "B[kl]W[ji]B[cn]W[nc]XAGB[kl]";
+        const expRealtimePosition: string = "B[x=2:y=13]W[x=9:y=8]W[x=13:y=2]"
         const expNowCount: number = 4;
         const expNextTurn: GoMoveType = GoMoveType.BLACK;
+        const expAgehamaB = 1;
+        const expAgehamaW = 0;
 
         // execute
         const canvas: HTMLCanvasElement = createCanvas("cv1");
@@ -94,18 +95,16 @@ describe('GoStoneManager', () => {
         dummyInstance.chakushu(gobanLeft + 2.5 + roSize * 9, gobanTop + 2.5 + roSize * 8);
         dummyInstance.chakushu(gobanLeft + 2.5 + roSize * 2, gobanTop + 2.5 + roSize * 13);
         dummyInstance.chakushu(gobanLeft + 2.5 + roSize * 13, gobanTop + 2.5 + roSize * 2);
-        dummyInstance.getAgehama(gobanLeft + 2.5 + roSize * 9, gobanTop + 2.5 + roSize * 8); // 白
-
-        const actualKifu = dummyInstance.kifuString;
-        const actualRealtimePosition = expectStoneFromRealTimePosition(dummyInstance.realtimePosition);
-        const actualNow = dummyInstance.nowCount;
-        const actNextTurn = dummyInstance.nextTurn;
+        dummyInstance.getAgehama(gobanLeft + 2.5 + roSize * 10, gobanTop + 2.5 + roSize * 11);
 
         // check
-        expect(actualKifu).toEqual(expected);
-        expect(actualRealtimePosition).toEqual(expectedRealtimePosition);
-        expect(actualNow).toEqual(expNowCount);
-        expect(actNextTurn).toEqual(expNextTurn);
+        expect(dummyInstance.kifuString).toEqual(expected);
+        const actualRealtimePosition = expectStoneFromRealTimePosition(dummyInstance.realtimePosition);
+        expect(actualRealtimePosition).toEqual(expRealtimePosition);
+        expect(dummyInstance.nowCount).toEqual(expNowCount);
+        expect(dummyInstance.nextTurn).toEqual(expNextTurn);
+        expect(dummyInstance.agehamaB).toEqual(expAgehamaB);
+        expect(dummyInstance.agehamaW).toEqual(expAgehamaW);
 
     });
     it('着手×4 & アゲハマ & matta ', () => {
@@ -119,9 +118,11 @@ describe('GoStoneManager', () => {
 
         // set expected
         const expected: string = "B[kl]W[ji]B[cn]W[nc]";
-        const expectedRealtimePosition: string = "B[x=2:y=13]W[x=9:y=8]B[x=10:y=11]W[x=13:y=2]"
+        const expRealtimePosition: string = "B[x=2:y=13]W[x=9:y=8]B[x=10:y=11]W[x=13:y=2]"
         const expNowCount: number = 3;
         const expNextTurn: GoMoveType = GoMoveType.BLACK;
+        const expAgehamaB = 0;
+        const expAgehamaW = 0;
 
         // execute
         const canvas: HTMLCanvasElement = createCanvas("cv1");
@@ -132,16 +133,14 @@ describe('GoStoneManager', () => {
         dummyInstance.getAgehama(gobanLeft + 2.5 + roSize * 9, gobanTop + 2.5 + roSize * 8); // 白
         dummyInstance.matta();
 
-        const actualKifu = dummyInstance.kifuString;
-        const actualRealtimePosition = expectStoneFromRealTimePosition(dummyInstance.realtimePosition);
-        const actualNow = dummyInstance.nowCount;
-        const actNextTurn = dummyInstance.nextTurn;
-
         // check
-        expect(actualKifu).toEqual(expected);
-        expect(actualRealtimePosition).toEqual(expectedRealtimePosition);
-        expect(actualNow).toEqual(expNowCount);
-        expect(actNextTurn).toEqual(expNextTurn);
+        expect(dummyInstance.kifuString).toEqual(expected);
+        const actualRealtimePosition = expectStoneFromRealTimePosition(dummyInstance.realtimePosition);
+        expect(actualRealtimePosition).toEqual(expRealtimePosition);
+        expect(dummyInstance.nowCount).toEqual(expNowCount);
+        expect(dummyInstance.nextTurn).toEqual(expNextTurn);
+        expect(dummyInstance.agehamaB).toEqual(expAgehamaB);
+        expect(dummyInstance.agehamaW).toEqual(expAgehamaW);
 
     });
     it('着手×4 & アゲハマ & 再着手', () => {
@@ -155,9 +154,11 @@ describe('GoStoneManager', () => {
 
         // set expected
         const expected: string = "B[kl]W[ji]B[dn]W[nc]XAGW[ji]B[ji]";
-        const expectedRealtimePosition: string = "B[x=3:y=13]B[x=9:y=8]B[x=10:y=11]W[x=13:y=2]"
+        const expRealtimePosition: string = "B[x=3:y=13]B[x=9:y=8]B[x=10:y=11]W[x=13:y=2]"
         const expNowCount: number = 5;
         const expNextTurn: GoMoveType = GoMoveType.WHITE;
+        const expAgehamaB = 0;
+        const expAgehamaW = 1;
 
         // execute
         const canvas: HTMLCanvasElement = createCanvas("cv1");
@@ -168,16 +169,14 @@ describe('GoStoneManager', () => {
         dummyInstance.getAgehama(gobanLeft + 2.5 + roSize * 9, gobanTop + 2.5 + roSize * 8); // 白
         dummyInstance.chakushu(gobanLeft + 2.5 + roSize * 9, gobanTop + 2.5 + roSize * 8); // 黒
 
-        const actualKifu = dummyInstance.kifuString;
-        const actualRealtimePosition = expectStoneFromRealTimePosition(dummyInstance.realtimePosition);
-        const actNowCount = dummyInstance.nowCount;
-        const actNextTurn = dummyInstance.nextTurn;
-
         // check
-        expect(actualKifu).toEqual(expected);
-        expect(actualRealtimePosition).toEqual(expectedRealtimePosition);
-        expect(actNowCount).toEqual(expNowCount);
-        expect(actNextTurn).toEqual(expNextTurn);
+        expect(dummyInstance.kifuString).toEqual(expected);
+        const actualRealtimePosition = expectStoneFromRealTimePosition(dummyInstance.realtimePosition);
+        expect(actualRealtimePosition).toEqual(expRealtimePosition);
+        expect(dummyInstance.nowCount).toEqual(expNowCount);
+        expect(dummyInstance.nextTurn).toEqual(expNextTurn);
+        expect(dummyInstance.agehamaB).toEqual(expAgehamaB);
+        expect(dummyInstance.agehamaW).toEqual(expAgehamaW);
 
     });
     it('着手×4 & アゲハマ & matta & matta ', () => {
@@ -192,9 +191,11 @@ describe('GoStoneManager', () => {
         const dummyInstance = new GoStoneManager(dummyCanvas, goSetting, 19);
         // set expected
         const expected: string = "B[kl]W[ji]B[cn]";
-        const expectedRealtimePosition: string = "B[x=2:y=13]W[x=9:y=8]B[x=10:y=11]"
+        const expRealtimePosition: string = "B[x=2:y=13]W[x=9:y=8]B[x=10:y=11]"
         const expNowCount: number = 2;
         const expNextTurn: GoMoveType = GoMoveType.WHITE;
+        const expAgehamaB = 0;
+        const expAgehamaW = 1;
 
         // execute
         const canvas: HTMLCanvasElement = createCanvas("cv1");
@@ -206,16 +207,14 @@ describe('GoStoneManager', () => {
         dummyInstance.matta();
         dummyInstance.matta();
 
-        const actualKifu = dummyInstance.kifuString;
-        const actualRealtimePosition = expectStoneFromRealTimePosition(dummyInstance.realtimePosition);
-        const actualNow = dummyInstance.nowCount;
-        const actNextTurn = dummyInstance.nextTurn;
-
         // check
-        expect(actualKifu).toEqual(expected);
-        expect(actualRealtimePosition).toEqual(expectedRealtimePosition);
-        expect(actualNow).toEqual(expNowCount);
-        expect(actNextTurn).toEqual(expNextTurn);
+        expect(dummyInstance.kifuString).toEqual(expected);
+        const actualRealtimePosition = expectStoneFromRealTimePosition(dummyInstance.realtimePosition);
+        expect(actualRealtimePosition).toEqual(expRealtimePosition);
+        expect(dummyInstance.nowCount).toEqual(expNowCount);
+        expect(dummyInstance.nextTurn).toEqual(expNextTurn);
+        expect(dummyInstance.agehamaB).toEqual(expAgehamaB);
+        expect(dummyInstance.agehamaW).toEqual(expAgehamaW);
 
     });
     it('着手×4 & アゲハマ & matta & matta & 着手', () => {
@@ -229,9 +228,11 @@ describe('GoStoneManager', () => {
         const dummyInstance = new GoStoneManager(dummyCanvas, goSetting, 19);
         // set expected
         const expected: string = "B[kl]W[ji]B[cn]W[he]";
-        const expectedRealtimePosition: string = "B[x=2:y=13]W[x=7:y=4]W[x=9:y=8]B[x=10:y=11]"
+        const expRealtimePosition: string = "B[x=2:y=13]W[x=7:y=4]W[x=9:y=8]B[x=10:y=11]"
         const expNowCount: number = 3;
         const expNextTurn: GoMoveType = GoMoveType.BLACK;
+        const expAgehamaB = 0;
+        const expAgehamaW = 1;
 
         // execute
         const canvas: HTMLCanvasElement = createCanvas("cv1");
@@ -244,19 +245,56 @@ describe('GoStoneManager', () => {
         dummyInstance.matta();
         dummyInstance.chakushu(gobanLeft + 2.5 + roSize * 7, gobanTop + 2.5 + roSize * 4);
 
-        const actualKifu = dummyInstance.kifuString;
-        const actualRealtimePosition = expectStoneFromRealTimePosition(dummyInstance.realtimePosition);
-        const actualNow = dummyInstance.nowCount;
-        const actNextTurn = dummyInstance.nextTurn;
-
         // check
-        expect(actualKifu).toEqual(expected);
-        expect(actualRealtimePosition).toEqual(expectedRealtimePosition);
-        expect(actualNow).toEqual(expNowCount);
-        expect(actNextTurn).toEqual(expNextTurn);
+        expect(dummyInstance.kifuString).toEqual(expected);
+        const actualRealtimePosition = expectStoneFromRealTimePosition(dummyInstance.realtimePosition);
+        expect(actualRealtimePosition).toEqual(expRealtimePosition);
+        expect(dummyInstance.nowCount).toEqual(expNowCount);
+        expect(dummyInstance.nextTurn).toEqual(expNextTurn);
+        expect(dummyInstance.agehamaB).toEqual(expAgehamaB);
+        expect(dummyInstance.agehamaW).toEqual(expAgehamaW);
 
     });
+    it('着手×4 & アゲハマ & アゲハマ & アゲハマミス(無いところ) & matta & 着手', () => {
 
+        const roSize = 5; const gobanTop = 10; const gobanLeft = 20;
+        const goSetting = new GoBoadSetting(gobanTop, gobanLeft, 1, roSize);
+
+        // prepare
+        const dummyCanvas: HTMLCanvasElement = createCanvas("dcv1");
+
+        const dummyInstance = new GoStoneManager(dummyCanvas, goSetting, 19);
+        // set expected
+        const expected: string = "B[kl]W[ji]B[cn]W[nc]XAGW[ji]B[he]";
+        const expRealtimePosition: string = "B[x=2:y=13]B[x=7:y=4]B[x=10:y=11]W[x=13:y=2]"
+        const expNowCount: number = 5;
+        const expNextTurn: GoMoveType = GoMoveType.WHITE;
+        const expAgehamaB = 0;
+        const expAgehamaW = 1;
+
+        // execute
+        const canvas: HTMLCanvasElement = createCanvas("cv1");
+        dummyInstance.chakushu(gobanLeft + 2.5 + roSize * 10, gobanTop + 2.5 + roSize * 11);
+        dummyInstance.chakushu(gobanLeft + 2.5 + roSize * 9, gobanTop + 2.5 + roSize * 8);
+        dummyInstance.chakushu(gobanLeft + 2.5 + roSize * 2, gobanTop + 2.5 + roSize * 13);
+        dummyInstance.chakushu(gobanLeft + 2.5 + roSize * 13, gobanTop + 2.5 + roSize * 2);
+        dummyInstance.getAgehama(gobanLeft + 2.5 + roSize * 9, gobanTop + 2.5 + roSize * 8); // 白
+        dummyInstance.getAgehama(gobanLeft + 2.5 + roSize * 13, gobanTop + 2.5 + roSize * 2); // 白
+        dummyInstance.getAgehama(gobanLeft + 2.5 + roSize * 13, gobanTop + 2.5 + roSize * 2); // 白
+        dummyInstance.matta();
+        dummyInstance.chakushu(gobanLeft + 2.5 + roSize * 7, gobanTop + 2.5 + roSize * 4);
+
+
+        // check
+        expect(dummyInstance.kifuString).toEqual(expected);
+        const actualRealtimePosition = expectStoneFromRealTimePosition(dummyInstance.realtimePosition);
+        expect(actualRealtimePosition).toEqual(expRealtimePosition);
+        expect(dummyInstance.nowCount).toEqual(expNowCount);
+        expect(dummyInstance.nextTurn).toEqual(expNextTurn);
+        expect(dummyInstance.agehamaB).toEqual(expAgehamaB);
+        expect(dummyInstance.agehamaW).toEqual(expAgehamaW);
+
+    });
     // 最後のカッコ
 });
 
