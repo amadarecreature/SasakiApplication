@@ -1,5 +1,5 @@
-import { GoBoadInfo, GoBoadSetting } from "../main/GoSetting";
-import { GoBoadManager } from "../main/GoBoardManager";
+import { GoBoadInfo, GoBoadSetting } from "../../main/ts/GoSetting";
+import { GoBoadManager } from "../../main/ts/GoBoardManager";
 import { JSDOM } from "jsdom";
 
 

@@ -30,11 +30,9 @@ class Main {
     readonly sampleCanvasGoboad: HTMLCanvasElement = <HTMLCanvasElement>document.getElementById("sample_goboad_canvas");
     readonly sampleCanvasGoishi: HTMLCanvasElement = <HTMLCanvasElement>document.getElementById("sample_goishi_canvas");
 
-
     readonly lblLog: HTMLLabelElement = <HTMLLabelElement>document.getElementById("log");
     readonly inpKifu: HTMLInputElement = <HTMLInputElement>document.getElementById("kifu");
     readonly inpSyncKey: HTMLInputElement = <HTMLInputElement>document.getElementById("synckey");
-
 
     readonly rdoDrawMode: HTMLInputElement = <HTMLInputElement>document.getElementById("rdoDrawMode_on");
     readonly rdoHandiCapStoneMode: HTMLInputElement = <HTMLInputElement>document.getElementById("rdoHandicapMode_on");
@@ -42,7 +40,6 @@ class Main {
     readonly slRosu: HTMLSelectElement = <HTMLSelectElement>document.getElementById("sl_rosu");
     readonly btnNew: HTMLButtonElement = <HTMLButtonElement>document.getElementById("btn_new");
     readonly btn_candidate_clear: HTMLButtonElement = <HTMLButtonElement>document.getElementById("btn_candidate_clear");
-
 
     // アゲハマモード
     readonly rdo_agehamaMode_on: HTMLInputElement = <HTMLInputElement>document.getElementById("rdo_agehamaMode_on");

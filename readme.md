@@ -26,6 +26,13 @@ docker run --name InstructionGo -v /{furllPath}InstructionGo/docs/sample:/usr/sh
 
  ```
 
+## SampleDemo local 2
+
+```
+ npx http-server
+
+# access http://localhost:8080/docs/sample/
+```
 ## Usage
 
 1. A

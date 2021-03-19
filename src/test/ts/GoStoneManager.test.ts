@@ -1,6 +1,5 @@
-import { GoBoadInfo, GoBoadSetting, GoMoveType } from "../main/GoSetting";
-import { GoBoadManager } from "../main/GoBoardManager";
-import { GoStoneManager } from "../main/GoStoneManager"
+import { GoBoadSetting, GoMoveType } from "../../main/ts/GoSetting";
+import { GoStoneManager } from "../../main/ts/GoStoneManager"
 import { JSDOM } from "jsdom";
 
 describe('GoStoneManager', () => {

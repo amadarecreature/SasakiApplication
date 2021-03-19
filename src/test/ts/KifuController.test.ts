@@ -1,5 +1,5 @@
-import { GoMoveType, KifuPart } from "../main/GoSetting";
-import { KifuController } from "../main/KifuController";
+import { GoMoveType, KifuPart } from "../../main/ts/GoSetting";
+import { KifuController } from "../../main/ts/KifuController";
 
 describe("KifuUtil_convertFromString", () => {
 
