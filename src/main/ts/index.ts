@@ -30,7 +30,6 @@ class Main {
     readonly sampleCanvasGoboad: HTMLCanvasElement = <HTMLCanvasElement>document.getElementById("sample_goboad_canvas");
     readonly sampleCanvasGoishi: HTMLCanvasElement = <HTMLCanvasElement>document.getElementById("sample_goishi_canvas");
 
-
     readonly lblLog: HTMLLabelElement = <HTMLLabelElement>document.getElementById("log");
     readonly inpKifu: HTMLInputElement = <HTMLInputElement>document.getElementById("kifu");
     readonly inpSyncKey: HTMLInputElement = <HTMLInputElement>document.getElementById("synckey");

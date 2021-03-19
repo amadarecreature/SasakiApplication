@@ -33,12 +33,10 @@ on Ubuntu
 change to project current directory
 
 ```
-npx http-server -o docs/sample/
+npx http-server
+# access http://localhost:8080/docs/sample/
 
 ```
-
-
-
 ## Usage
 
 1. A
