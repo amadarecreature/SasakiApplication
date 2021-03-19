@@ -403,6 +403,7 @@ export class GoStoneManager {
 
         var resultMove = GoMoveType.NONE;
 
+        // 指定した場所に石がある場合のみ実行
         if (this.isDuplicatePosition(mouseX, mouseY, this._goBoadInfo)) {
             this.clearStoneByRo(positionOnGoban);
 
@@ -421,9 +422,8 @@ export class GoStoneManager {
                 this.kifu.push(new KifuPart(GoMoveType.AGEHAMA_W, positionOnGoban.roX, positionOnGoban.roY, false));
                 // this._agehamaW++;
             }
-
+            this._nowCount += 1;
         }
-        this._nowCount += 1;
         return resultMove;
     }
     /**

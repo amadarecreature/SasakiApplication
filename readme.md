@@ -12,7 +12,7 @@ This application is written by Typescript.
 
 - Requirement
 
-## SampleDemo local
+## SampleDemo local 1
 
 Before execute,you need to have installed docker.
 
@@ -26,12 +26,16 @@ docker run --name InstructionGo -v /{furllPath}InstructionGo/docs/sample:/usr/sh
 
  ```
 
+
 ## SampleDemo local 2
 
-```
- npx http-server
+on Ubuntu
+change to project current directory
 
+```
+npx http-server
 # access http://localhost:8080/docs/sample/
+
 ```
 ## Usage
 
@@ -124,3 +128,5 @@ https://jestjs.io/docs/ja/cli
 git config commit.template .gitmessage
 
 
+# Links
+https://zenn.dev/phi/articles/node-npx-http-server

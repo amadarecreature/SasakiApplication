@@ -34,7 +34,9 @@ class Main {
     readonly inpKifu: HTMLInputElement = <HTMLInputElement>document.getElementById("kifu");
     readonly inpSyncKey: HTMLInputElement = <HTMLInputElement>document.getElementById("synckey");
 
+    readonly rdoNone: HTMLInputElement = <HTMLInputElement>document.getElementById("rdoNone");
     readonly rdoDrawMode: HTMLInputElement = <HTMLInputElement>document.getElementById("rdoDrawMode_on");
+
     readonly rdoHandiCapStoneMode: HTMLInputElement = <HTMLInputElement>document.getElementById("rdoHandicapMode_on");
     readonly rdoCandidateMode: HTMLInputElement = <HTMLInputElement>document.getElementById("rdoCandidateMode_on");
     readonly slRosu: HTMLSelectElement = <HTMLSelectElement>document.getElementById("sl_rosu");
@@ -112,10 +114,6 @@ class Main {
 
         this.btn_turn_back.addEventListener("click", (e: Event) => this.turnBack(e));
         this.btn_turn_forward.addEventListener("click", (e: Event) => this.turnForward(e));
-
-
-
-
 
         this.btn_auto_sync_start.addEventListener("click", (e: Event) => this.autoSyncStart(e));
 
@@ -221,6 +219,7 @@ class Main {
     private clearCandidateView(e: Event) {
         this.fwm.clearAll();
         this.gcm.clearAll();
+        this.rdoNone.checked = true;
     }
 }
 // Mainクラスを実行する。
