@@ -8,7 +8,8 @@
         "test": "jest --coverage=true --verbose",
         "test_only_changed": "jest --coverage=true --verbose --changedFilesWithAncestor",
         "test_watch": "jest --coverage=true --verbose --watch",
-        "build_W_local": "webpack;stylus -w src/main/stylus/index.styl -o docs/sample/css/index.bundle.css",
+        "stylus_watch": "stylus -w src/main/stylus/index.styl -o docs/sample/css/index.bundle.css",
+        "build_W_local": "webpack;",
         "build_W_prd": "webpack"
     },
     "repository": {
