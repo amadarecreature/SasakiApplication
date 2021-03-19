@@ -7,7 +7,7 @@ module.exports = {
 
     // メインとなるJavaScriptファイル（エントリーポイント）
     entry: {
-        "docs/sample/js/": './src/main/ts',
+        "docs/sample/js": './src/main/ts',
         "dist": './src/main/ts'
     },
     watch: true,
