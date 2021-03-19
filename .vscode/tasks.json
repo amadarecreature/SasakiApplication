@@ -18,6 +18,14 @@
         },
         {
             "type": "npm",
+            "script": "stylus_watch",
+            "group": "build",
+            "problemMatcher": [],
+            "label": "npm: stylus_watch",
+            "detail": "webpack"
+        },
+        {
+            "type": "npm",
             "script": "test_watch",
             "group": "build",
             "problemMatcher": [],
