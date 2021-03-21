@@ -5,7 +5,7 @@ import { JSDOM } from "jsdom";
 describe('GoStoneManager', () => {
     it('着手×3 アゲハマ 着手×1', () => {
         const roSize = 5; const gobanTop = 10; const gobanLeft = 20;
-        const goSetting = new GoBoadSetting(gobanTop, 20, 1, roSize);
+        const goSetting = new GoBoadSetting(gobanTop, gobanLeft, 1, roSize);
 
         // prepare
         const dummyInstance = new GoStoneManager(tCreateCanvas("dcv1"), goSetting, 19);
