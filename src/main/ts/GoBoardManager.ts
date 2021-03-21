@@ -11,6 +11,8 @@ export class GoBoadManager {
 
     private canvas!: HTMLCanvasElement;
 
+    private fontSize: number = 0;
+
     /**
      * このクラスが扱うコンテキストと幅(縦も同義)を注入する
      * @param canvas 
@@ -32,7 +34,9 @@ export class GoBoadManager {
         this.context = canvas.getContext('2d')!;
 
         //クラスを通して変わらないカンバス設定
-        this.context.font = "bold 15px '游ゴシック'";
+        this.fontSize = 15;
+        const font = "bold " + this.fontSize + "px " + "'游ゴシック'"
+        this.context.font = font;
         this.context.textAlign = 'center';
         this.context.shadowBlur = 2;
         this.drawBoard(5, this.canvas, goBoadInfo);
@@ -59,59 +63,65 @@ export class GoBoadManager {
         // 木目
         // drawWood(x, y, width, height, context);
         // 格子
-        this.drowKoushi(context, goBoadInfo, goBoadInfo.areaLeft, goBoadInfo.roWidth, goBoadInfo.areaWidth, goBoadInfo.roHeight, goBoadInfo.areaHeight);
+        this.drowKoushi(context, goBoadInfo, goBoadInfo.roWidth, goBoadInfo.roHeight);
 
     }
 
-    private drowKoushi(context: CanvasRenderingContext2D, goBoadInfo: GoBoadInfo, koushiLeft: number, cellHeight: number, gwidth: number, cellWidth: number, gheight: number) {
+    private drowKoushi(context: CanvasRenderingContext2D, goBoadInfo: GoBoadInfo, cellHeight: number, cellWidth: number) {
+
+        // 路の幅には線の太さ1本分が含まれる。
+
+        // 線の色
         context.fillStyle = "black";
 
-        const koushiTop = goBoadInfo.areaTop;
+        // 路の数
         const ro = goBoadInfo.roCount;
 
-        let lineWidth;
+        // 格子の外側(太線の1ピクセルまで含む)
+        const outOfAreaLength = goBoadInfo.areaLeft - goBoadInfo.left;
+
         // 罫線の太さ(端以外)
-        const lineBaseWidth = goBoadInfo.keisenWidth;
+        const lineWidth = goBoadInfo.keisenWidth;
         // 横の格子線
-        let startX1;
-        const startY2 = goBoadInfo.areaTop;
+        const koushiLeft = goBoadInfo.areaLeft;
+        const verticalStartY = goBoadInfo.areaTop;
+        const verticalLength = goBoadInfo.areaHeight;
 
-        for (var col = 1; col <= ro; col++) {
-            if (col == 1) {
-                startX1 = koushiLeft + (col - 1) * cellWidth;
-
-            } else {
-                startX1 = koushiLeft + lineBaseWidth + (col - 1) * cellWidth;
-            }
-
-            if (col == 1 || col == ro) {
-                lineWidth = lineBaseWidth * 2;
-            } else {
-                lineWidth = lineBaseWidth;
-            }
-            context.beginPath();
-            context.rect(startX1, startY2, lineWidth, gheight);
-            context.fill();
+        context.beginPath();
+        // 基本の縦線
+        for (var col = 0; col < ro; col++) {
+            // 外枠の太い部分の半分から計算を始める。
+            const startX1 = koushiLeft + lineWidth + (col * cellWidth);
+            context.rect(startX1, verticalStartY, lineWidth, verticalLength);
         }
 
-        // （横の格子線）
-        let y1, lineWidth2;
-        const x1 = goBoadInfo.areaLeft;
-        for (var row = 1; row <= ro; row++) {
-            if (row == 1)
-                y1 = koushiTop + (row - 1) * cellHeight;
-            else
-                y1 = koushiTop + lineBaseWidth + (row - 1) * cellHeight;
-            if (row == 1 || row == ro) {
-                lineWidth2 = lineBaseWidth * 2;
-            }
-            else {
-                lineWidth2 = lineBaseWidth;
-            }
-            context.beginPath();
-            context.rect(x1, y1, gwidth, lineWidth2);
-            context.fill();
+        // 外枠の太線を追加する
+        // 左端
+        context.rect(koushiLeft, verticalStartY, lineWidth, verticalLength);
+        // 右端
+        context.rect(goBoadInfo.left + (goBoadInfo.width - outOfAreaLength), verticalStartY, lineWidth, verticalLength);
+        context.fill();
+
+
+        const koushiTop = goBoadInfo.areaTop;
+        const horizontalStartX = goBoadInfo.areaLeft;
+        const horizontalLength = goBoadInfo.areaWidth;
+        context.beginPath();
+        // 基本の横線
+        for (var row = 0; row < ro; row++) {
+            // 外枠の太い部分の半分から計算を始める。
+            const y1 = koushiTop + lineWidth + (row * cellHeight);
+            context.rect(horizontalStartX, y1, horizontalLength, lineWidth);
         }
+
+        // 外枠の太線を追加する
+        // 上端
+        context.rect(horizontalStartX, koushiTop, horizontalLength, lineWidth);
+        // 下端
+        // const outOfAreaLength = koushiTop - goBoadInfo.top;
+        context.rect(horizontalStartX, goBoadInfo.top + (goBoadInfo.height - outOfAreaLength), horizontalLength, lineWidth);
+        context.fill();
+
 
         // 星の点
         // drawCircle
@@ -142,3 +152,9 @@ export class GoBoadManager {
 }
 
 
+class CanvasCotroller {
+    static drawText(context: CanvasRenderingContext2D, text: string, baseX: number, baseY: number) {
+        //座標を指定して文字を描く（座標は画像の中心に）
+        context.fillText(text, baseX, baseY);
+    }
+}
