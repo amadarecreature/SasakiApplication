@@ -11,7 +11,7 @@ export class GoBoadManager {
 
     private canvas!: HTMLCanvasElement;
 
-    private fontSize: number = 0;
+    private scaleFontSize: number = 0;
 
     /**
      * このクラスが扱うコンテキストと幅(縦も同義)を注入する
@@ -24,22 +24,24 @@ export class GoBoadManager {
         const goBoadInfo = new GoBoadInfo(goSetting.roHW, goSetting.roHW, goSetting.gobanLeft, goSetting.gobanTop, ro);
 
         //カンバスが使用できるかチェック
+        // テストができない
+        /* istanbul ignore next */
         if (!canvas.getContext) {
             console.log('カンバスが使用できません');
             return;
         }
 
+
         //カンバス・コンテキスト・大きさを注入する
         this.canvas = canvas;
         this.context = canvas.getContext('2d')!;
 
-        //クラスを通して変わらないカンバス設定
-        this.fontSize = 15;
-        const font = "bold " + this.fontSize + "px " + "'游ゴシック'"
-        this.context.font = font;
-        this.context.textAlign = 'center';
-        this.context.shadowBlur = 2;
+        this.scaleFontSize = 15;
+
         this.drawBoard(5, this.canvas, goBoadInfo);
+
+
+
     }
 
     /**
@@ -64,6 +66,9 @@ export class GoBoadManager {
         // drawWood(x, y, width, height, context);
         // 格子
         this.drowKoushi(context, goBoadInfo, goBoadInfo.roWidth, goBoadInfo.roHeight);
+
+        // 目盛りを設定
+        this.drawScaleXY(context, goBoadInfo, this.scaleFontSize);
 
     }
 
@@ -118,7 +123,6 @@ export class GoBoadManager {
         // 上端
         context.rect(horizontalStartX, koushiTop, horizontalLength, lineWidth);
         // 下端
-        // const outOfAreaLength = koushiTop - goBoadInfo.top;
         context.rect(horizontalStartX, goBoadInfo.top + (goBoadInfo.height - outOfAreaLength), horizontalLength, lineWidth);
         context.fill();
 
@@ -149,11 +153,47 @@ export class GoBoadManager {
         context.fill();
     }
 
+    private drawScaleXY(context: CanvasRenderingContext2D, goBoadInfo: GoBoadInfo, fontSize: number) {
+
+        const font = "bold " + fontSize + "px " + "'游ゴシック'"
+        context.font = font;
+        context.textAlign = 'center';
+        context.shadowBlur = 2;
+
+        const koushiTop = goBoadInfo.areaTop;
+        const koushiLeft = goBoadInfo.areaLeft;
+        const ro = goBoadInfo.roCount;
+        const perY = goBoadInfo.roHeight;
+        const perX = goBoadInfo.roWidth;
+
+        // vertical
+        for (var col = 0; col <= ro - 1; col++) {
+            const y = koushiTop + (perY * col);
+            CanvasCotroller.drawText(context, KifuUtil.toAlphabet(col + 1).toString(), goBoadInfo.left + (fontSize * 0.8), y);
+        }
+        // horizontal
+        for (var col = 0; col <= ro - 1; col++) {
+            const x = koushiLeft + (perX * col);
+            CanvasCotroller.drawText(context, Number(col + 1).toString(), x, goBoadInfo.top + (fontSize));
+        }
+    }
+
+
+}
+export class KifuUtil {
+    static toAlphabet(index: number): string {
+        const alphabet = "abcdefghijklmnopqrstuvwxyz";
+        if (index >= 1 && index <= 26) {
+            return alphabet.charAt(index - 1);
+        } else {
+            return "";
+        }
+    }
+
 }
 
-
-class CanvasCotroller {
-    static drawText(context: CanvasRenderingContext2D, text: string, baseX: number, baseY: number) {
+export class CanvasCotroller {
+    public static drawText(context: CanvasRenderingContext2D, text: string, baseX: number, baseY: number) {
         //座標を指定して文字を描く（座標は画像の中心に）
         context.fillText(text, baseX, baseY);
     }

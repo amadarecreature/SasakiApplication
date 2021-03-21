@@ -1,18 +1,29 @@
 import { GoBoadInfo, GoBoadSetting } from "../../main/ts/GoSetting";
-import { GoBoadManager } from "../../main/ts/GoBoardManager";
+import { GoBoadManager, KifuUtil, CanvasCotroller } from "../../main/ts/GoBoardManager";
 import { JSDOM } from "jsdom";
 
+describe('PositionUtil.toAlphabet', () => {
+    it("anz", () => {
+        expect(KifuUtil.toAlphabet(1)).toEqual("a");
+        expect(KifuUtil.toAlphabet(14)).toEqual("n");
+        expect(KifuUtil.toAlphabet(26)).toEqual("z");
+    })
+    it("out of range", () => {
+        expect(KifuUtil.toAlphabet(0)).toEqual("");
+        expect(KifuUtil.toAlphabet(27)).toEqual("");
+    })
 
+})
 
 describe('GoBoadManager', () => {
     it('初期配置', () => {
         const goSetting = new GoBoadSetting(10, 20, 1, 5);
-        const goBoadInfo = new GoBoadInfo(goSetting.roHW, goSetting.roHW, goSetting.gobanLeft, goSetting.gobanTop, 19);
+        // const goBoadInfo = new GoBoadInfo(goSetting.roHW, goSetting.roHW, goSetting.gobanLeft, goSetting.gobanTop, 19);
 
         // prepare
         const dummyCanvas: HTMLCanvasElement = createCanvas("dcv1");
         const dummyContext = dummyCanvas.getContext("2d")!;
-        const dummy = new DummyGoBoadManager(dummyCanvas, goSetting, 19);
+        new DummyGoBoadManager(dummyCanvas, goSetting, 19);
         // set result
         const expected = dummyContext.getImageData(dummyCanvas.offsetLeft, dummyCanvas.offsetTop, dummyCanvas.width, dummyCanvas.height);
 
@@ -27,6 +38,7 @@ describe('GoBoadManager', () => {
         expect(actual).toEqual(expected);
 
     });
+
 });
 
 // ある時点のクラスを基にした結果比較用のダミー
@@ -53,7 +65,6 @@ class DummyGoBoadManager {
         //カンバスが使用できるかチェック
         if (!canvas.getContext) {
             console.log('[Roulette.constructor] カンバスが使用できません');
-            // this.roCount = 0;
             return;
         }
 
@@ -90,6 +101,8 @@ class DummyGoBoadManager {
         // drawWood(x, y, width, height, context);
         // 格子
         this.drowKoushi(this.context, goBoadInfo, goBoadInfo.areaLeft, goBoadInfo.roWidth, goBoadInfo.areaWidth, goBoadInfo.roHeight, goBoadInfo.areaHeight);
+
+        this.drawScaleXY(context, goBoadInfo, 15);
 
     }
 
@@ -166,8 +179,33 @@ class DummyGoBoadManager {
         context.globalAlpha = 0.4;
         context.fill();
     }
+    private drawScaleXY(context: CanvasRenderingContext2D, goBoadInfo: GoBoadInfo, fontSize: number) {
+
+        const font = "bold " + fontSize + "px " + "'游ゴシック'"
+        context.font = font;
+        context.textAlign = 'center';
+        context.shadowBlur = 2;
+
+        const koushiTop = goBoadInfo.areaTop;
+        const koushiLeft = goBoadInfo.areaLeft;
+        const ro = goBoadInfo.roCount;
+        const perY = goBoadInfo.roHeight;
+        const perX = goBoadInfo.roWidth;
+
+        // vertical
+        for (var col = 0; col <= ro - 1; col++) {
+            const y = koushiTop + (perY * col);
+            CanvasCotroller.drawText(context, KifuUtil.toAlphabet(col + 1).toString(), goBoadInfo.left + (fontSize * 0.8), y);
+        }
+        // horizontal
+        for (var col = 0; col <= ro - 1; col++) {
+            const x = koushiLeft + (perX * col);
+            CanvasCotroller.drawText(context, Number(col + 1).toString(), x, goBoadInfo.top + (fontSize));
+        }
+    }
 
 }
+
 
 function createCanvas(id: string) {
     const dummyJsdom = new JSDOM("<html><canvas id='" + id + "' style='width:20px,height:20px'></canvas></html>");
