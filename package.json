@@ -4,6 +4,7 @@
     "description": "This application is to draw a IGO Boad for instruction.",
     "main": "index.js",
     "scripts": {
+        "run": "npx http-server",
         "lint": "tsc --noEmit",
         "test": "jest --coverage=true --verbose",
         "test_only_changed": "jest --coverage=true --verbose --changedFilesWithAncestor",
