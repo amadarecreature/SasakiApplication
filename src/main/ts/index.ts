@@ -1,11 +1,11 @@
 import { GoBoadManager } from "./GoBoardManager";
 import { FreeWriteManager } from "./FreeWriteManager";
-import { GoStoneManager } from "./GoStoneManager";
+import { GoStoneManager, } from "./GoStoneManager";
 import { GoCandidateManager } from "./GoCandidateManager";
 import { GoPlayStatsuManager } from "./GoPlayStatusManager"
 
 
-import { GoBoadSetting, GoMoveType } from "./GoSetting";
+import { GoBoadSetting, GoStoneColor } from "./GoSetting";
 import { GoLogger } from "./GoLogger"
 /**
  * (Required feature)
@@ -37,7 +37,8 @@ class Main {
     readonly rdoNone: HTMLInputElement = <HTMLInputElement>document.getElementById("rdoNone");
     readonly rdoDrawMode: HTMLInputElement = <HTMLInputElement>document.getElementById("rdoDrawMode_on");
 
-    readonly rdoHandiCapStoneMode: HTMLInputElement = <HTMLInputElement>document.getElementById("rdoHandicapMode_on");
+    readonly rdoBlackStoneModeOn: HTMLInputElement = <HTMLInputElement>document.getElementById("rdoBlackStoneModeOn");
+    readonly rdoWhiteStoneModeOn: HTMLInputElement = <HTMLInputElement>document.getElementById("rdoWhiteStoneModeOn");
     readonly rdoCandidateMode: HTMLInputElement = <HTMLInputElement>document.getElementById("rdoCandidateMode_on");
     readonly slRosu: HTMLSelectElement = <HTMLSelectElement>document.getElementById("sl_rosu");
     readonly btnNew: HTMLButtonElement = <HTMLButtonElement>document.getElementById("btn_new");
@@ -104,7 +105,6 @@ class Main {
         this.btn_sync_upLoad.addEventListener("click", (e: Event) => this.syncUpLoad(e));
         this.btn_sync_pull.addEventListener("click", (e: Event) => this.sync(e));
 
-
         // 棋譜読み込み
         this.btn_candidate_clear.addEventListener("click", (e: Event) => this.clearCandidateView(e));
 
@@ -157,8 +157,13 @@ class Main {
             return;
         }
 
-        if (this.rdoHandiCapStoneMode.checked) {
-            this.gim.addHandicapStone(e.offsetX, e.offsetY);
+        if (this.rdoBlackStoneModeOn.checked) {
+            this.gim.addSpecifiedColorStone(e.offsetX, e.offsetY, GoStoneColor.BLACK);
+            this.kifuLogger.log(this.gim.kifuString);
+            return;
+        }
+        if (this.rdoWhiteStoneModeOn.checked) {
+            this.gim.addSpecifiedColorStone(e.offsetX, e.offsetY, GoStoneColor.WHITE);
             this.kifuLogger.log(this.gim.kifuString);
             return;
         }

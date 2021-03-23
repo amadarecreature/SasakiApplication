@@ -1,4 +1,4 @@
-import { GoMoveType, PositionOnGoBoad, KifuPart } from "./GoSetting";
+import { GoMoveType, KifuPart, GoStoneColor } from "./GoSetting";
 
 enum KifuBlockComponent {
     POS_START = "[",
@@ -16,9 +16,27 @@ enum PositionWord {
     y = 25, z = 26,
 
 }
+/**
+ * 棋譜操作用のユーティリティ
+ */
+export class KifuUtil {
 
-export class KifuController {
 
+    /**
+     * 色指定で強制的に石を置いた場合の棋譜
+     * 
+     * @param color 
+     * @returns 置き石の棋譜(色ごと)、該当しない場合は「なし」を返却
+     */
+    static convertHandicapMoveFromColor(color: GoStoneColor) {
+        if (color == GoStoneColor.BLACK) {
+            return GoMoveType.OKI_BLACK;
+        }
+        if (color == GoStoneColor.WHITE) {
+            return GoMoveType.OKI_WHITE
+        }
+        throw GoMoveType.NONE;
+    }
     static getPositionNo(alphabet: string): number {
         const list = Object.keys(PositionWord);
         for (const key in list) {
@@ -131,6 +149,19 @@ export class KifuController {
 
         }
         return result;
+    }
+
+    static convertMoveFromColor(chakushu: GoMoveType): GoStoneColor {
+        if (chakushu == GoMoveType.BLACK) {
+            return GoStoneColor.BLACK;
+        }
+        if (chakushu == GoMoveType.WHITE) {
+            return GoStoneColor.WHITE;
+        }
+        if (chakushu == GoMoveType.OKI_BLACK) {
+            return GoStoneColor.BLACK;
+        }
+        return GoStoneColor.NONE;
     }
 
 }

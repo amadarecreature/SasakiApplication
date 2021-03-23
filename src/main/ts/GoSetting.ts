@@ -1,3 +1,9 @@
+export enum GoStoneColor {
+    BLACK = "black",
+    WHITE = "white",
+    NONE = "NONE"
+}
+
 export class GoBoadSetting {
     readonly goishiGlobalAlpha: number;
 
@@ -71,7 +77,7 @@ export class GoBoadInfo {
 export enum GoMoveType {
     BLACK = "B",
     WHITE = "W",
-    OKI = "AB",
+    OKI_BLACK = "AB",
     OKI_WHITE = "AE",
     AGEHAMA_B = "XAGB",
     AGEHAMA_W = "XAGW",

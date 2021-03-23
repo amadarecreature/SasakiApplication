@@ -1,5 +1,5 @@
-import { GoBoadSetting, GoMoveType } from "../../main/ts/GoSetting";
-import { GoStoneManager } from "../../main/ts/GoStoneManager"
+import { GoBoadSetting, GoMoveType, GoStoneColor } from "../../main/ts/GoSetting";
+import { GoStoneManager, GoStoneUtil } from "../../main/ts/GoStoneManager"
 import { JSDOM } from "jsdom";
 
 describe('GoStoneManager', () => {
@@ -279,10 +279,60 @@ describe('GoStoneManager', () => {
         expect(dummyInstance.agehamaW).toEqual(expAgehamaW);
 
     });
+    it('置き石(白) 置き石(黒) 置き石(白) 着手×2 アゲハマ 置き石(白) 置き石(黒) ', () => {
+        const roSize = 5; const gobanTop = 10; const gobanLeft = 20;
+        const goSetting = new GoBoadSetting(gobanTop, gobanLeft, 1, roSize);
+
+        // prepare
+        const dummyInstance = new GoStoneManager(tCreateCanvas("dcv1"), goSetting, 19);
+
+        // set result
+        const expKifu: string = "AE[ac]AB[ba]AE[as]B[ji]W[cn]AE[fp]AB[sa]";
+        const expRealtimePosition: string = "AE[x=0:y=2]AE[x=0:y=18]AB[x=1:y=0]W[x=2:y=13]AE[x=5:y=15]B[x=9:y=8]AB[x=18:y=0]"
+        const expNowCount: number = 6;
+        const expNextTurn: GoMoveType = GoMoveType.WHITE;
+        const expAgehamaB = 0;
+        const expAgehamaW = 0;
+        // execute
+        dummyInstance.addSpecifiedColorStone(gobanLeft + 2.5 + roSize * 0, gobanTop + 2.5 + roSize * 2, GoStoneColor.WHITE);
+        dummyInstance.addSpecifiedColorStone(gobanLeft + 2.5 + roSize * 1, gobanTop + 2.5 + roSize * 0, GoStoneColor.BLACK);
+        dummyInstance.addSpecifiedColorStone(gobanLeft + 2.5 + roSize * 0, gobanTop + 2.5 + roSize * 18, GoStoneColor.WHITE);
+        tExecuteChakushu(dummyInstance, gobanLeft, roSize, gobanTop, 9, 8);
+        tExecuteChakushu(dummyInstance, gobanLeft, roSize, gobanTop, 2, 13);
+        dummyInstance.addSpecifiedColorStone(gobanLeft + 2.5 + roSize * 5, gobanTop + 2.5 + roSize * 15, GoStoneColor.WHITE);
+        dummyInstance.addSpecifiedColorStone(gobanLeft + 2.5 + roSize * 18, gobanTop + 2.5 + roSize * 0, GoStoneColor.BLACK);
+
+        // check
+        expect(dummyInstance.kifuString).toEqual(expKifu);
+        const actualRealtimePosition = tExpStringFromRTPos(dummyInstance.realtimePosition);
+        expect(actualRealtimePosition).toEqual(expRealtimePosition);
+        expect(dummyInstance.nowCount).toEqual(expNowCount);
+        expect(dummyInstance.nextTurn).toEqual(expNextTurn);
+        expect(dummyInstance.agehamaB).toEqual(expAgehamaB);
+        expect(dummyInstance.agehamaW).toEqual(expAgehamaW);
+
+
+    });
     // 最後のカッコ
 });
+describe("nextTurn", () => {
+    it("To BLACK", () => {
+        expect(GoStoneUtil.nextTurn(GoMoveType.WHITE)).toEqual(GoMoveType.BLACK);
+        expect(GoStoneUtil.nextTurn(GoMoveType.OKI_WHITE)).toEqual(GoMoveType.BLACK);
 
+    })
+    it("To WHITE", () => {
+        expect(GoStoneUtil.nextTurn(GoMoveType.BLACK)).toEqual(GoMoveType.WHITE);
+        expect(GoStoneUtil.nextTurn(GoMoveType.OKI_BLACK)).toEqual(GoMoveType.WHITE);
 
+    })
+    it("null", () => {
+        expect(GoStoneUtil.nextTurn(GoMoveType.AGEHAMA_B)).toEqual(null);
+        expect(GoStoneUtil.nextTurn(GoMoveType.AGEHAMA_W)).toEqual(null);
+        expect(GoStoneUtil.nextTurn(GoMoveType.NONE)).toEqual(null);
+
+    })
+})
 
 function tExecuteChakushu(dummyInstance: GoStoneManager, gobanLeft: number, roSize: number, gobanTop: number, x: number, y: number) {
     dummyInstance.chakushu(gobanLeft + 2.5 + roSize * x, gobanTop + 2.5 + roSize * y);
