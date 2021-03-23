@@ -20,6 +20,8 @@ enum PositionWord {
  * 棋譜操作用のユーティリティ
  */
 export class KifuUtil {
+
+
     /**
      * 色指定で強制的に石を置いた場合の棋譜
      * 

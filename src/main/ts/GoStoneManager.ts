@@ -300,8 +300,16 @@ export class GoStoneManager {
         // 棋譜の設定
         this.kifu.push(new KifuPart(move, positionOnBoad.roX, positionOnBoad.roY, false));
 
-        // 次を白番にする
-        this._nextTurn = GoMoveType.WHITE;
+        this.realtimePosition[positionOnBoad.roX][positionOnBoad.roY] = move;
+
+        const tmpNextTurn = GoStoneUtil.nextTurn(move);
+
+        if (tmpNextTurn == null) {
+            // そのまま
+        } else {
+            this._nextTurn = tmpNextTurn;
+        }
+
         this._nowCount += 1;
 
     }
@@ -496,7 +504,7 @@ export class GoStoneManager {
      * @param circleCenterPosition 
      */
     private drawStoneSub(nowTurn: GoMoveType, circleCenterPosition: PointerPosition) {
-        const fillstyle = (nowTurn == GoMoveType.BLACK) ? "black" : "white";
+        const fillstyle = GoStoneUtil.calcStoneColor(nowTurn);
         const radius = this._goBoadInfo.roHeight * 0.475; // 半径
         this.drawFillCircle(circleCenterPosition.x, circleCenterPosition.y, radius, this._context, fillstyle);
     }
@@ -585,6 +593,50 @@ export class GoStoneManager {
         context.stroke();
         context.closePath();
 
+    }
+
+
+}
+export class GoStoneUtil {
+
+    static calcStoneColor(move: GoMoveType): string {
+        if (move == GoMoveType.BLACK) {
+            return GoStoneColor.BLACK;
+        }
+        if (move == GoMoveType.WHITE) {
+            return GoMoveType.WHITE;
+        }
+
+        if (move == GoMoveType.OKI_BLACK) {
+            return GoStoneColor.BLACK;
+        }
+        if (move == GoMoveType.OKI_WHITE) {
+            return GoStoneColor.WHITE;
+        }
+        return "";
+    }
+    /**
+     * 今の着手から次のターンの着手を求める。
+     * アゲハマの場合は変更しない為、NONEを返す
+     * @param nowTurn 
+     * @returns default:GoMoveType.NONE
+     */
+    static nextTurn(nowTurn: GoMoveType) {
+        if (nowTurn == GoMoveType.BLACK) {
+            return GoMoveType.WHITE;
+        }
+        if (nowTurn == GoMoveType.WHITE) {
+            return GoMoveType.BLACK
+        }
+
+        if (nowTurn == GoMoveType.OKI_BLACK) {
+            return GoMoveType.WHITE;
+        }
+        if (nowTurn == GoMoveType.OKI_WHITE) {
+            return GoMoveType.BLACK;
+        }
+
+        return null;
     }
 }
 
