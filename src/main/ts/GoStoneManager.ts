@@ -1,12 +1,8 @@
 import { GoPlayStatsuManager } from "./GoPlayStatusManager";
-import { GoBoadInfo, GoBoadSetting, KifuPart, GoMoveType } from "./GoSetting";
-import { KifuController } from "./KifuController";
+import { GoBoadInfo, GoBoadSetting, KifuPart, GoMoveType, GoStoneColor } from "./GoSetting";
+import { KifuUtil } from "./KifuController";
 
-enum GoishiColor {
-    BLACK = "black",
-    WHITE = "white",
-    NONE = "NONE"
-}
+
 
 class PointerPosition {
     readonly x: number;
@@ -152,7 +148,7 @@ export class GoStoneManager {
 
     public roadFromKifu(kifuString: string) {
 
-        const kifuList = KifuController.convertFromString(kifuString);
+        const kifuList = KifuUtil.convertFromString(kifuString);
         console.log(kifuString);
 
 
@@ -259,7 +255,7 @@ export class GoStoneManager {
      * @param mouseY 
      * @param color 
      */
-    private drawGoIshiByPosition(position: PointerPosition, color: GoishiColor): PositionOnGoBoad {
+    private drawGoIshiByPosition(position: PointerPosition, color: GoStoneColor): PositionOnGoBoad {
         const positionOnGoban = this.calcPositionOnGoban(position, this._goBoadInfo)
         const circleCenterPosition = this.calcCircleCenterPosition(this._goBoadInfo, positionOnGoban);
         const fillstyle: string = color;
@@ -287,19 +283,22 @@ export class GoStoneManager {
         return false;
     }
     /**
-     * 置き石を配置
+     * 指定した色の石を配置する
      */
-    public addHandicapStone(mouseX: number, mouseY: number) {
+    public addSpecifiedColorStone(mouseX: number, mouseY: number, stonleColor: GoStoneColor) {
         console.info("click=" + mouseX + ":" + mouseY);
 
         if (this.isDuplicatePosition(mouseX, mouseY, this._goBoadInfo)) {
             return;
         }
 
-        const positionOnBoad = this.drawGoIshiByPosition(new PointerPosition(mouseX, mouseY), GoishiColor.BLACK);
+        const positionOnBoad = this.drawGoIshiByPosition(new PointerPosition(mouseX, mouseY), stonleColor);
+
+        // 置き石としての棋譜動作に変換
+        const move = KifuUtil.convertHandicapMoveFromColor(stonleColor);
 
         // 棋譜の設定
-        this.kifu.push(new KifuPart(GoMoveType.BLACK, positionOnBoad.roX, positionOnBoad.roY, false));
+        this.kifu.push(new KifuPart(move, positionOnBoad.roX, positionOnBoad.roY, false));
 
         // 次を白番にする
         this._nextTurn = GoMoveType.WHITE;
@@ -308,7 +307,7 @@ export class GoStoneManager {
     }
 
     get kifuString() {
-        return KifuController.convertToString(this.kifu);
+        return KifuUtil.convertToString(this.kifu);
     }
     /**
      * 待った
@@ -588,40 +587,10 @@ export class GoStoneManager {
 
     }
 }
-class KifuUtil {
-
-    static convertFromString(value: string): KifuPart[] {
-        // TODO:実装する
-        return new Array();
-    }
-    /**
-     * TODO 実装する
-     * @param kifuList 
-     */
-    static convertToString(kifuList: KifuPart[]): string {
-        return "";
-    }
-
-}
-class GoishiUtil {
-    static convertColor(chakushu: GoMoveType): GoishiColor {
-        if (chakushu == GoMoveType.BLACK) {
-            return GoishiColor.BLACK;
-        }
-        if (chakushu == GoMoveType.WHITE) {
-            return GoishiColor.WHITE;
-        }
-        if (chakushu == GoMoveType.OKI) {
-            return GoishiColor.BLACK;
-        }
-        return GoishiColor.NONE;
-
-    }
-}
 
 function getAgehamaColor(targetChakushu: KifuPart): GoMoveType {
     return targetChakushu.color;
 }
 function isHandicapMove(targetChakushu: KifuPart) {
-    return targetChakushu.color == GoMoveType.OKI || targetChakushu.color == GoMoveType.OKI_WHITE;
+    return targetChakushu.color == GoMoveType.OKI_BLACK || targetChakushu.color == GoMoveType.OKI_WHITE;
 }

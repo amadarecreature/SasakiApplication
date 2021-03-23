@@ -23,10 +23,14 @@
                 <button id="btn_new" class="btn_base">新規</button>
 
                 <div class="radio_box">
-                    <input type="radio" id="rdoHandicapModeOff" name="rdogrpHandicapMode" checked />
-                    <label for="rdoNone">なし</label>
-                    <input type="radio" id="rdoHandicapMode_on" name="rdogrpHandicapMode" />
-                    <label for="rdoHandicapMode_on">置き石モードON</label>
+                    <div class="RdoForceStone">
+                        <input type="radio" id="rdoHandicapModeOff" name="rdogrpHandicapMode" checked />
+                        <label for="rdoHandicapModeOff">白黒</label>
+                        <input type="radio" id="rdoBlackStoneModeOn" name="rdogrpHandicapMode" />
+                        <label for="rdoBlackStoneModeOn">黒石のみ</label>
+                        <input type="radio" id="rdoWhiteStoneModeOn" name="rdogrpHandicapMode" />
+                        <label for="rdoWhiteStoneModeOn">白石のみ</label>
+                    </div>
                 </div>
 
 

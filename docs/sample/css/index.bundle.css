@@ -78,6 +78,24 @@
   background: #78bd78;
 /* カーソルタブの背景 */
 }
+.RdoForceStone {
+  padding: 2px 2px;
+}
+.RdoForceStone input {
+  display: none;
+}
+.RdoForceStone label {
+  border-radius: 4px;
+  box-shadow: 2px 4px 0px #808080;
+  padding-right: 5px;
+  padding-left: 5px;
+  background-color: #fff;
+  color: #000;
+}
+.RdoForceStone :checked + label {
+  background-color: #808080;
+  color: #fff;
+}
 .main_container {
 /* height: 600px;
     width: 600px; */
