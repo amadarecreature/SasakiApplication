@@ -1,7 +1,7 @@
 export enum GoStoneColor {
     BLACK = "black",
     WHITE = "white",
-    NONE = "NONE"
+    NONE = ""
 }
 
 export class GoBoadSetting {

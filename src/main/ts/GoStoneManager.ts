@@ -599,12 +599,12 @@ export class GoStoneManager {
 }
 export class GoStoneUtil {
 
-    static calcStoneColor(move: GoMoveType): string {
+    static calcStoneColor(move: GoMoveType): GoStoneColor {
         if (move == GoMoveType.BLACK) {
             return GoStoneColor.BLACK;
         }
         if (move == GoMoveType.WHITE) {
-            return GoMoveType.WHITE;
+            return GoStoneColor.WHITE;
         }
 
         if (move == GoMoveType.OKI_BLACK) {
@@ -613,7 +613,7 @@ export class GoStoneUtil {
         if (move == GoMoveType.OKI_WHITE) {
             return GoStoneColor.WHITE;
         }
-        return "";
+        return GoStoneColor.NONE;
     }
     /**
      * 今の着手から次のターンの着手を求める。
