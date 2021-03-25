@@ -78,13 +78,15 @@
   background: #78bd78;
 /* カーソルタブの背景 */
 }
-.RdoForceStone {
+.RdoSwitchButton {
+  display: inline-block;
   padding: 2px 2px;
+  width: auto;
 }
-.RdoForceStone input {
+.RdoSwitchButton input {
   display: none;
 }
-.RdoForceStone label {
+.RdoSwitchButton label {
   border-radius: 4px;
   box-shadow: 2px 4px 0px #808080;
   padding-right: 5px;
@@ -92,13 +94,15 @@
   background-color: #fff;
   color: #000;
 }
-.RdoForceStone :checked + label {
+.RdoSwitchButton :checked + label {
   background-color: #808080;
   color: #fff;
 }
+.block {
+  display: block;
+  text-align: center;
+}
 .main_container {
-/* height: 600px;
-    width: 600px; */
   padding: 2%;
   display: flex;
   flex-direction: row;
@@ -106,12 +110,26 @@
   border: 2px solid #ee82ee;
   background-color: #faebd7;
 }
-.goban_controller_container {
+.game_controller_container {
+  height: 40px;
   width: 100%;
   float: left;
   border: 1px solid #000;
   margin-bottom: 2px;
   padding: 2px;
+  display: table-cell;
+  vertical-align: middle;
+}
+.goban_controller_container {
+  height: 40px;
+  width: 100%;
+  float: left;
+  border: 1px solid #000;
+  margin-top: 2px;
+  margin-bottom: 2px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  padding-right: 2px;
 }
 .play_field_container {
 /* width: 100%; */
@@ -170,12 +188,7 @@
 }
 .goban_area canvas {
   position: absolute;
-/* top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0; */
   margin: auto;
-/* border: 2px solid brown; */
 }
 .btn_base {
   margin-top: 5px;
@@ -186,15 +199,48 @@
   margin-top: 10px;
   margin-bottom: 10px;
 }
-/* 汎用的なもの  */
+/* 汎用的なもの */
 .radio_box {
-  width: 90%;
+  display: table-cell;
+  overflow: hidden;
   box-shadow: 2px 2px 5px 1px #706b6b inset;
   padding-top: 2px;
   padding-right: 4px;
   padding-left: 4px;
   padding-bottom: 2px;
+  margin-left: 2px;
+  margin-right: 2px;
+  height: 30px;
 }
 .agehama_swich_parts {
   display: table-cell;
+}
+.data_sync_container {
+  display: inline-block;
+}
+.data_sync_container .acd-check {
+  display: none;
+}
+.data_sync_container .acd-label {
+  background: #333;
+  color: #fff;
+  margin-bottom: 1px;
+  padding: 2px;
+}
+.data_sync_container .acd-content {
+  background: #a52a2a;
+  border: 1px solid #333;
+  height: 0;
+  opacity: 0;
+  padding: 0 10px;
+  transition: 0.5s;
+  visibility: hidden;
+  display: none;
+}
+.data_sync_container .acd-check:checked + .acd-label + .acd-content {
+  height: 40px;
+  opacity: 1;
+  padding: 10px;
+  visibility: visible;
+  display: block;
 }

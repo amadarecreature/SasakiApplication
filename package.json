@@ -6,6 +6,7 @@
     "scripts": {
         "run": "npx http-server",
         "lint": "tsc --noEmit",
+        "stylus-lint": "stylint src/main/stylus/index.styl",
         "test": "jest --coverage=true --verbose",
         "test_only_changed": "jest --coverage=true --verbose --changedFilesWithAncestor",
         "test_watch": "jest --coverage=true --verbose --watch",
@@ -35,6 +36,7 @@
         "jest": "^26.6.3",
         "jest-canvas-mock": "^2.3.1",
         "jsdom": "^16.4.0",
+        "stylint": "^2.0.0",
         "ts-jest": "^26.5.2",
         "ts-loader": "^8.0.17",
         "webpack": "^5.24.2",

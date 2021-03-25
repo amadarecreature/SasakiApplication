@@ -11,7 +11,7 @@
 <body>
     <div class="main_container">
         <div class="play_field_container">
-            <div class="goban_controller_container">
+            <div class="game_controller_container">
                 <select id="sl_rosu">
                     <option value="4">4</option>
                     <option value="5">5</option>
@@ -21,9 +21,25 @@
                     <option value="19">19</option>
                 </select>
                 <button id="btn_new" class="btn_base">新規</button>
+                <button id="btn_back" class="btn_base">待った</button>
+                <div class="data_sync_container">
+                    <input id="acd-check1" class="acd-check" type="checkbox">
+                    <label class="acd-label" for="acd-check1">+</label>
+                    <div class="acd-content">
+                        <label id="lblSynckey" for="Synckey">データキー</label>
+                        <input id="synckey" type="text" value="abcKey" />
+                        <button id="btn_auto_sync_start" class="btn_base">自動更新開始</button>
+                        <button id="btn_auto_sync_stop" class="btn_base">自動更新終了</button>
+                        <button id="btn_sync_upLoad" class="btn_base">アップロード</button>
+                        <button id="btn_sync_pull" class="btn_base">取得</button>
+                    </div>
+                </div>
 
+            </div>
+            <div class="goban_controller_container">
                 <div class="radio_box">
-                    <div class="RdoForceStone">
+                    <label>着手方法</label>
+                    <div class="RdoSwitchButton">
                         <input type="radio" id="rdoHandicapModeOff" name="rdogrpHandicapMode" checked />
                         <label for="rdoHandicapModeOff">白黒</label>
                         <input type="radio" id="rdoBlackStoneModeOn" name="rdogrpHandicapMode" />
@@ -33,28 +49,18 @@
                     </div>
                 </div>
 
-
-                <button id="btn_back" class="btn_back">待った</button>
-
-                <label id="lblSynckey" for="Synckey">データキー</label>
-                <input id="synckey" type="text" value="abcKey" />
-
-                <button id="btn_auto_sync_start" class="btn_base">自動更新開始</button>
-                <button id="btn_auto_sync_stop" class="btn_base">自動更新終了</button>
-                <button id="btn_sync_upLoad" class="btn_base">アップロード</button>
-                <button id="btn_sync_pull" class="btn_base">取得</button>
-
-            </div>
-            <div class="goban_controller_container">
                 <div class="radio_box">
-                    <input type="radio" id="rdoNone" value="none" name="rdogrpLeadMode" checked />
-                    <label for="rdoNone">なし</label>
-                    <input type="radio" id="rdoDrawMode_on" value="draw" name="rdogrpLeadMode" />
-                    <label for="rdoDrawMode_on">描画モード</label>
-                    <input type="radio" id="rdoCandidateMode_on" value="free" name="rdogrpLeadMode" />
-                    <label for="rdoCandidateMode_on">候補モード</label>
+                    <label>画面編集機能</label>
+                    <div class="RdoSwitchButton">
+                        <input type="radio" id="rdoNone" value="none" name="rdogrpLeadMode" checked />
+                        <label for="rdoNone">なし</label>
+                        <input type="radio" id="rdoDrawMode_on" value="draw" name="rdogrpLeadMode" />
+                        <label for="rdoDrawMode_on">描画モード</label>
+                        <input type="radio" id="rdoCandidateMode_on" value="free" name="rdogrpLeadMode" />
+                        <label for="rdoCandidateMode_on">候補モード</label>
+                    </div>
+                    <button id="btn_candidate_clear" class="btn_base">クリア</button>
                 </div>
-                <button id="btn_candidate_clear" class="btn_base">クリア</button>
             </div>
             <div class="data_continer">
                 <input id="kifu" type="text" value="" />
@@ -84,12 +90,6 @@
                                 <div class="switch_image"></div>
                             </div>
                         </div>
-                        <!-- <div class="radio_box">
-                            <input type="radio" id="rdo_agehamaMode_off" name="rdoAgehamaMode" checked />
-                            <label for="rdo_agehamaMode_off">なし</label>
-                            <input type="radio" id="rdo_agehamaMode_on" name="rdoAgehamaMode" />
-                            <label for="rdo_agehamaMode_on">アゲハマモードON</label>
-                        </div> -->
                     </div>
                     <div class="play_controller">
                         <div class="turn_controller">
