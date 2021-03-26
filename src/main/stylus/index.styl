@@ -10,7 +10,7 @@
 }
 
 .game_controller_container {
-    height: 40px;
+    min-height: 40px;
     width: 100%;
     float: left;
     border: 1px solid black;
@@ -113,6 +113,14 @@
     margin-bottom: 10px;
 }
 
+.nextTurnRow {
+    // width: 20px;
+    height: 24px;
+    border: 1px;
+    border-style: solid;
+    border-color: black;
+}
+
 /* 汎用的なもの */
 .radio_box {
     display: table-cell;
@@ -133,34 +141,4 @@
 
 .data_sync_container {
     display: inline-block;
-
-    .acd-check {
-        display: none;
-    }
-
-    .acd-label {
-        background: #333;
-        color: #fff;
-        margin-bottom: 1px;
-        padding: 2px;
-    }
-
-    .acd-content {
-        background: brown;
-        border: 1px solid #333;
-        height: 0;
-        opacity: 0;
-        padding: 0 10px;
-        transition: 0.5s;
-        visibility: hidden;
-        display: none;
-    }
-
-    .acd-check:checked + .acd-label + .acd-content {
-        height: 40px;
-        opacity: 1;
-        padding: 10px;
-        visibility: visible;
-        display: block;
-    }
 }
