@@ -7,8 +7,8 @@
         {
             "type": "edge",
             "request": "launch",
-            "name": "Launch Chrome against localhost",
-            "url": "http://localhost:8080",
+            "name": "Launch Edge",
+            "url": "http://localhost:8080/docs/sample/",
             "webRoot": "${workspaceFolder}"
         }
     ]
