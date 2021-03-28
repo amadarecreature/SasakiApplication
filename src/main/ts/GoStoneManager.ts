@@ -54,15 +54,18 @@ export class GoStoneManager {
 
     // 次の手番(アゲハマ作業などは無視)
     private _nextTurn: GoMoveType;
+    private _nextStoneColor: GoStoneColor;
 
     public get nextTurn(): GoMoveType {
         return this._nextTurn;
     }
 
-
-    // private _agehamaB: number = 0;
-    // private _agehamaW: number = 0;
-
+    public get nextStoneColor(): GoStoneColor {
+        return this._nextStoneColor;
+    }
+    public set nextStoneColor(color: GoStoneColor) {
+        this._nextStoneColor = color;
+    }
 
     // アゲハマ
     public get agehamaW(): number {
@@ -109,6 +112,7 @@ export class GoStoneManager {
         this.roWidth = goBoadSetting.roHW;
         this.roHeight = goBoadSetting.roHW;
         this._nextTurn = GoMoveType.BLACK;
+        this._nextStoneColor = GoStoneColor.BLACK;
 
         this.roCount = roCount;
 
@@ -322,24 +326,23 @@ export class GoStoneManager {
      */
     public matta() {
 
-
-        console.log("before:kifu:" + this.kifuString);
-
         const targetNo = this._nowCount;
 
         // 待ったの対象となっている着手
         const targetChakushu = this.kifu[targetNo];
 
         const beforeNextTurn = this._nextTurn;
-
+        const beforeNextColor = this.nextStoneColor;
         var move;
-        var afterNextTurn;
+        var afterNextTurn: GoMoveType;
+        var afterNextColor: GoStoneColor;
         // アゲハマの時だけ取った石を戻す必要がある
         if (targetChakushu.color == GoMoveType.AGEHAMA_B) {
             move = GoMoveType.BLACK;
             const position = targetChakushu.position;
             const kifu = new KifuPart(move, position.roX, position.roY);
             afterNextTurn = beforeNextTurn;
+            afterNextColor = beforeNextColor;
             this.drawStoneFromKifu(kifu);
         } else if (targetChakushu.color == GoMoveType.AGEHAMA_W) {
             move = GoMoveType.WHITE;
@@ -348,12 +351,16 @@ export class GoStoneManager {
 
             // 次の着手は変えない
             afterNextTurn = beforeNextTurn;
+            afterNextColor = beforeNextColor;
 
             this.drawStoneFromKifu(kifu);
 
         } else {
             // アゲハマターンでなければ、次の着手を前着手の色に戻す。
             afterNextTurn = targetChakushu.color;
+            // TODO ここで着手を基に色を求めてそれをセットする
+            afterNextColor = KifuUtil.convertMoveToColor(afterNextTurn);
+
             // クリアする
             move = GoMoveType.NONE;
             this.clearStoneByRo(targetChakushu.position);
@@ -367,9 +374,8 @@ export class GoStoneManager {
         this.realtimePosition[targetChakushu.position.roX][targetChakushu.position.roY] = move;
 
         this._nextTurn = afterNextTurn;
-
-        console.log("after:kifu:" + this.kifuString);
-        console.log("取り消し=>" + targetChakushu.position.roX + ":" + targetChakushu.position.roY);
+        this._nextStoneColor = afterNextColor;
+        console.info("次の色" + afterNextColor);
     }
     /**
      * 碁石を消す
@@ -414,20 +420,19 @@ export class GoStoneManager {
         if (this.isDuplicatePosition(mouseX, mouseY, this._goBoadInfo)) {
             this.clearStoneByRo(positionOnGoban);
 
-            // とった石
+            // とった石の着手
             resultMove = this.realtimePosition[positionOnGoban.roX][positionOnGoban.roY];
 
+            const resultColor = KifuUtil.convertMoveToColor(resultMove);
             // データ的に消す
             this.realtimePosition[positionOnGoban.roX][positionOnGoban.roY] = GoMoveType.NONE;
 
             // アゲハマを設定
-            if (resultMove == GoMoveType.BLACK) {
+            if (resultColor == GoStoneColor.BLACK) {
                 this.kifu.push(new KifuPart(GoMoveType.AGEHAMA_B, positionOnGoban.roX, positionOnGoban.roY, false));
-                // this._agehamaB++;
             }
-            if (resultMove == GoMoveType.WHITE) {
+            if (resultColor == GoStoneColor.WHITE) {
                 this.kifu.push(new KifuPart(GoMoveType.AGEHAMA_W, positionOnGoban.roX, positionOnGoban.roY, false));
-                // this._agehamaW++;
             }
             this._nowCount += 1;
         }
@@ -446,7 +451,6 @@ export class GoStoneManager {
 
         const positionOnGoBoad = this.calcPositionOnGoban(new PointerPosition(mouseX, mouseY), this._goBoadInfo);
 
-        const keisen = 1;
         // 碁石の中心位置を計算する。
         const circleCenterPosition = this.calcCircleCenterPosition(this._goBoadInfo, positionOnGoBoad);
 
@@ -466,6 +470,8 @@ export class GoStoneManager {
 
         // ターンを入れ替える
         this._nextTurn = (nowTurn == GoMoveType.BLACK) ? GoMoveType.WHITE : GoMoveType.BLACK;
+        this._nextStoneColor = KifuUtil.convertMoveToColor(this._nextTurn);
+
         this._nowCount += 1;
 
 
@@ -535,7 +541,7 @@ export class GoStoneManager {
         this._context.clearRect(x, y, this.roWidth, this.roHeight);
         // 透明度
 
-        console.log("color", "clear");
+        console.debug("clearGoishi");
     }
 
     public UpdateAllGoishi() {

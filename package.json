@@ -4,15 +4,15 @@
     "description": "This application is to draw a IGO Boad for instruction.",
     "main": "index.js",
     "scripts": {
-        "run": "npx http-server",
-        "lint": "tsc --noEmit",
-        "stylus-lint": "stylint src/main/stylus/index.styl",
+        "http": "npx http-server",
+        "ts-l": "tsc --noEmit",
+        "sty-l": "stylint src/main/stylus/index.styl",
         "test": "jest --coverage=true --verbose",
         "test_only_changed": "jest --coverage=true --verbose --changedFilesWithAncestor",
-        "test_watch": "jest --coverage=true --verbose --watch",
-        "stylus_watch": "stylus -w src/main/stylus/index.styl -o docs/sample/css/index.bundle.css",
-        "build_W_local": "webpack;",
-        "build_W_prd": "webpack"
+        "test-w": "jest --coverage=true --verbose --watch",
+        "sty-w": "stylus -w src/main/stylus/index.styl -o docs/sample/css/index.bundle.css",
+        "ts-wd": "webpack;",
+        "ts-wp": "webpack"
     },
     "repository": {
         "type": "git",

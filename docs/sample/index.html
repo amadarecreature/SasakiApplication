@@ -23,15 +23,17 @@
                 <button id="btn_new" class="btn_base">新規</button>
                 <button id="btn_back" class="btn_base">待った</button>
                 <div class="data_sync_container">
-                    <input id="acd-check1" class="acd-check" type="checkbox">
-                    <label class="acd-label" for="acd-check1">+</label>
-                    <div class="acd-content">
-                        <label id="lblSynckey" for="Synckey">データキー</label>
-                        <input id="synckey" type="text" value="abcKey" />
-                        <button id="btn_auto_sync_start" class="btn_base">自動更新開始</button>
-                        <button id="btn_auto_sync_stop" class="btn_base">自動更新終了</button>
-                        <button id="btn_sync_upLoad" class="btn_base">アップロード</button>
-                        <button id="btn_sync_pull" class="btn_base">取得</button>
+                    <div class="acd-button-container">
+                        <input id="acd-check1" class="acd-check" type="checkbox">
+                        <label class="acd-label" for="acd-check1">+</label>
+                        <div class="acd-content">
+                            <label id="lblSynckey" for="Synckey">データキー</label>
+                            <input id="synckey" type="text" value="abcKey" />
+                            <button id="btn_auto_sync_start" class="btn_base">自動更新開始</button>
+                            <button id="btn_auto_sync_stop" class="btn_base">自動更新終了</button>
+                            <button id="btn_sync_upLoad" class="btn_base">アップロード</button>
+                            <button id="btn_sync_pull" class="btn_base">取得</button>
+                        </div>
                     </div>
                 </div>
 
@@ -75,16 +77,21 @@
                 </div>
                 <div class="play_option_area">
                     <div class="play_info">
-                        <label>手番 : </label><span id="spnTeban"></span>
+                        <div class="nextTurnRow">
+                            <label>手番 : </label>
+                            <canvas id="cnvTeban" class="nextTurn" width="20px" height="20px"></canvas>
+                            <label>※次に置く石の色 : </label>
+                            <canvas id="cnvStoneColor" class="nextTurn" width="20px" height="20px"></canvas>
+                        </div>
                         <div class="own_info">
                             <label>アゲハマ(白) : </label><span id="spn_agehama_W"></span>
                         </div>
                         <div class="enemy_info">
                             <label>アゲハマ(黒) : </label><span id="spn_agehama_B"></span>
                         </div>
-                        <div>
+                        <div class="agehama_mode_area">
                             <label for="agehama_switch" class="agehama_swich_parts">アゲハマモード</label>
-                            <div class="org_switch_area agehama_swich_parts">
+                            <div class="org_switch_area">
                                 <input type="checkbox" id="agehama_switch">
                                 <label for="agehama_switch"><span></span></label>
                                 <div class="switch_image"></div>

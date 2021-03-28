@@ -5,8 +5,9 @@ import { GoCandidateManager } from "./GoCandidateManager";
 import { GoPlayStatsuManager } from "./GoPlayStatusManager"
 
 
-import { GoBoadSetting, GoStoneColor } from "./GoSetting";
+import { GoBoadSetting, GoMoveType, GoStoneColor } from "./GoSetting";
 import { GoLogger } from "./GoLogger"
+import { KifuUtil } from "./KifuController";
 /**
  * (Required feature)
  * ・View sample of two-eyed shape
@@ -27,8 +28,13 @@ class Main {
     readonly canvasFree: HTMLCanvasElement = <HTMLCanvasElement>document.getElementById("free_canvas");
     readonly canvasCandidate: HTMLCanvasElement = <HTMLCanvasElement>document.getElementById("candidate_canvas");
 
+
+
     readonly sampleCanvasGoboad: HTMLCanvasElement = <HTMLCanvasElement>document.getElementById("sample_goboad_canvas");
     readonly sampleCanvasGoishi: HTMLCanvasElement = <HTMLCanvasElement>document.getElementById("sample_goishi_canvas");
+
+    readonly canvasTeban: HTMLCanvasElement = <HTMLCanvasElement>document.getElementById("cnvTeban");
+    readonly cnvStoneColor: HTMLCanvasElement = <HTMLCanvasElement>document.getElementById("cnvStoneColor");
 
     readonly lblLog: HTMLLabelElement = <HTMLLabelElement>document.getElementById("log");
     readonly inpKifu: HTMLInputElement = <HTMLInputElement>document.getElementById("kifu");
@@ -57,12 +63,14 @@ class Main {
     readonly btn_sync_upLoad: HTMLButtonElement = <HTMLButtonElement>document.getElementById("btn_sync_upLoad");
     readonly btn_sync_pull: HTMLButtonElement = <HTMLButtonElement>document.getElementById("btn_sync_pull");
 
-
     readonly btn_turn_back: HTMLButtonElement = <HTMLButtonElement>document.getElementById("btn_turn_back");
     readonly btn_turn_forward: HTMLButtonElement = <HTMLButtonElement>document.getElementById("btn_turn_forward");
 
+    readonly spnTeban: HTMLSpanElement = <HTMLSpanElement>document.getElementById("spnTeban");
 
     readonly kifuLogger = GoLogger.getInstance(this.inpKifu);
+
+
 
     readonly statusManager;
     /**
@@ -94,6 +102,19 @@ class Main {
         this.canvasFree.addEventListener("mouseup", (e: MouseEvent) => this.onMouseUp(e));
         this.canvasFree.addEventListener("mousemove", (e: MouseEvent) => this.onMouseMove(e));
 
+        this.rdoBlackStoneModeOn.addEventListener("click", (e: Event) => {
+            this.gim.nextStoneColor = GoStoneColor.BLACK;
+            this.updateNextTurn();
+        });
+        this.rdoWhiteStoneModeOn.addEventListener("click", (e: Event) => {
+            this.gim.nextStoneColor = GoStoneColor.WHITE;
+            this.updateNextTurn();
+        });
+        this.rdoNone.addEventListener("click", (e: Event) => {
+            this.gim.nextStoneColor = KifuUtil.convertMoveToColor(this.gim.nextTurn);
+            this.updateNextTurn();
+        });
+
         // 新規開始用イベント
         this.btnNew.addEventListener("click", (e: Event) => this.new(e))
 
@@ -116,6 +137,11 @@ class Main {
         this.btn_turn_forward.addEventListener("click", (e: Event) => this.turnForward(e));
 
         this.btn_auto_sync_start.addEventListener("click", (e: Event) => this.autoSyncStart(e));
+
+        // 画面の初期化
+        this.updateAgehamaCount();
+        this.updateNextTurn();
+
 
     }
     private syncUpLoad(e: Event) {
@@ -175,9 +201,8 @@ class Main {
         // アゲハマ取るモード
         // if (this.rdo_agehamaMode_on.checked) {
         if (this.chk_agehama_switch.checked) {
-            let targetMove = this.gim.getAgehama(e.offsetX, e.offsetY);
-            this.spn_agehama_B.innerText = this.gim.agehamaB + "個";
-            this.spn_agehama_W.innerText = this.gim.agehamaW + "個";
+            this.gim.getAgehama(e.offsetX, e.offsetY);
+            this.updateAgehamaCount();
             return;
 
         }
@@ -185,9 +210,28 @@ class Main {
         this.gim.chakushu(e.offsetX, e.offsetY);
         this.kifuLogger.log(this.gim.kifuString);
         this.statusManager.update(this.gim.kifuString);
-        const spnTeban: HTMLSpanElement = <HTMLSpanElement>document.getElementById("spnTeban");
-        spnTeban.innerHTML = this.gim.nextTurn;
+        this.updateNextTurn();
     }
+    private updateNextTurn() {
+
+        // 次の手番の色 ※あくまで着手。クリックしたときに置く石の色ではない
+        const color = KifuUtil.convertMoveToColor(this.gim.nextTurn);
+
+        const context = this.canvasTeban.getContext("2d")!;
+        this.drawFillCircle(10, 10, 8, context, color);
+
+        const context2 = this.cnvStoneColor.getContext("2d")!;
+        const color2 = this.gim.nextStoneColor;
+        this.drawFillCircle(10, 10, 8, context2, color2);
+
+
+    }
+
+    private updateAgehamaCount() {
+        this.spn_agehama_B.innerText = this.gim.agehamaB + "個";
+        this.spn_agehama_W.innerText = this.gim.agehamaW + "個";
+    }
+
     /**
      * 新規表示
      * @param e 
@@ -202,6 +246,8 @@ class Main {
 
         // データ登録
         this.statusManager.sync();
+        this.updateNextTurn();
+        this.rdoNone.checked = true;
 
     }
 
@@ -215,6 +261,7 @@ class Main {
     private mattta(e: Event) {
         this.gim.matta();
         this.kifuLogger.log(this.gim.kifuString);
+        this.updateNextTurn();
 
     }
     /**
@@ -225,6 +272,37 @@ class Main {
         this.fwm.clearAll();
         this.gcm.clearAll();
         this.rdoNone.checked = true;
+    }
+
+
+    /**
+ * 円形オブジェクトを描画します。
+ * @param x 左端座標
+ * @param y 上端座標
+ * @param r 半径
+ * @param context 描画先のコンテキストを指定します。
+ * @since 0.1
+ */
+    private drawFillCircle(x: number, y: number, r: number, context: CanvasRenderingContext2D, fillStyle: string) {
+        context.beginPath();
+        // context.arc(x + r, y + r, r, 0, 2 * Math.PI);
+        context.arc(x, y, r, 0, 2 * Math.PI);
+        context.fillStyle = fillStyle;
+        // 透明度
+        context.globalAlpha = 1;
+        context.fill();
+
+        // テカリ
+        context.beginPath();
+        context.arc(x, y, r * 0.8, 0, -0.25 * Math.PI, true);
+        context.closePath;
+        context.strokeStyle = (fillStyle == "black") ? "white" : "black";
+        context.lineCap = "round";
+        context.lineWidth = 0.5;
+        context.stroke();
+
+
+        console.log("color", fillStyle);
     }
 }
 // Mainクラスを実行する。

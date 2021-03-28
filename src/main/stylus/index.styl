@@ -158,6 +158,12 @@ subBoxBase() {
     margin-bottom: 10px;
 }
 
+.nextTurnRow {
+    // width: 20px;
+    height: 24px;
+    debugBorder(black);
+}
+
 /* 汎用的なもの */
 .radio_box {
     display: table-cell;
@@ -172,40 +178,16 @@ subBoxBase() {
     height: 30px;
 }
 
+.agehama_mode_area {
+    display: flex;
+    flex-direction: row;
+    vertical-align: middle;
+}
+
 .agehama_swich_parts {
     display: table-cell;
 }
 
 .data_sync_container {
     display: inline-block;
-
-    .acd-check {
-        display: none;
-    }
-
-    .acd-label {
-        background: #333;
-        color: #fff;
-        margin-bottom: 1px;
-        padding: 2px;
-    }
-
-    .acd-content {
-        background: brown;
-        border: 1px solid #333;
-        height: 0;
-        opacity: 0;
-        padding: 0 10px;
-        transition: 0.5s;
-        visibility: hidden;
-        display: none;
-    }
-
-    .acd-check:checked + .acd-label + .acd-content {
-        height: 40px;
-        opacity: 1;
-        padding: 10px;
-        visibility: visible;
-        display: block;
-    }
 }

@@ -10,43 +10,35 @@
         },
         {
             "type": "npm",
-            "script": "build_W_local",
+            "script": "ts-wd",
             "group": "build",
             "problemMatcher": [],
-            "label": "npm: build_W_local",
+            "label": "npm: ts-wd",
             "detail": "webpack"
         },
         {
             "type": "npm",
-            "script": "stylus_watch",
+            "script": "sty-w",
             "group": "build",
             "problemMatcher": [],
-            "label": "npm: stylus_watch",
+            "label": "npm: sty-w",
             "detail": "webpack"
         },
         {
             "type": "npm",
-            "script": "test_watch",
+            "script": "test-w",
             "group": "build",
             "problemMatcher": [],
-            "label": "npm: test_watch",
+            "label": "npm: test-w",
             "detail": "webpack"
         },
         {
             "type": "npm",
-            "script": "build_W_prd",
+            "script": "ts-wp",
             "group": "build",
             "problemMatcher": [],
-            "label": "npm: build_W_prd",
+            "label": "npm: ts-wp",
             "detail": "NODE_ENV=production webpack"
-        },
-        {
-            "type": "npm",
-            "script": "test",
-            "group": "build",
-            "problemMatcher": [],
-            "label": "npm: test",
-            "detail": ""
         }
     ]
 }

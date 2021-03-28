@@ -151,7 +151,8 @@ export class KifuUtil {
         return result;
     }
 
-    static convertMoveFromColor(chakushu: GoMoveType): GoStoneColor {
+
+    public static convertMoveToColor(chakushu: GoMoveType): GoStoneColor {
         if (chakushu == GoMoveType.BLACK) {
             return GoStoneColor.BLACK;
         }
@@ -160,6 +161,9 @@ export class KifuUtil {
         }
         if (chakushu == GoMoveType.OKI_BLACK) {
             return GoStoneColor.BLACK;
+        }
+        if (chakushu == GoMoveType.OKI_WHITE) {
+            return GoStoneColor.WHITE;
         }
         return GoStoneColor.NONE;
     }
