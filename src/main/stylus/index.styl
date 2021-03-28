@@ -1,19 +1,72 @@
 @import './common/*';
 
+/*
+ * variables
+ */
+debugBorder(aColor) {
+    // border: 2px solid aColor;
+}
+
+paddingLR(aSize) {
+    padding-right: aSize;
+    padding-left: aSize;
+}
+
+paddingTB(aSize) {
+    padding-top: aSize;
+    padding-bottom: aSize;
+}
+
+marginLR(aSize) {
+    margin-left: aSize;
+    margin-right: aSize;
+}
+
+marginTB(aSize) {
+    margin-top: aSize;
+    margin-bottom: aSize;
+}
+
+subBoxBase() {
+    background: Wheat;
+    box-shadow: -1px -1px 2px black;
+}
+
 .main_container {
-    padding: 2%;
+    // height: 600px;
+    paddingTB(2px);
+    paddingLR(5px);
     display: flex;
     flex-direction: row;
-    align-items: center;
-    border: 2px solid violet;
+    flex-wrap: wrap;
+    // align-items: center;
+    border: 2px solid black;
     background-color: antiquewhite;
 }
 
+.play_field_container {
+    width: 720px;
+    padding: 6px;
+    display: flex;
+    flex-direction: column;
+    margin-right: 2px;
+    debugBorder(red);
+}
+
+.sample_field_container {
+    paddingTB(2px);
+    paddingLR(2px);
+    display: flex;
+    flex-direction: column;
+    margin-left: 2px;
+    debugBorder(red);
+}
+
 .game_controller_container {
-    min-height: 40px;
-    width: 100%;
+    subBoxBase();
+    height: 40px;
+    min-width: 480px;
     float: left;
-    border: 1px solid black;
     margin-bottom: 2px;
     padding: 2px;
     display: table-cell;
@@ -21,65 +74,57 @@
 }
 
 .goban_controller_container {
+    subBoxBase();
     height: 40px;
-    width: 100%;
     float: left;
-    border: 1px solid black;
-    margin-top: 2px;
-    margin-bottom: 2px;
-    padding-top: 2px;
-    padding-bottom: 2px;
-    padding-right: 2px;
-}
-
-.play_field_container {
-    /* width: 100%; */
-    /* height: 80%; */
-    border: 1px;
-    border-style: solid;
-    border-color: black;
-    padding: 2px;
-}
-
-.sample_field_container {
-    /* width: 100%; */
-    height: 80%;
-    border: 1px;
-    border-style: solid;
-    border-color: black;
-    padding: 2px;
+    marginTB(3px);
+    paddingLR(4px);
+    paddingTB(4px);
 }
 
 .goban_container {
+    subBoxBase();
+    marginTB(3px);
     min-height: 512px;
-    border: 1px;
-    border-style: solid;
-    border-color: brown;
+    debugBorder(brown);
     display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
 }
 
 .data_container {
-    border: 2px solid black;
-    min-height: 25px;
-    margin-bottom: 5px;
+    subBoxBase();
+    // border: 2px solid black;
+    min-height: 30px;
+    paddingTB(2px);
+    paddingLR(4px);
+    marginTB(3px);
+
+    input {
+        width: 90%;
+    }
 }
 
 .goban_area {
     width: 400px;
     height: 380px;
     position: relative;
-    border: 3px solid green;
     flex-grow: 1;
+    paddingTB(10px);
+    paddingLR(4px);
+    debugBorder(green);
 }
 
 .play_option_area {
     flex-grow: 1;
-    border: 1px solid blue;
+    paddingTB(10px);
+    paddingLR(4px);
+    debugBorder(orange);
 }
 
 .play_controller {
-    border: 1px solid blue;
     height: 50%;
+    debugBorder(blue);
 }
 
 .turn_controller {
@@ -116,9 +161,7 @@
 .nextTurnRow {
     // width: 20px;
     height: 24px;
-    border: 1px;
-    border-style: solid;
-    border-color: black;
+    debugBorder(black);
 }
 
 /* 汎用的なもの */
@@ -133,6 +176,12 @@
     margin-left: 2px;
     margin-right: 2px;
     height: 30px;
+}
+
+.agehama_mode_area {
+    display: flex;
+    flex-direction: row;
+    vertical-align: middle;
 }
 
 .agehama_swich_parts {
