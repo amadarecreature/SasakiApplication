@@ -279,7 +279,7 @@ describe('GoStoneManager', () => {
         expect(dummyInstance.agehamaW).toEqual(expAgehamaW);
 
     });
-    it('置き石(白) 置き石(黒) 置き石(白) 着手×2 アゲハマ 置き石(白) 置き石(黒) ', () => {
+    it('置き石(白) 置き石(黒) 置き石(白) 着手×2 置き石(白) 置き石(黒) ', () => {
         const roSize = 5; const gobanTop = 10; const gobanLeft = 20;
         const goSetting = new GoBoadSetting(gobanTop, gobanLeft, 1, roSize);
 
@@ -313,6 +313,38 @@ describe('GoStoneManager', () => {
 
 
     });
+
+    it('置き石(白) アゲハマ ', () => {
+        const roSize = 5; const gobanTop = 10; const gobanLeft = 20;
+        const goSetting = new GoBoadSetting(gobanTop, gobanLeft, 1, roSize);
+
+        // prepare
+        const dummyInstance = new GoStoneManager(tCreateCanvas("dcv1"), goSetting, 19);
+
+        // set result
+        const expKifu: string = "AE[ac]XAGW[ac]AB[ac]XAGB[ac]";
+        const expRealtimePosition: string = ""
+        const expNowCount: number = 3;
+        const expNextTurn: GoMoveType = GoMoveType.WHITE;
+        const expAgehamaB = 1;
+        const expAgehamaW = 1;
+        // execute
+        dummyInstance.addSpecifiedColorStone(gobanLeft + 2.5 + roSize * 0, gobanTop + 2.5 + roSize * 2, GoStoneColor.WHITE);
+        tExecuteAgehama(dummyInstance, gobanLeft, roSize, gobanTop, 0, 2);
+        dummyInstance.addSpecifiedColorStone(gobanLeft + 2.5 + roSize * 0, gobanTop + 2.5 + roSize * 2, GoStoneColor.BLACK);
+        tExecuteAgehama(dummyInstance, gobanLeft, roSize, gobanTop, 0, 2);
+        // check
+        expect(dummyInstance.kifuString).toEqual(expKifu);
+        const actualRealtimePosition = tExpStringFromRTPos(dummyInstance.realtimePosition);
+        expect(actualRealtimePosition).toEqual(expRealtimePosition);
+        expect(dummyInstance.nowCount).toEqual(expNowCount);
+        expect(dummyInstance.nextTurn).toEqual(expNextTurn);
+        expect(dummyInstance.agehamaB).toEqual(expAgehamaB);
+        expect(dummyInstance.agehamaW).toEqual(expAgehamaW);
+
+
+    });
+
     // 最後のカッコ
 });
 describe("nextTurn", () => {
