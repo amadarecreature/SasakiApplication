@@ -420,20 +420,19 @@ export class GoStoneManager {
         if (this.isDuplicatePosition(mouseX, mouseY, this._goBoadInfo)) {
             this.clearStoneByRo(positionOnGoban);
 
-            // とった石
+            // とった石の着手
             resultMove = this.realtimePosition[positionOnGoban.roX][positionOnGoban.roY];
 
+            const resultColor = KifuUtil.convertMoveToColor(resultMove);
             // データ的に消す
             this.realtimePosition[positionOnGoban.roX][positionOnGoban.roY] = GoMoveType.NONE;
 
             // アゲハマを設定
-            if (resultMove == GoMoveType.BLACK) {
+            if (resultColor == GoStoneColor.BLACK) {
                 this.kifu.push(new KifuPart(GoMoveType.AGEHAMA_B, positionOnGoban.roX, positionOnGoban.roY, false));
-                // this._agehamaB++;
             }
-            if (resultMove == GoMoveType.WHITE) {
+            if (resultColor == GoStoneColor.WHITE) {
                 this.kifu.push(new KifuPart(GoMoveType.AGEHAMA_W, positionOnGoban.roX, positionOnGoban.roY, false));
-                // this._agehamaW++;
             }
             this._nowCount += 1;
         }
@@ -542,7 +541,7 @@ export class GoStoneManager {
         this._context.clearRect(x, y, this.roWidth, this.roHeight);
         // 透明度
 
-        console.log("color", "clear");
+        console.debug("clearGoishi");
     }
 
     public UpdateAllGoishi() {
