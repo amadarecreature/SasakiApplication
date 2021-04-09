@@ -247,10 +247,10 @@ export class GoStoneManager {
      */
     public startSyncLoop(interval: number, statusManager: GoPlayStatsuManager) {
 
-        statusManager.syncLoop(interval, this);
+        statusManager.startSync(interval);
     }
     public endSyncLoop(statusManager: GoPlayStatsuManager) {
-        statusManager.isLoop = false;
+        statusManager.stopSync();
     }
     /**
      * 指定した座標に石を描画する。

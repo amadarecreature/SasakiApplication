@@ -6,12 +6,14 @@ import { GoStoneManager } from './GoStoneManager';
  */
 export class GoPlayStatsuManager {
 
-    private apiUrl: string = "https://localhost:5001/api/GoGameRecord/";
+    private _apiUrl: string = "https://localhost:5001/api/GoGameRecord/api/GoGameRecord/";
     private key: string
-    private playRecord: string = "";
-    constructor(key: string, url: string) {
+
+    private _goStoneManager: GoStoneManager;
+    constructor(goStoneManager: GoStoneManager, key: string, apiUrl: string) {
         this.key = key;
-        this.apiUrl = url + "api/GoGameRecord/";
+        this._apiUrl = apiUrl;
+        this._goStoneManager = goStoneManager;
         // axios.defaults.baseURL = 'http://localhost:5001';
         // axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
     }
@@ -27,7 +29,7 @@ export class GoPlayStatsuManager {
         }
 
         var rtn = "";
-        axios.post(this.apiUrl + "update", args)
+        axios.post(this._apiUrl + "update", args)
             .then(function (response) {
                 console.log(response.data)
                 rtn = response.data.value;
@@ -42,17 +44,29 @@ export class GoPlayStatsuManager {
 
     }
 
-    public isLoop: boolean = false;
-    public async syncLoop(interval: number, goishiManager: GoStoneManager) {
-        if (this.isLoop) {
+    public get isLoop(): boolean {
+        return this._isLoop;
+    }
+
+    public stopSync() {
+        this._isLoop = false;
+    }
+    private _isLoop: boolean = false;
+
+
+
+    public async startSync(interval: number) {
+        if (this._isLoop) {
             console.log("syncLoop起動中");
             return;
         }
-        this.isLoop = true;
-        while (this.isLoop) {
+        this._isLoop = true;
+
+        // 停止フラグが立つまでループ
+        while (this._isLoop) {
             const now = performance.now();
             const kifu = await this.sync();
-            goishiManager.roadFromKifu(kifu);
+            this._goStoneManager.roadFromKifu(kifu);
             console.log("loop:" + kifu);
             await this.sleep(interval);
             const end = performance.now();
@@ -67,7 +81,7 @@ export class GoPlayStatsuManager {
             headers: { "Content-Type": "application/json" }
         }
         var rtn = "";
-        await axios.post(this.apiUrl + "select", args)
+        await axios.post(this._apiUrl + "select", args)
             .then(function (response) {
                 console.log("data:" + response.data)
                 rtn = response.data.value;
