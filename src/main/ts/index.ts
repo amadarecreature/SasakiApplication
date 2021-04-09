@@ -14,7 +14,7 @@ import { KifuUtil } from "./KifuController";
  */
 class Main {
 
-    private gim: GoStoneManager;
+    private gsm: GoStoneManager;
     private gcm: GoCandidateManager;
     private fwm: FreeWriteManager;
 
@@ -81,13 +81,16 @@ class Main {
         const rosu: number = parseInt(this.slRosu.options[this.slRosu.selectedIndex].value, 10);
 
         const key = this.inpSyncKey.value;
-        this.statusManager = new GoPlayStatsuManager(key, "https://dev-instruction-go-api.westus.azurecontainer.io/");
 
         // 本体描画
         new GoBoadManager(this.canvasGoboad, this.setting, rosu);
-        this.gim = new GoStoneManager(this.canvasIshi, this.setting, rosu);
+        this.gsm = new GoStoneManager(this.canvasIshi, this.setting, rosu);
         this.gcm = new GoCandidateManager(this.canvasCandidate, this.setting, rosu);
         this.fwm = new FreeWriteManager(this.canvasFree, this.setting, rosu);
+
+        // 同期用オブジェクト
+        this.statusManager = new GoPlayStatsuManager(this.gsm, key, "https://dev-instruction-go-api.westus.azurecontainer.io/");
+
 
         // サンプル描画
         new GoBoadManager(this.sampleCanvasGoboad, this.setting, rosu);
@@ -103,15 +106,15 @@ class Main {
         this.canvasFree.addEventListener("mousemove", (e: MouseEvent) => this.onMouseMove(e));
 
         this.rdoBlackStoneModeOn.addEventListener("click", (e: Event) => {
-            this.gim.nextStoneColor = GoStoneColor.BLACK;
+            this.gsm.nextStoneColor = GoStoneColor.BLACK;
             this.updateNextTurn();
         });
         this.rdoWhiteStoneModeOn.addEventListener("click", (e: Event) => {
-            this.gim.nextStoneColor = GoStoneColor.WHITE;
+            this.gsm.nextStoneColor = GoStoneColor.WHITE;
             this.updateNextTurn();
         });
         this.rdoNone.addEventListener("click", (e: Event) => {
-            this.gim.nextStoneColor = KifuUtil.convertMoveToColor(this.gim.nextTurn);
+            this.gsm.nextStoneColor = KifuUtil.convertMoveToColor(this.gsm.nextTurn);
             this.updateNextTurn();
         });
 
@@ -145,17 +148,17 @@ class Main {
 
     }
     private syncUpLoad(e: Event) {
-        this.statusManager.update(this.gim.kifuString);
+        // this.statusManager.update(this.gim.kifuString);
     }
     private sync(e: Event) {
-        this.statusManager.sync();
+        // this.statusManager.sync();
     }
 
     private autoSyncStart(e: Event) {
-        this.gim.startSyncLoop(500, this.statusManager);
+        // this.gim.startSyncLoop(500, this.statusManager);
     }
     private autoSyncStop(e: Event) {
-        this.gim.endSyncLoop(this.statusManager);
+        // this.gim.endSyncLoop(this.statusManager);
     }
     private onMouseMove(e: MouseEvent): any {
         if (this.rdoDrawMode.checked) {
@@ -184,13 +187,13 @@ class Main {
         }
 
         if (this.rdoBlackStoneModeOn.checked) {
-            this.gim.addSpecifiedColorStone(e.offsetX, e.offsetY, GoStoneColor.BLACK);
-            this.kifuLogger.log(this.gim.kifuString);
+            this.gsm.addSpecifiedColorStone(e.offsetX, e.offsetY, GoStoneColor.BLACK);
+            this.kifuLogger.log(this.gsm.kifuString);
             return;
         }
         if (this.rdoWhiteStoneModeOn.checked) {
-            this.gim.addSpecifiedColorStone(e.offsetX, e.offsetY, GoStoneColor.WHITE);
-            this.kifuLogger.log(this.gim.kifuString);
+            this.gsm.addSpecifiedColorStone(e.offsetX, e.offsetY, GoStoneColor.WHITE);
+            this.kifuLogger.log(this.gsm.kifuString);
             return;
         }
         if (this.rdoCandidateMode.checked) {
@@ -201,35 +204,37 @@ class Main {
         // アゲハマ取るモード
         // if (this.rdo_agehamaMode_on.checked) {
         if (this.chk_agehama_switch.checked) {
-            this.gim.getAgehama(e.offsetX, e.offsetY);
+            this.gsm.getAgehama(e.offsetX, e.offsetY);
             this.updateAgehamaCount();
             return;
 
         }
 
-        this.gim.chakushu(e.offsetX, e.offsetY);
-        this.kifuLogger.log(this.gim.kifuString);
-        this.statusManager.update(this.gim.kifuString);
+        this.gsm.chakushu(e.offsetX, e.offsetY);
+        this.kifuLogger.log(this.gsm.kifuString);
+
+        // this.statusManager.update(this.gsm.kifuString);
+
         this.updateNextTurn();
     }
     private updateNextTurn() {
 
         // 次の手番の色 ※あくまで着手。クリックしたときに置く石の色ではない
-        const color = KifuUtil.convertMoveToColor(this.gim.nextTurn);
+        const color = KifuUtil.convertMoveToColor(this.gsm.nextTurn);
 
         const context = this.canvasTeban.getContext("2d")!;
         this.drawFillCircle(10, 10, 8, context, color);
 
         const context2 = this.cnvStoneColor.getContext("2d")!;
-        const color2 = this.gim.nextStoneColor;
+        const color2 = this.gsm.nextStoneColor;
         this.drawFillCircle(10, 10, 8, context2, color2);
 
 
     }
 
     private updateAgehamaCount() {
-        this.spn_agehama_B.innerText = this.gim.agehamaB + "個";
-        this.spn_agehama_W.innerText = this.gim.agehamaW + "個";
+        this.spn_agehama_B.innerText = this.gsm.agehamaB + "個";
+        this.spn_agehama_W.innerText = this.gsm.agehamaW + "個";
     }
 
     /**
@@ -240,7 +245,7 @@ class Main {
         const rosu: number = parseInt(this.slRosu.options[this.slRosu.selectedIndex].value, 10);
 
         new GoBoadManager(this.canvasGoboad, this.setting, rosu);
-        this.gim = new GoStoneManager(this.canvasIshi, this.setting, rosu);
+        this.gsm = new GoStoneManager(this.canvasIshi, this.setting, rosu);
         this.gcm = new GoCandidateManager(this.canvasFree, this.setting, rosu);
         this.fwm = new FreeWriteManager(this.canvasFree, this.setting, rosu);
 
@@ -259,8 +264,8 @@ class Main {
     }
 
     private mattta(e: Event) {
-        this.gim.matta();
-        this.kifuLogger.log(this.gim.kifuString);
+        this.gsm.matta();
+        this.kifuLogger.log(this.gsm.kifuString);
         this.updateNextTurn();
 
     }
