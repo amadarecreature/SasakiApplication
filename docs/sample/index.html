@@ -68,29 +68,17 @@
                 <label id="log">ログ</label>
                 <input id="kifu" type="text" value="" />
             </div>
-            <div class="goban_container">
-                <div class="goban_area">
-                    <canvas id="goboad_canvas" style="z-index: 0;"></canvas>
-                    <canvas id="goishi_canvas" style="z-index: 10;"></canvas>
-                    <canvas id="candidate_canvas" style="z-index: 60;"></canvas>
-                    <canvas id="free_canvas" style="z-index: 100;"></canvas>
-                </div>
-                <div class="play_option_area">
-                    <div class="play_info">
+            <div class="mainPlayContainer">
+                <div class="goban_container">
+                    <div class="turn_area">
                         <div class="nextTurnRow">
                             <label>手番 : </label>
                             <canvas id="cnvTeban" class="nextTurn" width="20px" height="20px"></canvas>
-                            <label>※次に置く石の色 : </label>
+                            <label>次に置く石の色 : </label>
                             <canvas id="cnvStoneColor" class="nextTurn" width="20px" height="20px"></canvas>
                         </div>
-                        <div class="own_info">
-                            <label>アゲハマ(白) : </label><span id="spn_agehama_W"></span>
-                        </div>
-                        <div class="enemy_info">
-                            <label>アゲハマ(黒) : </label><span id="spn_agehama_B"></span>
-                        </div>
                         <div class="agehama_mode_area">
-                            <label for="agehama_switch" class="agehama_swich_parts">アゲハマモード</label>
+                            <label for="agehama_switch">アゲハマモード</label>
                             <div class="org_switch_area">
                                 <input type="checkbox" id="agehama_switch">
                                 <label for="agehama_switch"><span></span></label>
@@ -98,25 +86,38 @@
                             </div>
                         </div>
                     </div>
-                    <div class="play_controller">
-                        <div class="turn_controller">
-                            <button type="button" id="btn_turn_back">
-                                <img src="img/left_button.png" />
-                            </button>
-                            <button type="button" id="btn_turn_forward">
-                                <img src="img/right_button.png" />
-                            </button>
+                    <div class="goban_area">
+                        <canvas id="goboad_canvas" style="z-index: 0;"></canvas>
+                        <canvas id="goishi_canvas" style="z-index: 10;"></canvas>
+                        <canvas id="candidate_canvas" style="z-index: 60;"></canvas>
+                        <canvas id="free_canvas" style="z-index: 100;"></canvas>
+                    </div>
+                </div>
+                <div class="play_controller">
+
+                    <div class="play_info">
+                        <div class="own_info">
+                            <label>アゲハマ(白) : </label><span id="spn_agehama_W"></span>
                         </div>
+                        <div class="enemy_info">
+                            <label>アゲハマ(黒) : </label><span id="spn_agehama_B"></span>
+                        </div>
+                    </div>
+                    <div class="turn_controller">
+                        <button type="button" id="btn_turn_back">
+                            <img src="img/left_button.png" />
+                        </button>
+                        <button type="button" id="btn_turn_forward">
+                            <img src="img/right_button.png" />
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
         <div class="sample_field_container">
-            <div class="goban_container">
-                <div class="goban_area">
-                    <canvas id="sample_goboad_canvas" style="z-index: 0;"></canvas>
-                    <canvas id="sample_goishi_canvas" style="z-index: 10;"></canvas>
-                </div>
+            <div class="goban_area">
+                <canvas id="sample_goboad_canvas" style="z-index: 0;"></canvas>
+                <canvas id="sample_goishi_canvas" style="z-index: 10;"></canvas>
             </div>
         </div>
     </div>

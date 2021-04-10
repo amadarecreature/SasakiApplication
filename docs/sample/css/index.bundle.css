@@ -1,7 +1,7 @@
 .org_switch_area {
   position: relative;
 /* 1行の高さ */
-  line-height: 30px;
+  line-height: switchButtonHeight;
 /* 文字間 */
   letter-spacing: 0;
 /* 文字位置は中央 */
@@ -11,15 +11,18 @@
 /* 親要素が基点 */
   position: relative;
 /* 中央寄せ */
-  margin: auto;
+  margin-right: 5px;
+  margin-left: 5px;
 /* ボタンの横幅 */
-  width: 100px;
+  width: 92px;
 /* デフォルト背景色 */
   background: transparent;
+/* === チェックボックスのラベル（ONのとき） ================ */
+/* === 表示する文字（標準） ================================ */
 }
 .org_switch_area input[type='checkbox'] {
   display: none;
-  width: 100%;
+  width: 10px;
 /* チェックボックス非表示 */
 }
 .org_switch_area label {
@@ -27,7 +30,7 @@
 /* ボックス要素に変更 */
   box-sizing: border-box;
 /* 枠線を含んだサイズ */
-  height: 30px;
+  height: switchButtonHeight;
 /* ボタンの高さ */
   border: 2px solid #999;
 /* 未選択タブのの枠線 */
@@ -41,41 +44,44 @@
 .org_switch_area label span:after {
   content: 'OFF';
 /* 表示する文字 */
-  padding: 0 0 0 18px;
+  padding: 0 0 0 16px;
 /* 表示する位置 */
   color: #999;
-/* 文字色 */
-}
-.org_switch_area input[type='checkbox']:checked+label span:after {
-  content: 'ON';
-/* 表示する文字 */
-  padding: 0 16px 0 0;
-/* 表示する位置 */
-  color: #78bd78;
 /* 文字色 */
 }
 .org_switch_area .switch_image {
   position: absolute;
 /* 親要素からの相対位置 */
-  width: 26px;
+  width: 24px;
 /* 丸の横幅 */
-  height: 26px;
+  height: 24px;
 /* 丸の高さ */
-  background: #999;
+  background: #808080;
 /* カーソルタブの背景 */
   top: 2px;
 /* 親要素からの位置 */
-  left: 3px;
+  left: 2px;
 /* 親要素からの位置 */
-  border-radius: 26px;
+  border-radius: 24px;
 /* 角丸 */
   transition: 0.2s;
 /* 滑らか変化 */
 }
+.org_switch_area input[type='checkbox']:checked+label span:after {
+/* 表示する文字 */
+  content: 'ON';
+/* 表示する位置 */
+  padding: 0 16px 0 0;
+/* 文字色 */
+  color: #fff;
+}
+.org_switch_area input[type='checkbox']:checked~label {
+  background: #008000;
+}
 .org_switch_area input[type='checkbox']:checked~.switch_image {
-  transform: translateX(68px);
+  transform: translateX(64px);
 /* 丸も右へ移動 */
-  background: #78bd78;
+  background: #fff;
 /* カーソルタブの背景 */
 }
 .RdoSwitchButton {
@@ -150,7 +156,7 @@
   padding: 6px;
   display: flex;
   flex-direction: column;
-  margin-right: 2px;
+  margin-right: 3px;
 }
 .sample_field_container {
   padding-top: 2px;
@@ -163,7 +169,8 @@
 }
 .game_controller_container {
   background: Wheat;
-  box-shadow: -1px -1px 2px #000;
+  box-shadow: 2px 2px 1px #000;
+  border: 1px solid #808080;
   height: 40px;
   min-width: 480px;
   float: left;
@@ -174,7 +181,8 @@
 }
 .goban_controller_container {
   background: Wheat;
-  box-shadow: -1px -1px 2px #000;
+  box-shadow: 2px 2px 1px #000;
+  border: 1px solid #808080;
   height: 40px;
   float: left;
   margin-top: 3px;
@@ -184,19 +192,51 @@
   padding-top: 4px;
   padding-bottom: 4px;
 }
-.goban_container {
+.mainPlayContainer {
   background: Wheat;
-  box-shadow: -1px -1px 2px #000;
+  box-shadow: 2px 2px 1px #000;
+  border: 1px solid #808080;
   margin-top: 3px;
   margin-bottom: 3px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-right: 4px;
+  padding-left: 4px;
   min-height: 512px;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
 }
+.goban_container {
+  background: Wheat;
+  box-shadow: 2px 2px 1px #000;
+  border: 1px solid #808080;
+  margin-left: 3px;
+  margin-right: 3px;
+  padding-right: 10px;
+  padding-left: 10px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  min-height: 512px;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+}
+.play_controller {
+  background: Wheat;
+  box-shadow: 2px 2px 1px #000;
+  border: 1px solid #808080;
+  margin-left: 3px;
+  margin-right: 3px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-right: 10px;
+  padding-left: 10px;
+}
 .data_container {
   background: Wheat;
-  box-shadow: -1px -1px 2px #000;
+  box-shadow: 2px 2px 1px #000;
+  border: 1px solid #808080;
   min-height: 30px;
   padding-top: 2px;
   padding-bottom: 2px;
@@ -220,13 +260,10 @@
 }
 .play_option_area {
   flex-grow: 1;
-  padding-top: 10px;
-  padding-bottom: 10px;
+  padding-top: 20px;
+  padding-bottom: 20px;
   padding-right: 4px;
   padding-left: 4px;
-}
-.play_controller {
-  height: 50%;
 }
 .turn_controller {
   padding-top: 2px;
@@ -272,7 +309,7 @@
 .agehama_mode_area {
   display: flex;
   flex-direction: row;
-  vertical-align: middle;
+  text-align: center;
 }
 .agehama_swich_parts {
   display: table-cell;
