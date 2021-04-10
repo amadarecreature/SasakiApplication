@@ -202,7 +202,6 @@ class Main {
         }
 
         // アゲハマ取るモード
-        // if (this.rdo_agehamaMode_on.checked) {
         if (this.chk_agehama_switch.checked) {
             this.gsm.getAgehama(e.offsetX, e.offsetY);
             this.updateAgehamaCount();

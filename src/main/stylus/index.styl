@@ -29,7 +29,8 @@ marginTB(aSize) {
 
 subBoxBase() {
     background: Wheat;
-    box-shadow: -1px -1px 2px black;
+    box-shadow: 2px 2px 1px black;
+    border: 1px solid gray;
 }
 
 .main_container {
@@ -49,7 +50,7 @@ subBoxBase() {
     padding: 6px;
     display: flex;
     flex-direction: column;
-    margin-right: 2px;
+    margin-right: 3px;
     debugBorder(red);
 }
 
@@ -82,14 +83,36 @@ subBoxBase() {
     paddingTB(4px);
 }
 
-.goban_container {
+.mainPlayContainer {
     subBoxBase();
     marginTB(3px);
+    paddingTB(4px);
+    paddingLR(4px);
     min-height: 512px;
     debugBorder(brown);
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+}
+
+.goban_container {
+    subBoxBase();
+    marginLR(3px);
+    paddingLR(10px);
+    paddingTB(10px);
+    min-height: 512px;
+    debugBorder(brown);
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+
+.play_controller {
+    subBoxBase();
+    marginLR(3px);
+    paddingTB(10px);
+    paddingLR(10px);
+    debugBorder(blue);
 }
 
 .data_container {
@@ -117,14 +140,9 @@ subBoxBase() {
 
 .play_option_area {
     flex-grow: 1;
-    paddingTB(10px);
+    paddingTB(20px);
     paddingLR(4px);
     debugBorder(orange);
-}
-
-.play_controller {
-    height: 50%;
-    debugBorder(blue);
 }
 
 .turn_controller {
@@ -181,7 +199,7 @@ subBoxBase() {
 .agehama_mode_area {
     display: flex;
     flex-direction: row;
-    vertical-align: middle;
+    text-align: center;
 }
 
 .agehama_swich_parts {
