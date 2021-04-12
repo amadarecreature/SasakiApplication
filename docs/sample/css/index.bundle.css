@@ -137,6 +137,19 @@
   visibility: visible;
   display: block;
 }
+.CursorMouseAgehama {
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1001;
+  cursor: none;
+  posinter-events: none;
+}
+.CursorMouseAgehama img {
+  width: 100%;
+}
 /*
  * variables
  */
@@ -221,6 +234,9 @@
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
+}
+.cursor_agehama {
+  cursor: url("../img/mouseAgehama.gif"), auto;
 }
 .play_controller {
   background: Wheat;

@@ -91,6 +91,14 @@ class Main {
         // 同期用オブジェクト
         this.statusManager = new GoPlayStatsuManager(this.gsm, key, "https://dev-instruction-go-api.westus.azurecontainer.io/");
 
+        // アゲハマモードを切り替えた時にマウスカーソルを変える。
+        this.chk_agehama_switch.addEventListener("change", (e: Event) => {
+            if (this.chk_agehama_switch.checked) {
+                this.canvasFree.classList.add("cursor_agehama");
+            } else {
+                this.canvasFree.classList.remove("cursor_agehama");
+            }
+        });
 
         // サンプル描画
         new GoBoadManager(this.sampleCanvasGoboad, this.setting, rosu);
@@ -144,6 +152,8 @@ class Main {
         // 画面の初期化
         this.updateAgehamaCount();
         this.updateNextTurn();
+
+        this.mouseChangeForAgehama();
 
 
     }
@@ -308,7 +318,26 @@ class Main {
 
         console.log("color", fillStyle);
     }
+
+    private mouseChangeForAgehama() {
+        window.document.onmousemove = function (e) {
+            const mouseX = e.pageX;
+            const mouseY = e.pageY;
+            // console.info(document.body.style.cursor);
+            // document.body.style.cursor = "url(img/mouseChangeForAgehama.gif)";
+            // document.body.style.cursor = ({
+            //     //カーソルの真ん中に座標軸が来るよう、
+            //     //カーソルの大きさの半分を引きます
+            //     left: mouseX - (cWidth / 2),
+            //     top: mouseY - (cWidth / 2)
+            // })
+        };
+    }
 }
+
+
+
+
 // Mainクラスを実行する。
 window.addEventListener("load", () => new Main());
 
