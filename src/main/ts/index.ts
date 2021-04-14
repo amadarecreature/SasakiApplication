@@ -113,7 +113,6 @@ class Main {
         this.canvasFree.addEventListener("mouseup", (e: MouseEvent) => this.onMouseUp(e));
         this.canvasFree.addEventListener("mousemove", (e: MouseEvent) => this.onMouseMove(e));
 
-        this.canvasFree.addEventListener("mousemove", (e: MouseEvent) => this.onMouseOver(e))
 
         this.rdoBlackStoneModeOn.addEventListener("click", (e: Event) => {
             this.gsm.nextStoneColor = GoStoneColor.BLACK;
@@ -189,10 +188,10 @@ class Main {
     }
 
     /**
-     * TODO:cursor関連のクラスを削除してからクラスを追加する。ように修正する。
+     * 
      * @param e 
      */
-    private onMouseOver(e: MouseEvent): void {
+    private changeMouseCursor(): void {
         const clearedList: string[] = new Array();
 
         // 一回不要なのをクリア
@@ -208,16 +207,20 @@ class Main {
         if (this.rdoDrawMode.checked) {
             this.fwm.draw(e.offsetX, e.offsetY);
         }
+        this.changeMouseCursor();
     }
     private onMouseDown(e: MouseEvent): any {
         if (this.rdoDrawMode.checked) {
             this.fwm.start(e.offsetX, e.offsetY);
         }
+        this.changeMouseCursor();
     }
     private onMouseUp(e: MouseEvent): any {
         if (this.rdoDrawMode.checked) {
             this.fwm.stop();
         }
+        this.changeMouseCursor();
+
     }
 
     /**

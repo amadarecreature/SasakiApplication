@@ -226,10 +226,10 @@
   cursor: url("../img/mouseAgehama.gif"), auto;
 }
 .cursor_black_stone {
-  cursor: url("../img/blackStone.png"), auto;
+  cursor: url("../img/blackStone.gif"), auto;
 }
 .cursor_white_stone {
-  cursor: url("../img/whiteStone.png"), auto;
+  cursor: url("../img/whiteStone.gif"), auto;
 }
 .play_controller {
   background: Wheat;
