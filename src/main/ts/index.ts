@@ -93,11 +93,11 @@ class Main {
 
         // アゲハマモードを切り替えた時にマウスカーソルを変える。
         this.chk_agehama_switch.addEventListener("change", (e: Event) => {
-            if (this.chk_agehama_switch.checked) {
-                this.canvasFree.classList.add("cursor_agehama");
-            } else {
-                this.canvasFree.classList.remove("cursor_agehama");
-            }
+            // if (this.chk_agehama_switch.checked) {
+            //     this.canvasFree.classList.add("cursor_agehama");
+            // } else {
+            //     this.canvasFree.classList.remove("cursor_agehama");
+            // }
         });
 
         // サンプル描画
@@ -112,6 +112,8 @@ class Main {
         this.canvasFree.addEventListener("mousedown", (e: MouseEvent) => this.onMouseDown(e));
         this.canvasFree.addEventListener("mouseup", (e: MouseEvent) => this.onMouseUp(e));
         this.canvasFree.addEventListener("mousemove", (e: MouseEvent) => this.onMouseMove(e));
+
+        this.canvasFree.addEventListener("mousemove", (e: MouseEvent) => this.onMouseOver(e))
 
         this.rdoBlackStoneModeOn.addEventListener("click", (e: Event) => {
             this.gsm.nextStoneColor = GoStoneColor.BLACK;
@@ -170,6 +172,38 @@ class Main {
     private autoSyncStop(e: Event) {
         // this.gim.endSyncLoop(this.statusManager);
     }
+
+    private judgeMouseCursorClass(): string {
+
+        if (this.chk_agehama_switch.checked) {
+            return "cursor_agehama";
+        }
+        if (this.gsm.nextStoneColor == GoStoneColor.BLACK) {
+            return "cursor_black_stone";
+        }
+        if (this.gsm.nextStoneColor == GoStoneColor.WHITE) {
+            return "cursor_white_stone";
+        }
+
+        return "";
+    }
+
+    /**
+     * TODO:cursor関連のクラスを削除してからクラスを追加する。ように修正する。
+     * @param e 
+     */
+    private onMouseOver(e: MouseEvent): void {
+        const clearedList: string[] = new Array();
+
+        // 一回不要なのをクリア
+        this.canvasFree.classList.remove("cursor_agehama");
+        this.canvasFree.classList.remove("cursor_black_stone");
+        this.canvasFree.classList.remove("cursor_white_stone");
+
+        const mouseImgPath = this.judgeMouseCursorClass();
+        this.canvasFree.classList.add(mouseImgPath);
+    }
+
     private onMouseMove(e: MouseEvent): any {
         if (this.rdoDrawMode.checked) {
             this.fwm.draw(e.offsetX, e.offsetY);
