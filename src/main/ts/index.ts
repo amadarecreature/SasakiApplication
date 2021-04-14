@@ -91,6 +91,14 @@ class Main {
         // 同期用オブジェクト
         this.statusManager = new GoPlayStatsuManager(this.gsm, key, "https://dev-instruction-go-api.westus.azurecontainer.io/");
 
+        // アゲハマモードを切り替えた時にマウスカーソルを変える。
+        this.chk_agehama_switch.addEventListener("change", (e: Event) => {
+            // if (this.chk_agehama_switch.checked) {
+            //     this.canvasFree.classList.add("cursor_agehama");
+            // } else {
+            //     this.canvasFree.classList.remove("cursor_agehama");
+            // }
+        });
 
         // サンプル描画
         new GoBoadManager(this.sampleCanvasGoboad, this.setting, rosu);
@@ -104,6 +112,7 @@ class Main {
         this.canvasFree.addEventListener("mousedown", (e: MouseEvent) => this.onMouseDown(e));
         this.canvasFree.addEventListener("mouseup", (e: MouseEvent) => this.onMouseUp(e));
         this.canvasFree.addEventListener("mousemove", (e: MouseEvent) => this.onMouseMove(e));
+
 
         this.rdoBlackStoneModeOn.addEventListener("click", (e: Event) => {
             this.gsm.nextStoneColor = GoStoneColor.BLACK;
@@ -145,6 +154,8 @@ class Main {
         this.updateAgehamaCount();
         this.updateNextTurn();
 
+        this.mouseChangeForAgehama();
+
 
     }
     private syncUpLoad(e: Event) {
@@ -160,20 +171,56 @@ class Main {
     private autoSyncStop(e: Event) {
         // this.gim.endSyncLoop(this.statusManager);
     }
+
+    private judgeMouseCursorClass(): string {
+
+        if (this.chk_agehama_switch.checked) {
+            return "cursor_agehama";
+        }
+        if (this.gsm.nextStoneColor == GoStoneColor.BLACK) {
+            return "cursor_black_stone";
+        }
+        if (this.gsm.nextStoneColor == GoStoneColor.WHITE) {
+            return "cursor_white_stone";
+        }
+
+        return "";
+    }
+
+    /**
+     * 
+     * @param e 
+     */
+    private changeMouseCursor(): void {
+        const clearedList: string[] = new Array();
+
+        // 一回不要なのをクリア
+        this.canvasFree.classList.remove("cursor_agehama");
+        this.canvasFree.classList.remove("cursor_black_stone");
+        this.canvasFree.classList.remove("cursor_white_stone");
+
+        const mouseImgPath = this.judgeMouseCursorClass();
+        this.canvasFree.classList.add(mouseImgPath);
+    }
+
     private onMouseMove(e: MouseEvent): any {
         if (this.rdoDrawMode.checked) {
             this.fwm.draw(e.offsetX, e.offsetY);
         }
+        this.changeMouseCursor();
     }
     private onMouseDown(e: MouseEvent): any {
         if (this.rdoDrawMode.checked) {
             this.fwm.start(e.offsetX, e.offsetY);
         }
+        this.changeMouseCursor();
     }
     private onMouseUp(e: MouseEvent): any {
         if (this.rdoDrawMode.checked) {
             this.fwm.stop();
         }
+        this.changeMouseCursor();
+
     }
 
     /**
@@ -308,7 +355,26 @@ class Main {
 
         console.log("color", fillStyle);
     }
+
+    private mouseChangeForAgehama() {
+        window.document.onmousemove = function (e) {
+            const mouseX = e.pageX;
+            const mouseY = e.pageY;
+            // console.info(document.body.style.cursor);
+            // document.body.style.cursor = "url(img/mouseChangeForAgehama.gif)";
+            // document.body.style.cursor = ({
+            //     //カーソルの真ん中に座標軸が来るよう、
+            //     //カーソルの大きさの半分を引きます
+            //     left: mouseX - (cWidth / 2),
+            //     top: mouseY - (cWidth / 2)
+            // })
+        };
+    }
 }
+
+
+
+
 // Mainクラスを実行する。
 window.addEventListener("load", () => new Main());
 
