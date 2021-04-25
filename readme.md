@@ -24,8 +24,7 @@ docker run --name InstructionGo -v /{furllPath}InstructionGo/docs/sample:/usr/sh
 
 #accsess http://localhost on your browser
 
- ```
-
+```
 
 ## SampleDemo local 2
 
@@ -37,6 +36,7 @@ npx http-server
 # access http://localhost:8080/docs/sample/
 
 ```
+
 ## Usage
 
 1. A
@@ -80,29 +80,26 @@ This software is released under the MIT License, see LICENSE.txt.
 
 <https://github.com/jsdom/jsdom>
 
-## canvasのテスト
+## canvas のテスト
 
- -imgeデータの構造
-    1ピクセルにつき、RDGAの4つのデータが存在する。
-    RGBAはそれぞれ0～255の8bitデータ
-    つまり、1ピクセルで配列4個を使用する。
-    ピクセル(x,y)の開始位置index(Rの位置)
-    index=(4*y)*幅+(4*x)=4*(y*幅+x)
-    G=index+1
-    B=index+2
-    A=index+3
-
+-imge データの構造
+1 ピクセルにつき、RDGA の 4 つのデータが存在する。
+RGBA はそれぞれ 0 ～ 255 の 8bit データ
+つまり、1 ピクセルで配列 4 個を使用する。
+ピクセル(x,y)の開始位置 index(R の位置)
+index=(4*y)*幅+(4*x)=4*(y\*幅+x)
+G=index+1
+B=index+2
+A=index+3
 
 # npminstall on WSL2
 
 https://docs.microsoft.com/ja-jp/windows/nodejs/setup-on-wsl2
 
-
-
-
 # package management
 
 https://www.npmjs.com/package/npm-check-updates
+
 ```
 npm install -g npm-check-updates
 ncu
@@ -110,10 +107,9 @@ ncu -u
 npm install
 ```
 
-
 ## use canvas on Ubuntu
-https://github.com/Automattic/node-canvas/wiki/Installation:-Ubuntu-and-other-Debian-based-systems
 
+https://github.com/Automattic/node-canvas/wiki/Installation:-Ubuntu-and-other-Debian-based-systems
 
 # Test
 
@@ -124,9 +120,19 @@ https://jestjs.io/docs/ja/cli
     "--verbose"
 
 # Git
+
 ## To set commit template
+
 git config commit.template .gitmessage
 
-
 # Links
+
 https://zenn.dev/phi/articles/node-npx-http-server
+
+# WSL2
+
+```
+# mtu change
+sudo ip link set eth0 mtu 1200
+
+```
