@@ -33,6 +33,24 @@ subBoxBase() {
     border: 1px solid gray;
 }
 
+orgButtonDesign() {
+    display: inline-block;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    paddingLR(5px);
+    // width: 60px;
+    height: 25px;
+    line-height: 25px;
+    text-decoration: none;
+    text-align: center;
+    border: 1px solid gray;
+    border-radius: 4px;
+    background-color: #fff;
+    position: relative;
+    box-shadow: 0 3px 0 gray;
+    cursor: pointer;
+}
+
 .main_container {
     // height: 600px;
     paddingTB(2px);
@@ -177,6 +195,15 @@ subBoxBase() {
     margin: auto;
 }
 
+.org_button {
+    orgButtonDesign();
+
+    &:active {
+        top: 4px;
+        box-shadow: 0 1px 0 gray;
+    }
+}
+
 .btn_base {
     margin-top: 5px;
     margin-bottom: 5px;
@@ -189,7 +216,6 @@ subBoxBase() {
 }
 
 .nextTurnRow {
-    // width: 20px;
     height: 24px;
     debugBorder(black);
 }

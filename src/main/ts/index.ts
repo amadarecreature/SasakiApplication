@@ -47,7 +47,10 @@ class Main {
     readonly rdoWhiteStoneModeOn: HTMLInputElement = <HTMLInputElement>document.getElementById("rdoWhiteStoneModeOn");
     readonly rdoCandidateMode: HTMLInputElement = <HTMLInputElement>document.getElementById("rdoCandidateMode_on");
     readonly slRosu: HTMLSelectElement = <HTMLSelectElement>document.getElementById("sl_rosu");
-    readonly btnNew: HTMLButtonElement = <HTMLButtonElement>document.getElementById("btn_new");
+    readonly btnNew: HTMLParagraphElement = <HTMLParagraphElement>document.getElementById("btn_new");
+    readonly btnBack: HTMLParagraphElement = <HTMLParagraphElement>document.getElementById("btn_back");
+
+
     readonly btn_candidate_clear: HTMLButtonElement = <HTMLButtonElement>document.getElementById("btn_candidate_clear");
 
     // アゲハマモード
@@ -142,8 +145,7 @@ class Main {
         this.btn_candidate_clear.addEventListener("click", (e: Event) => this.clearCandidateView(e));
 
         // 待った
-        const btnBack: HTMLButtonElement = <HTMLButtonElement>document.getElementById("btn_back");
-        btnBack.addEventListener("click", (e: Event) => this.mattta(e));
+        this.btnBack.addEventListener("click", (e: Event) => this.mattta(e));
 
         this.btn_turn_back.addEventListener("click", (e: Event) => this.turnBack(e));
         this.btn_turn_forward.addEventListener("click", (e: Event) => this.turnForward(e));
