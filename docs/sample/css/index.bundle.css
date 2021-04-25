@@ -223,7 +223,7 @@
   flex-wrap: wrap;
 }
 .cursor_agehama {
-  cursor: url("../img/mouseAgehama.gif"), auto;
+  cursor: grab;
 }
 .cursor_black_stone {
   cursor: url("../img/blackStone.gif"), auto;
