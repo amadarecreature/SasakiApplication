@@ -7,8 +7,6 @@ export class GoBoadManager {
      * このクラスが扱うカンバスのコンテキスト
      * 
      */
-    readonly context!: CanvasRenderingContext2D;
-
     private canvas!: HTMLCanvasElement;
 
     private scaleFontSize: number = 0;
@@ -34,7 +32,6 @@ export class GoBoadManager {
 
         //カンバス・コンテキスト・大きさを注入する
         this.canvas = canvas;
-        this.context = canvas.getContext('2d')!;
 
         this.scaleFontSize = 15;
 
@@ -65,67 +62,32 @@ export class GoBoadManager {
         // 木目
         // drawWood(x, y, width, height, context);
         // 格子
-        this.drowKoushi(context, goBoadInfo, goBoadInfo.roWidth, goBoadInfo.roHeight);
+        this.drowKoushi(context, goBoadInfo);
 
         // 目盛りを設定
         this.drawScaleXY(context, goBoadInfo, this.scaleFontSize);
 
     }
 
-    private drowKoushi(context: CanvasRenderingContext2D, goBoadInfo: GoBoadInfo, cellHeight: number, cellWidth: number) {
-
-        // 路の幅には線の太さ1本分が含まれる。
+    private drowKoushi(context: CanvasRenderingContext2D, goBoadInfo: GoBoadInfo) {
 
         // 線の色
-        context.fillStyle = "black";
+        const keisenColor = "black";
 
-        // 路の数
-        const ro = goBoadInfo.roCount;
-
-        // 格子の外側(太線の1ピクセルまで含む)
-        const outOfAreaLength = goBoadInfo.areaLeft - goBoadInfo.left;
-
+        // 路の幅には線の太さ1本分が含まれる。
         // 罫線の太さ(端以外)
         const lineWidth = goBoadInfo.keisenWidth;
         // 横の格子線
-        const koushiLeft = goBoadInfo.areaLeft;
-        const verticalStartY = goBoadInfo.areaTop;
-        const verticalLength = goBoadInfo.areaHeight;
+        GoBoardCanvasUtil.drawKeisenH(context, goBoadInfo, lineWidth, keisenColor);
 
-        context.beginPath();
-        // 基本の縦線
-        for (var col = 0; col < ro; col++) {
-            // 外枠の太い部分の半分から計算を始める。
-            const startX1 = koushiLeft + lineWidth + (col * cellWidth);
-            context.rect(startX1, verticalStartY, lineWidth, verticalLength);
-        }
+        // 格子の外側(太線の1ピクセルまで含む)
+        GoBoardCanvasUtil.drawKeisenOutsideH(goBoadInfo, context, lineWidth);
 
-        // 外枠の太線を追加する
-        // 左端
-        context.rect(koushiLeft, verticalStartY, lineWidth, verticalLength);
-        // 右端
-        context.rect(goBoadInfo.left + (goBoadInfo.width - outOfAreaLength), verticalStartY, lineWidth, verticalLength);
-        context.fill();
+        // 縦の格子線
+        GoBoardCanvasUtil.drawKeisenV(context, keisenColor, goBoadInfo, lineWidth);
 
 
-        const koushiTop = goBoadInfo.areaTop;
-        const horizontalStartX = goBoadInfo.areaLeft;
-        const horizontalLength = goBoadInfo.areaWidth;
-        context.beginPath();
-        // 基本の横線
-        for (var row = 0; row < ro; row++) {
-            // 外枠の太い部分の半分から計算を始める。
-            const y1 = koushiTop + lineWidth + (row * cellHeight);
-            context.rect(horizontalStartX, y1, horizontalLength, lineWidth);
-        }
-
-        // 外枠の太線を追加する
-        // 上端
-        context.rect(horizontalStartX, koushiTop, horizontalLength, lineWidth);
-        // 下端
-        context.rect(horizontalStartX, goBoadInfo.top + (goBoadInfo.height - outOfAreaLength), horizontalLength, lineWidth);
-        context.fill();
-
+        GoBoardCanvasUtil.drawKeisenOutsideV(context, goBoadInfo, lineWidth);
 
         // 星の点
         // drawCircle
@@ -191,7 +153,69 @@ export class KifuUtil {
     }
 
 }
+export class GoBoardCanvasUtil {
+    /**
+     * 太さと色を指定して罫線を引ける
+     * @param context 
+     * @param goBoadInfo 
+     * @param lineWidth 
+     * @param lineColor 
+     */
+    public static drawKeisenH(context: CanvasRenderingContext2D, goBoadInfo: GoBoadInfo, lineWidth: number, lineColor: string) {
+        context.beginPath();
+        context.fillStyle = lineColor;
+        for (var col = 0; col < goBoadInfo.roCount; col++) {
+            // 外枠の太い部分の半分から計算を始める。
+            const startX1 = goBoadInfo.areaLeft + lineWidth + (col * goBoadInfo.roHeight);
+            context.rect(startX1, goBoadInfo.areaTop, lineWidth, goBoadInfo.areaHeight);
+        }
+        context.fill();
+    }
 
+    public static drawKeisenOutsideH(goBoadInfo: GoBoadInfo, context: CanvasRenderingContext2D, lineWidth: number) {
+        const koushiLeft = goBoadInfo.areaLeft;
+        const verticalStartY = goBoadInfo.areaTop;
+        const verticalLength = goBoadInfo.areaHeight;
+        const outOfAreaLength = goBoadInfo.areaLeft - goBoadInfo.left;
+
+        context.beginPath();
+        // 外枠の太線を追加する
+        // 左端
+        context.rect(koushiLeft, verticalStartY, lineWidth, verticalLength);
+        // 右端
+        context.rect(goBoadInfo.left + (goBoadInfo.width - outOfAreaLength), verticalStartY, lineWidth, verticalLength);
+        context.fill();
+    }
+    public static drawKeisenV(context: CanvasRenderingContext2D, keisenColor: string, goBoadInfo: GoBoadInfo, lineWidth: number) {
+        context.beginPath();
+        context.fillStyle = keisenColor;
+
+        // 基本の横線
+        for (var row = 0; row < goBoadInfo.roCount; row++) {
+            // 外枠の太い部分の半分から計算を始める。
+            const y1 = goBoadInfo.areaTop + lineWidth + (row * goBoadInfo.roWidth);
+            context.rect(goBoadInfo.areaLeft, y1, goBoadInfo.areaWidth, lineWidth);
+        }
+        context.fill();
+    }
+
+    public static drawKeisenOutsideV(context: CanvasRenderingContext2D, goBoadInfo: GoBoadInfo, lineWidth: number) {
+        context.beginPath();
+
+        const horizontalLength = goBoadInfo.areaWidth;
+        const horizontalStartX = goBoadInfo.areaLeft;
+        const koushiTop = goBoadInfo.areaTop;
+        const outOfAreaLength = goBoadInfo.areaLeft - goBoadInfo.left;
+
+        // 外枠の太線を追加する
+        // 上端
+        context.rect(horizontalStartX, koushiTop, horizontalLength, lineWidth);
+        // 下端
+        context.rect(horizontalStartX, goBoadInfo.top + (goBoadInfo.height - outOfAreaLength), horizontalLength, lineWidth);
+        context.fill();
+    }
+
+}
 export class CanvasCotroller {
     public static drawText(context: CanvasRenderingContext2D, text: string, baseX: number, baseY: number) {
         //座標を指定して文字を描く（座標は画像の中心に）
