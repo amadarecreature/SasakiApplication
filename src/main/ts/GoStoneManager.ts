@@ -199,29 +199,29 @@ export class GoStoneManager {
 
     }
 
-    /**
-     * 碁盤上での位置左上から数えた路数
-     * @param x 
-     * @param y 
-     */
-    private calcPositionOnGoban(position: PointerPosition, goBoadInfo: GoBoadInfo): PositionOnGoBoad {
-        const top = goBoadInfo.top;
-        const left = goBoadInfo.left;
-        console.log(`boad:${top}:${left}`)
+    // /**
+    //  * 碁盤上での位置左上から数えた路数
+    //  * @param x 
+    //  * @param y 
+    //  */
+    // private calcPositionOnGoban(position: PointerPosition, goBoadInfo: GoBoadInfo): PositionOnGoBoad {
+    //     const top = goBoadInfo.top;
+    //     const left = goBoadInfo.left;
+    //     console.log(`boad:${top}:${left}`)
 
-        const x0 = position.x - left;
-        // 1区画の半分先までは、手前の路数として判断する
-        const xRo = Math.floor((x0 + (goBoadInfo.roHeight / 2)) / goBoadInfo.roWidth) - 1;
+    //     const x0 = position.x - left;
+    //     // 1区画の半分先までは、手前の路数として判断する
+    //     const xRo = Math.floor((x0 + (goBoadInfo.roHeight / 2)) / goBoadInfo.roWidth) - 1;
 
-        const y0 = position.y - top;
-        // 1区画の半分先までは、手前の路数として判断する
-        const yRo = Math.floor((y0 + (goBoadInfo.roHeight / 2)) / goBoadInfo.roHeight) - 1;
+    //     const y0 = position.y - top;
+    //     // 1区画の半分先までは、手前の路数として判断する
+    //     const yRo = Math.floor((y0 + (goBoadInfo.roHeight / 2)) / goBoadInfo.roHeight) - 1;
 
-        // console.info("ro=" + xRo + ":" + yRo);
+    //     // console.info("ro=" + xRo + ":" + yRo);
 
 
-        return new PositionOnGoBoad(xRo, yRo);
-    }
+    //     return new PositionOnGoBoad(xRo, yRo);
+    // }
 
     /**
      * 碁盤を描画します。
@@ -260,7 +260,7 @@ export class GoStoneManager {
      * @param color 
      */
     private drawGoIshiByPosition(position: PointerPosition, color: GoStoneColor): PositionOnGoBoad {
-        const positionOnGoban = this.calcPositionOnGoban(position, this._goBoadInfo)
+        const positionOnGoban = GoStoneUtil.calcPositionOnGoban(position, this._goBoadInfo)
         const circleCenterPosition = this.calcCircleCenterPosition(this._goBoadInfo, positionOnGoban);
         const fillstyle: string = color;
         const radius = this._goBoadInfo.roHeight * 0.475; // 半径
@@ -278,7 +278,7 @@ export class GoStoneManager {
      * 
      */
     private isDuplicatePosition(mouseX: number, mouseY: number, goBoadInfo: GoBoadInfo) {
-        const positionOnGoban = this.calcPositionOnGoban(new PointerPosition(mouseX, mouseY), goBoadInfo);
+        const positionOnGoban = GoStoneUtil.calcPositionOnGoban(new PointerPosition(mouseX, mouseY), goBoadInfo);
 
         if (this.realtimePosition[positionOnGoban.roX][positionOnGoban.roY] != GoMoveType.NONE) {
             console.log("既に石がある。=>" + positionOnGoban.roX + ":" + positionOnGoban.roY)
@@ -412,7 +412,7 @@ export class GoStoneManager {
     public getAgehama(mouseX: number, mouseY: number) {
 
         // 碁盤上の位置
-        const positionOnGoban = this.calcPositionOnGoban(new PointerPosition(mouseX, mouseY), this._goBoadInfo);
+        const positionOnGoban = GoStoneUtil.calcPositionOnGoban(new PointerPosition(mouseX, mouseY), this._goBoadInfo);
 
         var resultMove = GoMoveType.NONE;
 
@@ -449,7 +449,7 @@ export class GoStoneManager {
 
         const nowTurn = this._nextTurn;
 
-        const positionOnGoBoad = this.calcPositionOnGoban(new PointerPosition(mouseX, mouseY), this._goBoadInfo);
+        const positionOnGoBoad = GoStoneUtil.calcPositionOnGoban(new PointerPosition(mouseX, mouseY), this._goBoadInfo);
 
         // 碁石の中心位置を計算する。
         const circleCenterPosition = this.calcCircleCenterPosition(this._goBoadInfo, positionOnGoBoad);
@@ -604,6 +604,31 @@ export class GoStoneManager {
 
 }
 export class GoStoneUtil {
+
+    /**
+     * 碁盤上での位置左上から数えた路数
+     * @param x 
+     * @param y 
+     */
+    public static calcPositionOnGoban(position: PointerPosition, goBoadInfo: GoBoadInfo): PositionOnGoBoad {
+        const top = goBoadInfo.top;
+        const left = goBoadInfo.left;
+        console.log(`boad:${top}:${left}`)
+
+        const x0 = position.x - left;
+        // 1区画の半分先までは、手前の路数として判断する
+        const xRo = Math.floor((x0 + (goBoadInfo.roHeight / 2)) / goBoadInfo.roWidth) - 1;
+
+        const y0 = position.y - top;
+        // 1区画の半分先までは、手前の路数として判断する
+        const yRo = Math.floor((y0 + (goBoadInfo.roHeight / 2)) / goBoadInfo.roHeight) - 1;
+
+        // console.info("ro=" + xRo + ":" + yRo);
+
+
+        return new PositionOnGoBoad(xRo, yRo);
+    }
+
 
     static calcStoneColor(move: GoMoveType): GoStoneColor {
         if (move == GoMoveType.BLACK) {
