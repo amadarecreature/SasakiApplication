@@ -30,7 +30,7 @@ describe('GoBoadManager', () => {
         // execute
         const canvas: HTMLCanvasElement = createCanvas("cv1");
         const context = canvas.getContext("2d")!;
-        const gbm = new GoBoadManager(canvas, goSetting, 19);
+        new GoBoadManager(canvas, goSetting, 19);
 
         const actual = context.getImageData(dummyCanvas.offsetLeft, dummyCanvas.offsetTop, dummyCanvas.width, dummyCanvas.height);
 

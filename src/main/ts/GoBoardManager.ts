@@ -1,5 +1,5 @@
-import { GoBoadSetting, GoBoadInfo } from "./GoSetting";
-
+import { GoBoadSetting, GoBoadInfo, PointerPosition, PositionOnGoBoad } from "./GoSetting";
+import { GoStoneUtil } from "./GoUtils"
 
 export class GoBoadManager {
 
@@ -142,6 +142,7 @@ export class GoBoadManager {
 
 
 }
+
 export class KifuUtil {
     static toAlphabet(index: number): string {
         const alphabet = "abcdefghijklmnopqrstuvwxyz";

@@ -1,11 +1,12 @@
-import { GoBoadManager } from "./GoBoardManager";
+import { GoBoadManager, } from "./GoBoardManager";
+import { GoBoardMouseManager } from "./GoBoardMouseManager";
 import { FreeWriteManager } from "./FreeWriteManager";
 import { GoStoneManager, } from "./GoStoneManager";
 import { GoCandidateManager } from "./GoCandidateManager";
 import { GoPlayStatsuManager } from "./GoPlayStatusManager"
 
 
-import { GoBoadSetting, GoMoveType, GoStoneColor } from "./GoSetting";
+import { GoBoadSetting, GoStoneColor } from "./GoSetting";
 import { GoLogger } from "./GoLogger"
 import { KifuUtil } from "./KifuController";
 /**
@@ -17,6 +18,7 @@ class Main {
     private gsm: GoStoneManager;
     private gcm: GoCandidateManager;
     private fwm: FreeWriteManager;
+    private mwm: GoBoardMouseManager;
 
     private sampleGsm: GoStoneManager;
 
@@ -26,6 +28,7 @@ class Main {
     readonly canvasGoboad: HTMLCanvasElement = <HTMLCanvasElement>document.getElementById("goboad_canvas");
     readonly canvasIshi: HTMLCanvasElement = <HTMLCanvasElement>document.getElementById("goishi_canvas");
     readonly canvasFree: HTMLCanvasElement = <HTMLCanvasElement>document.getElementById("free_canvas");
+    readonly canvasMouse: HTMLCanvasElement = <HTMLCanvasElement>document.getElementById("mouse_canvas");
     readonly canvasCandidate: HTMLCanvasElement = <HTMLCanvasElement>document.getElementById("candidate_canvas");
 
 
@@ -90,18 +93,9 @@ class Main {
         this.gsm = new GoStoneManager(this.canvasIshi, this.setting, rosu);
         this.gcm = new GoCandidateManager(this.canvasCandidate, this.setting, rosu);
         this.fwm = new FreeWriteManager(this.canvasFree, this.setting, rosu);
-
+        this.mwm = new GoBoardMouseManager(this.canvasMouse, this.setting, rosu);
         // 同期用オブジェクト
         this.statusManager = new GoPlayStatsuManager(this.gsm, key, "https://dev-instruction-go-api.westus.azurecontainer.io/");
-
-        // アゲハマモードを切り替えた時にマウスカーソルを変える。
-        this.chk_agehama_switch.addEventListener("change", (e: Event) => {
-            // if (this.chk_agehama_switch.checked) {
-            //     this.canvasFree.classList.add("cursor_agehama");
-            // } else {
-            //     this.canvasFree.classList.remove("cursor_agehama");
-            // }
-        });
 
         // サンプル描画
         new GoBoadManager(this.sampleCanvasGoboad, this.setting, rosu);
@@ -194,7 +188,6 @@ class Main {
      * @param e 
      */
     private changeMouseCursor(): void {
-        const clearedList: string[] = new Array();
 
         // 一回不要なのをクリア
         this.canvasFree.classList.remove("cursor_agehama");
@@ -210,6 +203,8 @@ class Main {
             this.fwm.draw(e.offsetX, e.offsetY);
         }
         this.changeMouseCursor();
+
+        this.mwm.drawPointerPositionLine(e.offsetX, e.offsetY);
     }
     private onMouseDown(e: MouseEvent): any {
         if (this.rdoDrawMode.checked) {
@@ -296,6 +291,7 @@ class Main {
         this.gsm = new GoStoneManager(this.canvasIshi, this.setting, rosu);
         this.gcm = new GoCandidateManager(this.canvasFree, this.setting, rosu);
         this.fwm = new FreeWriteManager(this.canvasFree, this.setting, rosu);
+        this.mwm = new GoBoardMouseManager(this.canvasMouse, this.setting, rosu);
 
         // データ登録
         this.statusManager.sync();

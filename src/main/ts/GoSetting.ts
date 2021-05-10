@@ -3,7 +3,14 @@ export enum GoStoneColor {
     WHITE = "white",
     NONE = ""
 }
-
+export class PointerPosition {
+    readonly x: number;
+    readonly y: number;
+    constructor(x: number, y: number) {
+        this.x = x;
+        this.y = y;
+    }
+}
 export class GoBoadSetting {
     readonly goishiGlobalAlpha: number;
 
