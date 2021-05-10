@@ -1,17 +1,10 @@
 import { GoPlayStatsuManager } from "./GoPlayStatusManager";
-import { GoBoadInfo, GoBoadSetting, KifuPart, GoMoveType, GoStoneColor } from "./GoSetting";
+import { GoBoadInfo, GoBoadSetting, KifuPart, GoMoveType, GoStoneColor, PointerPosition } from "./GoSetting";
 import { KifuUtil } from "./KifuController";
+import { GoStoneUtil } from "./GoUtils"
 
 
 
-class PointerPosition {
-    readonly x: number;
-    readonly y: number;
-    constructor(x: number, y: number) {
-        this.x = x;
-        this.y = y;
-    }
-}
 
 class PositionOnGoBoad {
     readonly roX: number;
@@ -522,9 +515,9 @@ export class GoStoneManager {
      * @returns  
      */
     private calcCircleCenterPosition(goBoadInfo: GoBoadInfo, positionOnGoban: PositionOnGoBoad) {
-        const circleX = goBoadInfo.areaLeft + goBoadInfo.keisenWidth + (this.roWidth) * (positionOnGoban.roX);
+        const circleX = goBoadInfo.areaLeft + goBoadInfo.keisenWidth + (goBoadInfo.roWidth) * (positionOnGoban.roX);
         // 端の線は2px(格子ごとの線+1pxなので、足りない1pxだけ足す)
-        const circleY = goBoadInfo.areaTop + goBoadInfo.keisenWidth + (this.roHeight) * (positionOnGoban.roY);
+        const circleY = goBoadInfo.areaTop + goBoadInfo.keisenWidth + (goBoadInfo.roHeight) * (positionOnGoban.roY);
         const circleCenterPosition = new PointerPosition(circleX, circleY);
         return circleCenterPosition;
     }
@@ -603,73 +596,7 @@ export class GoStoneManager {
 
 
 }
-export class GoStoneUtil {
 
-    /**
-     * 碁盤上での位置左上から数えた路数
-     * @param x 
-     * @param y 
-     */
-    public static calcPositionOnGoban(position: PointerPosition, goBoadInfo: GoBoadInfo): PositionOnGoBoad {
-        const top = goBoadInfo.top;
-        const left = goBoadInfo.left;
-        console.log(`boad:${top}:${left}`)
-
-        const x0 = position.x - left;
-        // 1区画の半分先までは、手前の路数として判断する
-        const xRo = Math.floor((x0 + (goBoadInfo.roHeight / 2)) / goBoadInfo.roWidth) - 1;
-
-        const y0 = position.y - top;
-        // 1区画の半分先までは、手前の路数として判断する
-        const yRo = Math.floor((y0 + (goBoadInfo.roHeight / 2)) / goBoadInfo.roHeight) - 1;
-
-        // console.info("ro=" + xRo + ":" + yRo);
-
-
-        return new PositionOnGoBoad(xRo, yRo);
-    }
-
-
-    static calcStoneColor(move: GoMoveType): GoStoneColor {
-        if (move == GoMoveType.BLACK) {
-            return GoStoneColor.BLACK;
-        }
-        if (move == GoMoveType.WHITE) {
-            return GoStoneColor.WHITE;
-        }
-
-        if (move == GoMoveType.OKI_BLACK) {
-            return GoStoneColor.BLACK;
-        }
-        if (move == GoMoveType.OKI_WHITE) {
-            return GoStoneColor.WHITE;
-        }
-        return GoStoneColor.NONE;
-    }
-    /**
-     * 今の着手から次のターンの着手を求める。
-     * アゲハマの場合は変更しない為、NONEを返す
-     * @param nowTurn 
-     * @returns default:GoMoveType.NONE
-     */
-    static nextTurn(nowTurn: GoMoveType) {
-        if (nowTurn == GoMoveType.BLACK) {
-            return GoMoveType.WHITE;
-        }
-        if (nowTurn == GoMoveType.WHITE) {
-            return GoMoveType.BLACK
-        }
-
-        if (nowTurn == GoMoveType.OKI_BLACK) {
-            return GoMoveType.WHITE;
-        }
-        if (nowTurn == GoMoveType.OKI_WHITE) {
-            return GoMoveType.BLACK;
-        }
-
-        return null;
-    }
-}
 
 function getAgehamaColor(targetChakushu: KifuPart): GoMoveType {
     return targetChakushu.color;
