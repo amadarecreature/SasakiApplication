@@ -56,6 +56,8 @@ export class GoBoadInfo {
     // 罫線の幅
     readonly keisenWidth: number;
 
+    readonly keisenColor: string;
+
     /**
      * 碁盤の構成情報
      * @param roWidth 
@@ -78,6 +80,7 @@ export class GoBoadInfo {
         this.areaLeft = left + Math.floor((this.width - this.areaWidth) / 2);
         this.areaTop = top + Math.floor((this.height - this.areaHeight) / 2);
         this.keisenWidth = keisenWidth;
+        this.keisenColor = "black";
     }
 }
 
