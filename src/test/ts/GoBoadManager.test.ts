@@ -1,19 +1,9 @@
 import { GoBoadInfo, GoBoadSetting } from "../../main/ts/GoSetting";
-import { GoBoadManager, KifuUtil, CanvasCotroller } from "../../main/ts/GoBoardManager";
+import { KifuUtil, CommonCanvasUtil } from "../../main/ts/GoUtils";
+import { GoBoadManager } from "../../main/ts/GoBoardManager";
 import { JSDOM } from "jsdom";
 
-describe('PositionUtil.toAlphabet', () => {
-    it("anz", () => {
-        expect(KifuUtil.toAlphabet(1)).toEqual("a");
-        expect(KifuUtil.toAlphabet(14)).toEqual("n");
-        expect(KifuUtil.toAlphabet(26)).toEqual("z");
-    })
-    it("out of range", () => {
-        expect(KifuUtil.toAlphabet(0)).toEqual("");
-        expect(KifuUtil.toAlphabet(27)).toEqual("");
-    })
 
-})
 
 describe('GoBoadManager', () => {
     it('初期配置', () => {
@@ -195,12 +185,12 @@ class DummyGoBoadManager {
         // vertical
         for (var col = 0; col <= ro - 1; col++) {
             const y = koushiTop + (perY * col);
-            CanvasCotroller.drawText(context, KifuUtil.toAlphabet(col + 1).toString(), goBoadInfo.left + (fontSize * 0.8), y);
+            CommonCanvasUtil.drawText(context, KifuUtil.toAlphabet(col + 1).toString(), goBoadInfo.left + (fontSize * 0.8), y);
         }
         // horizontal
         for (var col = 0; col <= ro - 1; col++) {
             const x = koushiLeft + (perX * col);
-            CanvasCotroller.drawText(context, Number(col + 1).toString(), x, goBoadInfo.top + (fontSize));
+            CommonCanvasUtil.drawText(context, Number(col + 1).toString(), x, goBoadInfo.top + (fontSize));
         }
     }
 
