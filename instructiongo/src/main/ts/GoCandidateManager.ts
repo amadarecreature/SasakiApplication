@@ -1,5 +1,4 @@
 import { GoBoadSetting, GoBoadInfo, GoMoveType, KifuPart, PositionOnGoBoad, PositionXY } from "./GoSetting";
-import { Logger } from "./GoLogger";
 
 /**
  * 碁石を管理するクラス
@@ -33,7 +32,6 @@ export class GoCandidateManager {
      * @param canvas 
      * @param goSetting
      * @param roCount 
-     * @param logger
      */
     public constructor(canvas: HTMLCanvasElement, goSetting: GoBoadSetting, roCount: number) {
 

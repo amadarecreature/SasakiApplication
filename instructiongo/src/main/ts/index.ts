@@ -232,12 +232,12 @@ class Main {
 
         if (this.rdoBlackStoneModeOn.checked) {
             this.gsm.addSpecifiedColorStone(e.offsetX, e.offsetY, GoStoneColor.BLACK);
-            this.kifuLogger.log(this.gsm.kifuString);
+            this.kifuLogger.info(this.gsm.kifuString);
             return;
         }
         if (this.rdoWhiteStoneModeOn.checked) {
             this.gsm.addSpecifiedColorStone(e.offsetX, e.offsetY, GoStoneColor.WHITE);
-            this.kifuLogger.log(this.gsm.kifuString);
+            this.kifuLogger.info(this.gsm.kifuString);
             return;
         }
         if (this.rdoCandidateMode.checked) {
@@ -254,7 +254,7 @@ class Main {
         }
 
         this.gsm.chakushu(e.offsetX, e.offsetY);
-        this.kifuLogger.log(this.gsm.kifuString);
+        this.kifuLogger.info(this.gsm.kifuString);
 
         // this.statusManager.update(this.gsm.kifuString);
 
@@ -309,7 +309,7 @@ class Main {
 
     private mattta(e: Event) {
         this.gsm.matta();
-        this.kifuLogger.log(this.gsm.kifuString);
+        this.kifuLogger.info(this.gsm.kifuString);
         this.updateNextTurn();
 
     }
