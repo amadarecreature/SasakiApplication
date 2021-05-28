@@ -12,11 +12,6 @@
             "detail": "webpack"
         },
         {
-            "label": "run1",
-            "type": "shell",
-            "command": "docker run --name nginx -v C:/git_rep/InstructionGo/docs/sample:/usr/share/nginx/html:ro -d -p 80:80  nginx"
-        },
-        {
             "type": "npm",
             "script": "ts-wd",
             "group": "build",

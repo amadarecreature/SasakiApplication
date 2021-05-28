@@ -1,4 +1,6 @@
-export class GoLogger implements Logger {
+import { ImLogger } from "./common/AppLogger";
+
+export class GoLogger implements ImLogger {
     private static instance: GoLogger;
     private constructor(target: HTMLElement) {
         // do something construct...
@@ -13,7 +15,8 @@ export class GoLogger implements Logger {
         }
         return GoLogger.instance;
     }
-    public log(value: string) {
+    public error(value: string) { };
+    public info(value: string) {
 
         if (this.target instanceof HTMLInputElement) {
             const t = <HTMLInputElement>this.target;
@@ -29,7 +32,4 @@ export class GoLogger implements Logger {
         throw new Error("this element isn't the target　types.");
     }
 
-}
-export interface Logger {
-    log(value: String): void;
 }

@@ -1,4 +1,5 @@
 const path = require('path');
+const CopyPlugin = require("copy-webpack-plugin");
 
 module.exports = {
     // モード値を production に設定すると最適化された状態で、
@@ -7,7 +8,7 @@ module.exports = {
 
     // メインとなるJavaScriptファイル（エントリーポイント）
     entry: {
-        "docs/sample/js": './src/main/ts',
+        "sample/js": './src/main/ts',
         "dist": './src/main/ts'
     },
     watch: true,
@@ -18,7 +19,7 @@ module.exports = {
     },
     output: {
         path: path.join(__dirname, "/"),
-        filename: "[name]/index.bundle.js"
+        filename: "[name]/instructiongo.bundle.js"
     },
 
     module: {
@@ -29,6 +30,14 @@ module.exports = {
             use: 'ts-loader'
         }]
     },
+    plugins: [
+        new CopyPlugin({
+            patterns: [
+                { from: "../common/src/main/ts", to: "src/main/ts/common", force: true },
+            ],
+
+        }),
+    ],
     // import 文で .ts ファイルを解決するため
     resolve: {
         modules: [

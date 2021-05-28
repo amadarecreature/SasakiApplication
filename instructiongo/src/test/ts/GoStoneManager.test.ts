@@ -1,6 +1,6 @@
 import { GoBoadSetting, GoMoveType, GoStoneColor } from "../../main/ts/GoSetting";
 import { GoStoneManager } from "../../main/ts/GoStoneManager"
-import { GoStoneUtil } from "./../../main/ts/GoUtils"
+import { GoStoneUtil } from "../../main/ts/GoUtils"
 import { JSDOM } from "jsdom";
 
 describe('GoStoneManager', () => {
