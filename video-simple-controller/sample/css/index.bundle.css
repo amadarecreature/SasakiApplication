@@ -1,0 +1,58 @@
+.mainContainer {
+  display: flex;
+  flex-direction: column;
+  padding: 2px;
+  background-color: #eef;
+  width: 100%;
+}
+.dropZone {
+  border: 1px solid;
+  padding: 30px;
+}
+.videoBox {
+  padding: 2px;
+}
+.videoAndControlContainer {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #808080;
+}
+.videoArea {
+  display: flex;
+  flex-direction: row;
+}
+.videoAndPlayerContainer {
+  display: flex;
+  flex-direction: column;
+}
+.video {
+  border: 1px solid #000;
+}
+.playController {
+  width: 400px;
+  background-color: #333;
+  color: #fff;
+  margin-bottom: 5px;
+}
+.org_button {
+  display: inline-block;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  padding-right: 5px;
+  padding-left: 5px;
+  height: 25px;
+  line-height: 25px;
+  text-decoration: none;
+  text-align: center;
+  border: 1px solid #808080;
+  border-radius: 4px;
+  background-color: #fff;
+  position: relative;
+  box-shadow: 0 3px 0 #808080;
+  cursor: pointer;
+  color: #000;
+}
+.org_button:active {
+  top: 4px;
+  box-shadow: 0 1px 0 #808080;
+}
