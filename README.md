@@ -2,8 +2,7 @@
 
 
 ## projects
-### instractiongo
-
-### video-simple-controller
+### [instractiongo](/instractiongo/readme)
 
 
+### [video-simple-controller](/instractiongo/readme)
