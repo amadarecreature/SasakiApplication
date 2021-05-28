@@ -1,0 +1,83 @@
+@import './common/*';
+
+orgButtonDesign() {
+    display: inline-block;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    paddingLR(5px);
+    height: 25px;
+    line-height: 25px;
+    text-decoration: none;
+    text-align: center;
+    border: 1px solid gray;
+    border-radius: 4px;
+    background-color: #fff;
+    position: relative;
+    box-shadow: 0 3px 0 gray;
+    cursor: pointer;
+    color: black;
+}
+
+.mainContainer {
+    display: flex;
+    flex-direction: column;
+    padding: 2px;
+    background-color: #eef;
+    width: 100%;
+}
+
+.dropZone {
+    border: 1px solid;
+    padding: 30px;
+}
+
+.videoBox {
+    padding: 2px;
+}
+
+// ._seekbar {
+// width: 160px;
+// margin: 1em;
+// }
+// .seekBar {
+// width: 160px;
+// height: 10px;
+// margin: 1em;
+// border-radius: 5px;
+// background: linear-gradient(rgb(39, 13, 13), rgb(214, 8, 8)) no-repeat #eee;
+// }
+.videoAndControlContainer {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid gray;
+}
+
+.videoArea {
+    display: flex;
+    flex-direction: row;
+}
+
+.videoAndPlayerContainer {
+    display: flex;
+    flex-direction: column;
+}
+
+.video {
+    border: 1px solid black;
+}
+
+.playController {
+    width: 400px;
+    background-color: #333333;
+    color: #ffffff;
+    margin-bottom: 5px;
+}
+
+.org_button {
+    orgButtonDesign();
+
+    &:active {
+        top: 4px;
+        box-shadow: 0 1px 0 gray;
+    }
+}
