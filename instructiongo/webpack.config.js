@@ -34,6 +34,7 @@ module.exports = {
         new CopyPlugin({
             patterns: [
                 { from: "../common/src/main/ts", to: "src/main/ts/common", force: true },
+                { from: "../common/src/main/stylus", to: "src/main/stylus/common", force: true },
             ],
 
         }),

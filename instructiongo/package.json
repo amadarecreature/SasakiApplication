@@ -7,9 +7,8 @@
         "http": "npx http-server -p 8080",
         "ts-l": "tsc --noEmit",
         "test": "jest --coverage=true --verbose",
-        "test_only_changed": "jest --coverage=true --verbose --changedFilesWithAncestor",
         "test-w": "jest --coverage=true --verbose --watch",
-        "sty-w": "stylus -w src/main/stylus/ ../common/src/main/stylus/ -o sample/css/instructiongo.bundle.css",
+        "sty-w": "stylus -w src/main/stylus/ -o sample/css/instructiongo.bundle.css",
         "ts-w": "webpack"
     },
     "repository": {
