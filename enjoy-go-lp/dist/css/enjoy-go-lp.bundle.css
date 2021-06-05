@@ -4,26 +4,29 @@ body {
   flex-direction: column;
 }
 header {
+  flex-direction: column;
   border: 1px dashed #000;
 }
-.head_menu nav {
+.main_menu nav {
   border-bottom: 1px solid #000;
 }
-.head_menu nav ul {
+.main_menu nav ul {
   list-style: none;
   overflow: hidden;
 }
-.head_menu nav li {
+.main_menu nav li {
   width: 140px;
   text-align: center;
   background-color: #333;
   float: left;
   height: 40px;
   line-height: 40px;
+  margin-top: 1px;
+  margin-bottom: 1px;
   margin-left: 1px;
   margin-right: 1px;
 }
-.head_menu nav li a {
+.main_menu nav li a {
   text-decoration: none;
   color: #fff;
   font-weight: bold;
@@ -31,6 +34,7 @@ header {
 }
 .main_container {
   flex: 1;
+  flex-direction: columns;
   min-height: 200px;
   background-color: #eee;
   text-align: center;
@@ -38,8 +42,12 @@ header {
   margin-bottom: 5px;
   border: 1px dashed #000;
 }
+.main_container .first_content {
+  flex-direction: row;
+}
 footer {
-  height: 70px;
+  flex-direction: column;
+  min-height: 50px;
   text-align: center;
   background-color: #d2b48c;
   border: 1px dashed #000;

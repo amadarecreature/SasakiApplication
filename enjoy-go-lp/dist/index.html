@@ -11,26 +11,76 @@
 </head>
 
 <body>
+    <!-- Messenger チャットプラグイン Code -->
+    <div id="fb-root"></div>
+
+    <!-- Your チャットプラグイン code -->
+    <div id="fb-customer-chat" class="fb-customerchat">
+    </div>
+
+    <script>
+        var chatbox = document.getElementById('fb-customer-chat');
+        chatbox.setAttribute("page_id", "104878821588492");
+        chatbox.setAttribute("attribution", "biz_inbox");
+        window.fbAsyncInit = function () {
+            FB.init({
+                xfbml: true,
+                version: 'v10.0'
+            });
+        };
+
+        (function (d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s); js.id = id;
+            js.src = 'https://connect.facebook.net/ja_JP/sdk/xfbml.customerchat.js';
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+    </script>
     <header>
         <h1>囲碁で遊ぼう!</h1>
-        <div class="head_menu">
-            <nav>
-                <ul>
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="contact.html">問い合わせ</a></li>
-                </ul>
-            </nav>
+        <div id="headerMenu">
         </div>
     </header>
     <div class="main_container">
+        <div class="first_content">
+            <h2>second_content</h2>
+            <p class="description">
+                色々と説明を書く
+            </p>
+        </div>
+        <div class="second_content">
+            <div class="event_calender">
+                <iframe
+                    src="https://calendar.google.com/calendar/embed?src=q99erfps23puvgdleokhv2neoo%40group.calendar.google.com&ctz=Asia%2FTokyo"
+                    style="border: 0" width="400" height="400" frameborder="0" scrolling="no"></iframe>
+            </div>
+            <div class="messenger">
 
-    </div>
-    <div class="">
-
+            </div>
+        </div>
     </div>
     <footer>
+        <div id="footerMenu"></div>
 
     </footer>
 </body>
+<template id="template">
+    <div class="main_menu">
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="contact.html">問い合わせ</a></li>
+            </ul>
+        </nav>
+    </div>
+</template>
+<script>
+    const template = document.getElementById('template');
+    // 2） コンテンツを取得
+    const content = template.content;
+    document.getElementById("headerMenu").appendChild(document.importNode(content, true));
+    document.getElementById("footerMenu").appendChild(document.importNode(content, true));
+</script>
 
 </html>

@@ -7,10 +7,11 @@ body {
 }
 
 header {
+    flex-direction: column;
     border: 1px dashed black;
 }
 
-.head_menu {
+.main_menu {
     nav {
         border-bottom: 1px solid black;
 
@@ -26,6 +27,7 @@ header {
             float: left;
             height: 40px;
             line-height: 40px;
+            marginTB(1px);
             marginLR(1px);
 
             a {
@@ -40,15 +42,24 @@ header {
 
 .main_container {
     flex: 1;
+    flex-direction: columns;
     min-height: 200px;
     background-color: #eee;
     text-align: center;
     marginTB(5px);
     border: 1px dashed black;
+
+    .first_content {
+        flex-direction: row;
+
+        .event_calender {
+        }
+    }
 }
 
 footer {
-    height: 70px;
+    flex-direction: column;
+    min-height: 50px;
     text-align: center;
     background-color: #D2B48C;
     border: 1px dashed black;
