@@ -12,7 +12,7 @@
  - [readme](https://github.com/amadarecreature/SasakiApplication/tree/master/video-simple-controller)
  - [sample](https://amadarecreature.github.io/SasakiApplication/video-simple-controller/sample/)
 
-### 
+### enjoy-igo-lp
  - readme
  - [production](https://amadarecreature.github.io/SasakiApplication/enjoy-go-lp/dist/)
 
