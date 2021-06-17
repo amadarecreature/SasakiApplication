@@ -1,5 +1,5 @@
 {
-  "name": "piched-ball-viewer",
+  "name": "pitched-ball-viewer",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -8,7 +8,7 @@
     "ts-l": "tsc --noEmit",
     "test": "jest --coverage=true --verbose",
     "test-w": "jest --coverage=true --verbose --watch",
-    "sty-w": "stylus -w src/main/stylus/ -o sample/css/piched-ball-viewer.bundle.css",
+    "sty-w": "stylus -w src/main/stylus/ -o sample/css/pitched-ball-viewer.bundle.css",
     "ts-w": "webpack"
   },
   "repository": {

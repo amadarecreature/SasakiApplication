@@ -1,6 +1,6 @@
 const path = require('path');
 const CopyPlugin = require("copy-webpack-plugin");
-const projectName = "piched-ball-viewer";
+const projectName = "pitched-ball-viewer";
 
 
 module.exports = {
