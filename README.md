@@ -16,3 +16,7 @@
  - readme
  - [production](https://amadarecreature.github.io/SasakiApplication/enjoy-go-lp/dist/)
 
+## Information
+If you use the canvas library with npm,please refer to the following.
+(path)
+https://github.com/Automattic/node-canvas/wiki/Installation%3A-Ubuntu-and-other-Debian-based-systems
