@@ -12,7 +12,7 @@ module.exports = {
     },
     watch: true,
     watchOptions: {
-        ignored: ['files/**/*.js', 'node_modules/**'],
+        ignored: ['files/**/*.js', 'node_modules/**','src/main/lib/**'],
         aggregateTimeout: 200,
         poll: 1000
     },

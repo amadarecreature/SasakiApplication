@@ -4,7 +4,7 @@ This application is to draw a IGO Boad for instruction.
 
 ## Description
 
-This application is written by Typescript.
+This application is written by TypeScript.
 
 ## Features
 
@@ -80,3 +80,13 @@ This software is released under the MIT License, see LICENSE.txt.
     G=index+1
     B=index+2
     A=index+3
+
+## structure
+碁盤の操作、棋譜の再生などは以下のライブラリを利用する。
+https://github.com/waltheri/wgo.js/tree/master/wgo
+http://www.gliftgo.com/#ProblemEx
+
+
+お絵描き機能、候補機能などはその上のレイヤーにcanvasを設置する。
+
+
