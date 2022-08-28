@@ -1,0 +1,52 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "type": "npm",
+            "script": "http",
+            "group": "none",
+            "problemMatcher": [],
+            "label": "start localhost",
+            "detail": "webpack"
+        },
+        {
+            "label": "run1",
+            "type": "shell",
+            "command": "docker run --name nginx -v C:/git_rep/InstructionGo/docs/sample:/usr/share/nginx/html:ro -d -p 80:80  nginx"
+        },
+        {
+            "type": "npm",
+            "script": "ts-wd",
+            "group": "build",
+            "problemMatcher": [],
+            "label": "npm: ts-wd",
+            "detail": "webpack"
+        },
+        {
+            "type": "npm",
+            "script": "sty-w",
+            "group": "build",
+            "problemMatcher": [],
+            "label": "npm: sty-w",
+            "detail": "webpack"
+        },
+        {
+            "type": "npm",
+            "script": "test-w",
+            "group": "build",
+            "problemMatcher": [],
+            "label": "npm: test-w",
+            "detail": "webpack"
+        },
+        {
+            "type": "npm",
+            "script": "ts-wp",
+            "group": "build",
+            "problemMatcher": [],
+            "label": "npm: ts-wp",
+            "detail": "NODE_ENV=production webpack"
+        }
+    ]
+}

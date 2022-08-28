@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ja">
+<meta charset="UTF-8" />
+
+<head>
+    <title>Video Controller Sample</title>
+    <link rel="shortcut icon" href="favicon.ico">
+    <script src="js/video-simple-controller.bundle.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/video-simple-controller.bundle.css" />
+
+</head>
+
+<body>
+    <div class="mainContainer">
+        <div class="videoArea">
+            <div class="videoAndControlContainer">
+                <div id="drop-zone1" class="dropZone">
+                    <p>ファイルをドラッグ＆ドロップもしくは</p>
+                    <input type="file" value="読み込み" id="videoFile1" />
+                </div>
+                <div class="videoBox">
+                    <video id="video1" width="600" height="400" class="video" controls>
+                        <source src="">
+                    </video>
+                </div>
+                <div class="playControllerContainer">
+                    <div class="playController">
+                        <label id="btnBack1" class="org_button" accesskey=";">←(;)</label>
+                        <label id="btnForward1" class="org_button" accesskey=":">→(:)</label>
+                        <br>
+                        現在（秒）：<span id="currentTime1">0</span><br>
+                        全体（秒）：<span id="nagasa1"></span><br>
+                        <input type="text" id="interval1" value="0.05" />
+                        <span id="kanryou1"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="videoAndControlContainer">
+                <div id="drop-zone2" class="dropZone">
+                    <p>ファイルをドラッグ＆ドロップもしくは</p>
+                    <input type="file" value="読み込み" id="videoFile2" />
+                </div>
+                <div class="videoBox">
+                    <video id="video2" width="600" height="400" class="video" controls>
+                        <source src="">
+                    </video>
+                </div>
+
+                <div class="playControllerContainer">
+                    <div class="playController">
+                        <label id="btnBack2" class="org_button" accesskey="+">←(+)</label>
+                        <label id="btnForward2" class="org_button" accesskey="*">→(*)</label>
+                        <br>
+                        現在（秒）：<span id="currentTime2">0</span><br>
+                        全体（秒）：<span id="nagasa2"></span><br>
+                        <input type="text" id="interval2" value="0.05" />
+                        <span id="kanryou2"></span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+
+</html>

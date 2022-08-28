@@ -1,0 +1,229 @@
+@import './common/*';
+
+/*
+ * variables
+ */
+debugBorder(aColor) {
+    // border: 2px solid aColor;
+}
+
+subBoxBase() {
+    background: Wheat;
+    box-shadow: 2px 2px 1px black;
+    border: 1px solid gray;
+}
+
+orgButtonDesign() {
+    display: inline-block;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    paddingLR(5px);
+    // width: 60px;
+    height: 25px;
+    line-height: 25px;
+    text-decoration: none;
+    text-align: center;
+    border: 1px solid gray;
+    border-radius: 4px;
+    background-color: #fff;
+    position: relative;
+    box-shadow: 0 3px 0 gray;
+    cursor: pointer;
+}
+
+.main_container {
+    // height: 600px;
+    paddingTB(2px);
+    paddingLR(5px);
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    // align-items: center;
+    border: 2px solid black;
+    background-color: antiquewhite;
+}
+
+.play_field_container {
+    width: 720px;
+    padding: 6px;
+    display: flex;
+    flex-direction: column;
+    margin-right: 3px;
+    debugBorder(red);
+}
+
+.sample_field_container {
+    paddingTB(2px);
+    paddingLR(2px);
+    display: flex;
+    flex-direction: column;
+    margin-left: 2px;
+    debugBorder(red);
+}
+
+.game_controller_container {
+    subBoxBase();
+    height: 40px;
+    min-width: 480px;
+    float: left;
+    margin-bottom: 2px;
+    padding: 2px;
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.goban_controller_container {
+    subBoxBase();
+    height: 40px;
+    float: left;
+    marginTB(3px);
+    paddingLR(4px);
+    paddingTB(4px);
+}
+
+.mainPlayContainer {
+    subBoxBase();
+    marginTB(3px);
+    paddingTB(4px);
+    paddingLR(4px);
+    min-height: 512px;
+    debugBorder(brown);
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.goban_container {
+    subBoxBase();
+    marginLR(3px);
+    paddingLR(10px);
+    paddingTB(10px);
+    min-height: 512px;
+    debugBorder(brown);
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+
+.cursor_agehama {
+    cursor: grab;
+}
+
+.cursor_black_stone {
+    cursor: url('../img/blackStone.gif'), auto;
+}
+
+.cursor_white_stone {
+    cursor: url('../img/whiteStone.gif'), auto;
+}
+
+.play_controller {
+    subBoxBase();
+    marginLR(3px);
+    paddingTB(10px);
+    paddingLR(10px);
+    debugBorder(blue);
+}
+
+.data_container {
+    subBoxBase();
+    // border: 2px solid black;
+    min-height: 30px;
+    paddingTB(2px);
+    paddingLR(4px);
+    marginTB(3px);
+
+    input {
+        width: 90%;
+    }
+}
+
+.goban_area {
+    width: 400px;
+    height: 380px;
+    position: relative;
+    flex-grow: 1;
+    paddingTB(10px);
+    paddingLR(4px);
+    debugBorder(green);
+}
+
+.play_option_area {
+    flex-grow: 1;
+    paddingTB(20px);
+    paddingLR(4px);
+    debugBorder(orange);
+}
+
+.turn_controller {
+    padding-top: 2px;
+    padding-bottom: 2px;
+    width: 120px;
+}
+
+.turn_controller button {
+    padding: auto;
+    width: 45%;
+}
+
+.turn_controller img {
+    width: 100%;
+}
+
+.goban_area canvas {
+    position: absolute;
+    margin: auto;
+}
+
+.org_button {
+    orgButtonDesign();
+
+    &:active {
+        top: 4px;
+        box-shadow: 0 1px 0 gray;
+    }
+}
+
+.btn_base {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    border-radius: 120px;
+}
+
+.btn_back {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.nextTurnRow {
+    height: 24px;
+    debugBorder(black);
+}
+
+/* 汎用的なもの */
+.radio_box {
+    display: table-cell;
+    overflow: hidden;
+    box-shadow: 2px 2px 5px 1px rgb(112, 107, 107) inset;
+    padding-top: 2px;
+    padding-right: 4px;
+    padding-left: 4px;
+    padding-bottom: 2px;
+    margin-left: 2px;
+    margin-right: 2px;
+    height: 30px;
+}
+
+.agehama_mode_area {
+    display: flex;
+    flex-direction: row;
+    text-align: center;
+}
+
+.agehama_swich_parts {
+    display: table-cell;
+}
+
+.data_sync_container {
+    display: inline-block;
+}
