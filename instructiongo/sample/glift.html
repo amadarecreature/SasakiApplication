@@ -8,6 +8,9 @@
 </head>
 
 <body>
+    <script>
+        glift.create({ divId: 'main_goban' });
+    </script>
     <div class="main_container">
         <div class="play_field_container">
             <div class="goban_controller_container">
@@ -52,7 +55,7 @@
 
 
 
-                    <canvas id="candidate_canvas" style="z-index: 60;"></canvas>
+                    <canvas id="main_goban" style="z-index: 60;"></canvas>
                     <canvas id="free_canvas" style="z-index: 100;"></canvas>
                 </div>
                 <div class="play_info_area">

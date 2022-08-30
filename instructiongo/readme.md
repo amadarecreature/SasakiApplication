@@ -31,7 +31,7 @@ docker run --name InstructionGo -v /{furllPath}InstructionGo/docs/sample:/usr/sh
 on Ubuntu
 change to project current directory
 
-```
+``` bash
 npx http-server
 # access http://localhost:8080/docs/sample/
 
@@ -45,7 +45,7 @@ npx http-server
 
 ## Sample
 
-<https://amadarecreature.github.io/InstructionGo/sample/>
+<https://amadarecreature.github.io/SasakiApplication/instructiongo/sample/>
 
 ## Installation
 
