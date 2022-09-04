@@ -225,10 +225,22 @@ class Main {
      * @param e 
      */
     private onMouseClick(e: MouseEvent) {
+
+        // 優先度順に記述
+
         if (this.rdoDrawMode.checked) {
             // 描画モードの場合
             return;
         }
+
+        // アゲハマ取るモード
+        if (this.chk_agehama_switch.checked) {
+            this.gsm.getAgehama(e.offsetX, e.offsetY);
+            this.updateAgehamaCount();
+            return;
+
+        }
+
 
         if (this.rdoBlackStoneModeOn.checked) {
             this.gsm.addSpecifiedColorStone(e.offsetX, e.offsetY, GoStoneColor.BLACK);
@@ -245,13 +257,6 @@ class Main {
             return;
         }
 
-        // アゲハマ取るモード
-        if (this.chk_agehama_switch.checked) {
-            this.gsm.getAgehama(e.offsetX, e.offsetY);
-            this.updateAgehamaCount();
-            return;
-
-        }
 
         this.gsm.chakushu(e.offsetX, e.offsetY);
         this.kifuLogger.info(this.gsm.kifuString);
