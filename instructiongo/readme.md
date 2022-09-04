@@ -4,7 +4,7 @@ This application is to draw a IGO Boad for instruction.
 
 ## Description
 
-This application is written by Typescript.
+This application is written by TypeScript.
 
 ## Features
 
@@ -47,6 +47,10 @@ npx http-server
 
 <https://amadarecreature.github.io/SasakiApplication/instructiongo/sample/>
 
+### gliftモード
+
+<https://amadarecreature.github.io/SasakiApplication/instructiongo/sample/glift.html>
+
 ## Installation
 
 $ git clone <https://github.com/amadarecreature/InstructionGo.git>
@@ -57,6 +61,14 @@ $ cd InstructionGo
 ### Test
 
 1. execute test
+
+[jest](https://jestjs.io/docs/ja/cli)
+
+``` bash
+    "--runInBand"
+    "--noStackTrace"
+    "--verbose"
+```
 
 ### Deploy
 
@@ -82,7 +94,9 @@ This software is released under the MIT License, see LICENSE.txt.
 
 ## canvas のテスト
 
+``` text
 -imge データの構造
+
 1 ピクセルにつき、RDGA の 4 つのデータが存在する。
 RGBA はそれぞれ 0 ～ 255 の 8bit データ
 つまり、1 ピクセルで配列 4 個を使用する。
@@ -92,47 +106,54 @@ G=index+1
 B=index+2
 A=index+3
 
-# npminstall on WSL2
-
-https://docs.microsoft.com/ja-jp/windows/nodejs/setup-on-wsl2
-
-# package management
-
-https://www.npmjs.com/package/npm-check-updates
-
 ```
+
+## Environment
+
+### npminstall on WSL2
+
+[https://docs.microsoft.com/ja-jp/windows/nodejs/setup-on-wsl2]
+
+### package management
+
+[https://www.npmjs.com/package/npm-check-updates]
+
+``` bash
 npm install -g npm-check-updates
 ncu
 ncu -u
 npm install
 ```
 
-## use canvas on Ubuntu
+### WSL2
 
-https://github.com/Automattic/node-canvas/wiki/Installation:-Ubuntu-and-other-Debian-based-systems
+``` bash
+S# mtu change
+sudo ip link set eth0 mtu 1200
+```
 
-# Test
+## library
 
-https://jestjs.io/docs/ja/cli
+### Glift
 
-    "--runInBand"
-    "--noStackTrace"
-    "--verbose"
+[grlifgo](http://www.gliftgo.com/)
 
-# Git
+### wgo
+
+[https://github.com/waltheri/wgo.js]
+
+### use canvas on Ubuntu
+
+[https://github.com/Automattic/node-canvas/wiki/Installation:-Ubuntu-and-other-Debian-based-systems]
+
+## Git
+
+[https://github.com/amadarecreature/SasakiApplication.git]
 
 ## To set commit template
 
 git config commit.template .gitmessage
 
-# Links
+## Links
 
-https://zenn.dev/phi/articles/node-npx-http-server
-
-# WSL2
-
-```
-# mtu change
-sudo ip link set eth0 mtu 1200
-
-```
+[https://zenn.dev/phi/articles/node-npx-http-server]
