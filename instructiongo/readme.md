@@ -37,6 +37,10 @@ npx http-server
 
 ```
 
+### URL
+
+[http://192.168.1.6:8080/sample/glift.html]
+
 ## Usage
 
 1. A
@@ -50,6 +54,11 @@ npx http-server
 ### gliftモード
 
 <https://amadarecreature.github.io/SasakiApplication/instructiongo/sample/glift.html>
+
+#### information
+
+- 指定するdivはサイズの指定が必要。
+- gliftの読み込み自体は画面描画後最後にする。
 
 ## Installation
 
@@ -135,6 +144,9 @@ sudo ip link set eth0 mtu 1200
 ## library
 
 ### Glift
+
+glift盤版は詰碁と棋譜参照はできるが、対戦はできない為用途を分ける。
+オリジナル版で実際の対局支援、詰碁はglift。
 
 [grlifgo](http://www.gliftgo.com/)
 

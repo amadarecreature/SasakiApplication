@@ -5,27 +5,11 @@
 <head>
     <title>メインページ</title>
     <script src="./lib/gliftgo/glift_1_1_2.min.js"></script>
+    <script src="./js/glift.js"></script>
+
 </head>
 
 <body>
-    <script>
-        gliftWidget = glift.create({
-            divId: "main_goban",
-            sgf: {
-                sgfString: "(;FF[4]GM[1]SZ[19]CA[UTF-8]SO[Glift]EV[]PB[Chen Yaoye]BR[9p]PW[Tan Xiao]WR[7p]KM[7.5]DT[2013-11-18]RE[B+0.5];B[qd];W[dc];B[pq];W[dq];B[nc];W[co];B[qk];W[jp];B[de];W[cg];B[cc];W[gl];B[dd];W[db];B[fd];W[hc];B[cf];W[dh];B[cb];W[mp];B[po];W[kc];B[dk];W[bf];B[be];W[df];B[ce];W[dm];B[fk];W[gh];B[hk];W[gn];B[hq];W[jq];B[eq];W[dr];B[io];W[im];B[jo];W[ko];B[jm];W[jn];B[in];W[kn];B[hm];W[il];B[hl];W[od];B[jk];W[oc])",
-                widgetType: 'EXAMPLE',
-                initialPosition: 30,
-                nextMovesPath: '0:10',
-                uiComponents: ['BOARD', 'STATUS_BAR']
-            },
-            display: {
-                drawBoardCoords: true,
-                theme: 'DEPTH',
-                disableZoomForMobile: true,
-                goBoardBackground: 'images/purty_wood.png',
-            }
-        });
-    </script>
     <div class="main_container">
         <div class="play_field_container">
             <div class="goban_controller_container">
@@ -64,13 +48,13 @@
                 <label id="log">ログ</label>
             </div>
             <div class="goban_container">
+
                 <div class="goban_area">
                     <!-- <canvas id="goboad_canvas" style="z-index: 0;"></canvas>
                     <canvas id="goishi_canvas" style="z-index: 10;"></canvas> -->
 
 
-
-                    <canvas id="main_goban" style="z-index: 60;"></canvas>
+                    <div id="glift_display1" style="width:500px;height:500px;z-index: 0;"></div>
                     <canvas id="free_canvas" style="z-index: 100;"></canvas>
                 </div>
                 <div class="play_info_area">
@@ -87,12 +71,16 @@
         <div class="sample_field_container">
             <div class="goban_container">
                 <div class="goban_area">
-                    <canvas id="sample_goboad_canvas" style="z-index: 0;"></canvas>
+                    <canvas id="sample_goboad_canvas" style="z-index: 100;"></canvas>
                     <canvas id="sample_goishi_canvas" style="z-index: 10;"></canvas>
                 </div>
             </div>
         </div>
     </div>
+    <script>
+        setUpGlift1("glift_display1");
+    </script>
+
 </body>
 
 </html>
